@@ -33,9 +33,6 @@ public class Stirling {
         utilLog.log("Loading configuration..");
         UtilConfig.getInstance().init();
 
-        utilLog.log("Checking for updates..");
-        // TODO: 5/9/17
-
         utilLog.log("Loading modules..");
         //
 

@@ -33,7 +33,6 @@ public class StirlingAccount {
     private String salt;
 
     private List<StirlingClass> stirlingClasses;
-    private List<ContactableAccount> contacts;
 
     private File avatarImage;
     private File bannerImage;
@@ -50,7 +49,6 @@ public class StirlingAccount {
         this.password = BCrypt.hashpw(password, salt);
         this.salt = salt;
         this.stirlingClasses = new ArrayList<>();
-        this.contacts = new ArrayList<>();
         this.avatarImage = null;
         this.bannerImage = null;
     }

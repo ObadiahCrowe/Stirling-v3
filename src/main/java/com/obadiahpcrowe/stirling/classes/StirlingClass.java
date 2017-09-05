@@ -1,5 +1,8 @@
 package com.obadiahpcrowe.stirling.classes;
 
+import com.obadiahpcrowe.stirling.classes.interfaces.StirlingPostable;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingOutline;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -13,5 +16,10 @@ import java.util.UUID;
 public class StirlingClass {
 
     private List<UUID> teachers;
+    private String room;
+    private String name;
+    private String description;
+    private StirlingOutline outline;
+    private List<StirlingPostable> postables;
 
 }

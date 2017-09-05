@@ -1,5 +1,7 @@
 package com.obadiahpcrowe.stirling.accounts;
 
+import java.util.UUID;
+
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 5/9/17 at 4:22 PM
@@ -17,6 +19,10 @@ public class AccountManager {
 
     public String createAccount(String username, String emailAddress, String password) {
         return "";
+    }
+
+    public Object getField(String fieldName, UUID uuid) {
+        return null;
     }
 
     public static AccountManager getInstance() {
