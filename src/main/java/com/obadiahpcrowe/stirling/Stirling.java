@@ -5,6 +5,9 @@ import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
+import lombok.Getter;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -13,10 +16,11 @@ import com.obadiahpcrowe.stirling.util.enums.VersionType;
  * Package: com.obadiahpcrowe.stirling
  * Copyright (c) Obadiah Crowe 2017
  */
+@SpringBootApplication
 public class Stirling {
 
     private static Stirling instance;
-    private StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
+    private @Getter StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
@@ -41,6 +45,19 @@ public class Stirling {
         utilLog.log("Registering module API calls..");
 
         utilLog.log("Starting REST API service..");
+        SpringApplication.run(Stirling.class, args);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            utilLog.log("Beginning shutdown procedure..");
+            utilLog.log("Saving config..");
+            UtilConfig.getInstance().saveConfig();
+
+            utilLog.log("Unloading modules..");
+            //
+
+            utilLog.log("Finishing shutdown..");
+            utilLog.saveLogs();
+        }));
     }
 
     public static Stirling getInstance() {
