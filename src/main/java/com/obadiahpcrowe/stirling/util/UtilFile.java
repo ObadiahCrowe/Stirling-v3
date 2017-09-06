@@ -4,6 +4,8 @@ import com.obadiahpcrowe.stirling.Stirling;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -92,6 +94,20 @@ public class UtilFile {
         InputStream inputStream = Stirling.class.getClassLoader().getResourceAsStream(fileName);
         OutputStream outputStream = new FileOutputStream(new File(directory + File.separator + fileName));
         IOUtils.copy(inputStream, outputStream);
+    }
+
+    public List<File> getAllFiles(File directory) {
+        List<File> files = new ArrayList<>();
+        try {
+            for (File file : directory.listFiles()) {
+                if (file.isDirectory()) {
+                    files.addAll(getAllFiles(file));
+                } else {
+                    files.add(file);
+                }
+            }
+        } catch (NullPointerException ignored) {}
+        return files;
     }
 
     public File getStorageLoc() {
