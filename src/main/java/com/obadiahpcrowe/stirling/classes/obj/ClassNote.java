@@ -27,9 +27,10 @@ public class ClassNote implements StirlingPostable {
     private List<File> videos;
     private List<File> attachments;
     private List<String> links;
+    private UUID uuid;
 
     public ClassNote(UUID poster, String time, String date, String title, String content, List<File> images,
-                     List<File> videos, List<File> attachments, List<String> links) {
+                     List<File> videos, List<File> attachments, List<String> links, UUID uuid) {
         this.poster = poster;
         this.type = PostableType.CLASS_POST;
         this.time = time;
@@ -40,6 +41,7 @@ public class ClassNote implements StirlingPostable {
         this.videos = videos;
         this.attachments = attachments;
         this.links = links;
+        this.uuid = uuid;
     }
 
     @Override
@@ -90,5 +92,10 @@ public class ClassNote implements StirlingPostable {
     @Override
     public List<String> getLinks() {
         return links;
+    }
+
+    @Override
+    public UUID getHolderSection() {
+        return uuid;
     }
 }

@@ -4,6 +4,7 @@ import com.obadiahpcrowe.stirling.classes.enums.PostableType;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -33,4 +34,6 @@ public interface StirlingPostable {
     List<File> getAttachments();
 
     List<String> getLinks();
+
+    UUID getHolderSection();
 }

@@ -30,9 +30,10 @@ public class Homework implements StirlingPostable, StirlingWork {
     private List<String> links;
     private String dueDate;
     private String dueTime;
+    private UUID uuid;
 
     public Homework(UUID poster, String time, String date, String title, String content, List<File> images,
-                    List<File> videos, List<File> attachments, List<String> links, String dueDate, String dueTime) {
+                    List<File> videos, List<File> attachments, List<String> links, String dueDate, String dueTime, UUID uuid) {
         this.poster = poster;
         this.type = PostableType.HOMEWORK;
         this.time = time;
@@ -45,6 +46,7 @@ public class Homework implements StirlingPostable, StirlingWork {
         this.links = links;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
+        this.uuid = uuid;
     }
 
     @Override
@@ -95,6 +97,11 @@ public class Homework implements StirlingPostable, StirlingWork {
     @Override
     public List<String> getLinks() {
         return links;
+    }
+
+    @Override
+    public UUID getHolderSection() {
+        return uuid;
     }
 
     @Override
