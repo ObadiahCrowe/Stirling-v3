@@ -1,9 +1,6 @@
 package com.obadiahpcrowe.stirling.database.obj;
 
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -19,7 +16,7 @@ import java.util.Arrays;
 public class StirlingDatabase {
 
     private DB db;
-    private String collection;
+    private DBCollection collection;
 
     public StirlingDatabase(ServerAddress address, String dbName, String collection, MongoCredential credential) {
         MongoClient client;
@@ -29,6 +26,6 @@ public class StirlingDatabase {
             client = new MongoClient(address);
         }
         this.db = client.getDB(dbName);
-        this.collection = collection;
+        this.collection = this.db.getCollection(collection);
     }
 }

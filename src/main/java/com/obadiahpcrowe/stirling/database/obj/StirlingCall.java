@@ -54,7 +54,7 @@ public class StirlingCall {
         return this;
     }
 
-    public StirlingCall replaceField(Map<String, Object> identifiers, String field, Object insertableObject) {
+    public StirlingCall replaceField(Map<String, Object> identifiers, Object insertableObject, String field) {
         this.callType = CallType.REPLACE_FIELD;
         this.identifiers = identifiers;
         this.field = field;
