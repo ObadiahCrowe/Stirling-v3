@@ -17,7 +17,7 @@ public class StirlingMsg {
     private MsgResponse response;
     private String message;
 
-    public StirlingMsg(MsgTemplate template, StirlingLocale locale, String[] args) {
+    public StirlingMsg(MsgTemplate template, StirlingLocale locale, String... args) {
         this.response = template.getResponse();
 
         String rawMessage = "";

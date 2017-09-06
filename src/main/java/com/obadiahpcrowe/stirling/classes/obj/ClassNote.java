@@ -3,8 +3,10 @@ package com.obadiahpcrowe.stirling.classes.obj;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.classes.enums.PostableType;
 import com.obadiahpcrowe.stirling.classes.interfaces.StirlingPostable;
+import com.obadiahpcrowe.stirling.cloud.interfaces.CloudDocument;
+import com.obadiahpcrowe.stirling.cloud.interfaces.CloudMedia;
 
-import java.io.File;
+import com.obadiahpcrowe.stirling.cloud.interfaces.CloudMedia;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,14 +25,14 @@ public class ClassNote implements StirlingPostable {
     private String date;
     private String title;
     private String content;
-    private List<File> images;
-    private List<File> videos;
-    private List<File> attachments;
+    private List<CloudMedia> images;
+    private List<CloudMedia> videos;
+    private List<CloudDocument> attachments;
     private List<String> links;
     private UUID uuid;
 
-    public ClassNote(UUID poster, String time, String date, String title, String content, List<File> images,
-                     List<File> videos, List<File> attachments, List<String> links, UUID uuid) {
+    public ClassNote(UUID poster, String time, String date, String title, String content, List<CloudMedia> images,
+                     List<CloudMedia> videos, List<CloudDocument> attachments, List<String> links, UUID uuid) {
         this.poster = poster;
         this.type = PostableType.CLASS_POST;
         this.time = time;
@@ -75,17 +77,17 @@ public class ClassNote implements StirlingPostable {
     }
 
     @Override
-    public List<File> getImages() {
+    public List<CloudMedia> getImages() {
         return images;
     }
 
     @Override
-    public List<File> getVideos() {
+    public List<CloudMedia> getVideos() {
         return videos;
     }
 
     @Override
-    public List<File> getAttachments() {
+    public List<CloudDocument> getAttachments() {
         return attachments;
     }
 
