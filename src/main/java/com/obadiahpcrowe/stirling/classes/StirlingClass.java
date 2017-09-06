@@ -38,12 +38,12 @@ public class StirlingClass {
     private List<ContactableAccount> classMates;
     private MessageGroup messageGroup;
 
-    public StirlingClass(List<ContactableAccount> teachers, UUID uuid, String room, String name, String desc, StirlingOutline outline,
+    public StirlingClass(List<ContactableAccount> teachers, String room, String name, String desc, StirlingOutline outline,
                          List<StirlingSection> sections, List<StirlingPostable> postables, List<StirlingCatchup> catchupModules,
                          List<LessonCalEntry> lessons, List<StirlingAssessment> assessments, List<ContactableAccount> classMates,
                          MessageGroup messageGroup) {
         this.teachers = teachers;
-        this.uuid = uuid;
+        this.uuid = UUID.randomUUID();
         this.room = room;
         this.name = name;
         this.desc = desc;

@@ -20,8 +20,8 @@ public class StirlingSection {
     private String desc;
     private AccountType minType;
 
-    public StirlingSection(UUID uuid, String title, String desc, AccountType minType) {
-        this.uuid = uuid;
+    public StirlingSection(String title, String desc, AccountType minType) {
+        this.uuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;
         this.minType = minType;

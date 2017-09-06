@@ -48,7 +48,7 @@ public class Homework implements StirlingPostable, StirlingWork {
         this.links = links;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
-        this.uuid = uuid;
+        this.uuid = UUID.randomUUID();
     }
 
     @Override

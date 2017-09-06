@@ -32,7 +32,7 @@ public class ClassNote implements StirlingPostable {
     private UUID uuid;
 
     public ClassNote(UUID poster, String time, String date, String title, String content, List<CloudMedia> images,
-                     List<CloudMedia> videos, List<CloudDocument> attachments, List<String> links, UUID uuid) {
+                     List<CloudMedia> videos, List<CloudDocument> attachments, List<String> links) {
         this.poster = poster;
         this.type = PostableType.CLASS_POST;
         this.time = time;
@@ -43,7 +43,7 @@ public class ClassNote implements StirlingPostable {
         this.videos = videos;
         this.attachments = attachments;
         this.links = links;
-        this.uuid = uuid;
+        this.uuid = UUID.randomUUID();
     }
 
     @Override
