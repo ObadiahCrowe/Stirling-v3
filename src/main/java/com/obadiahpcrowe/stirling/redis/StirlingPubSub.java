@@ -13,7 +13,7 @@ public class StirlingPubSub extends JedisPubSub {
 
     @Override
     public void onMessage(String channel, String message) {
-        super.onMessage(channel, message);
+        RedisManager.getInstance().callSub(message);
     }
 
     @Override
