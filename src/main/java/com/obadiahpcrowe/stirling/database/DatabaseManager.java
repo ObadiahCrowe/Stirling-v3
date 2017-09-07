@@ -1,10 +1,7 @@
 package com.obadiahpcrowe.stirling.database;
 
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.database.obj.StirlingDatabase;
 import lombok.Getter;

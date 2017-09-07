@@ -37,6 +37,7 @@ public class AccountManager {
 
             StirlingAccount account = new StirlingAccount(accountName, emailAddress, password);
             databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).insert(account));
+
             UtilFile.getInstance().createUserFiles(account.getUuid());
 
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_CREATED, StirlingLocale.ENGLISH, accountName));
@@ -95,11 +96,13 @@ public class AccountManager {
 
             if (account != null) {
                 return true;
+            } else {
+                return false;
             }
         } catch (NullPointerException e) {
+            e.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public boolean accountExists(UUID uuid) {

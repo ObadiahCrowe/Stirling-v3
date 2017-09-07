@@ -6,7 +6,6 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -42,7 +41,7 @@ public class Stirling {
         utilLog.log("Registering module API calls..");
 
         utilLog.log("Starting REST API service..");
-        SpringApplication.run(Stirling.class, args);
+        //SpringApplication.run(Stirling.class, args);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

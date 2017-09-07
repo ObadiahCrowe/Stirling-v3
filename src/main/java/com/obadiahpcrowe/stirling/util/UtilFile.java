@@ -50,7 +50,7 @@ public class UtilFile {
     }
 
     public void createUserFiles(UUID uuid) {
-        File userFolder = new File(home + File.separator + uuid.toString());
+        File userFolder = new File(home + File.separator + "UserData" + File.separator + uuid.toString());
         if (!userFolder.exists()) {
             userFolder.mkdir();
         }
@@ -63,7 +63,7 @@ public class UtilFile {
         };
 
         for (File file : folders) {
-            File dirFile = new File(home + File.separator + file);
+            File dirFile = new File(userFolder + File.separator + file);
             if (!dirFile.exists()) {
                 dirFile.mkdir();
             }
@@ -74,7 +74,7 @@ public class UtilFile {
     }
 
     public void deleteUserFiles(UUID uuid) {
-        deleteDirectory(new File(home + File.separator + uuid.toString()));
+        deleteDirectory(new File(home + File.separator + "UserData" + File.separator + uuid.toString()));
     }
 
     private void copyDefaultAvatar(String uuid) {
