@@ -13,8 +13,9 @@ import lombok.Getter;
 public enum MsgTemplate {
 
     ACCOUNT_EXISTS(MsgResponse.USER_ERROR, "The account, {0}, already exists!", 1),
-    ACCOUNT_CREATED(MsgResponse.SUCCESS, "Account, {0}, created!", 1),
-    ACCOUNT_DELETED(MsgResponse.SUCCESS, "Account, {0}, deleted!", 1),
+    ACCOUNT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The account, {0}, does not exist!", 1),
+    ACCOUNT_CREATED(MsgResponse.SUCCESS, "Account, {0}, has been created!", 1),
+    ACCOUNT_DELETED(MsgResponse.SUCCESS, "Account, {0}, has been deleted!", 1),
     ACCOUNT_FIELD_EDITED(MsgResponse.SUCCESS, "The field, {0}, was edited for {1}!", 2),
 
     ANNOUNCEMENT_CREATED(MsgResponse.SUCCESS, "The announcement, {0}, has been posted!", 1),
@@ -62,7 +63,9 @@ public enum MsgTemplate {
     SUBMITTING_FILE(MsgResponse.SUCCESS, "Submitting {0}..", 1),
 
     CANNOT_SET_FIELD_TO_FIELD(MsgResponse.USER_ERROR, "Cannot apply the value, {0}, to the field, {1}!", 2),
-    SET_FIELD_TO_FIELD(MsgResponse.SUCCESS, "Set the value, {0}, to the field, {1}!", 2);
+    SET_FIELD_TO_FIELD(MsgResponse.SUCCESS, "Set the value, {0}, to the field, {1}!", 2),
+
+    PASSWORD_INCORRECT(MsgResponse.USER_ERROR, "The password for {0} is incorrect!", 1);
 
     private MsgResponse response;
     private String message;

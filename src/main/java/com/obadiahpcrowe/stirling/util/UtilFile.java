@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.util;
 
 import com.obadiahpcrowe.stirling.Stirling;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -72,6 +73,10 @@ public class UtilFile {
         copyDefaultBanner(uuid.toString());
     }
 
+    public void deleteUserFiles(UUID uuid) {
+        deleteDirectory(new File(home + File.separator + uuid.toString()));
+    }
+
     private void copyDefaultAvatar(String uuid) {
         try {
             copyInternalFile("avatar.png", new File(home + File.separator + "UserData" +
@@ -125,6 +130,14 @@ public class UtilFile {
                 break;
         }
         return home;
+    }
+
+    public void deleteDirectory(File file) {
+        try {
+            FileUtils.deleteDirectory(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static UtilFile getInstance() {
