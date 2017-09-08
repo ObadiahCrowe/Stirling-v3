@@ -18,11 +18,11 @@ public class AnnouncementResource {
 
     private String title;
     private UUID owner;
-    private File file;
+    private String filePath;
 
     public AnnouncementResource(StirlingAccount account, String title, File file) {
         this.title = title;
         this.owner = account.getUuid();
-        this.file = file;
+        this.filePath = file.getPath();
     }
 }

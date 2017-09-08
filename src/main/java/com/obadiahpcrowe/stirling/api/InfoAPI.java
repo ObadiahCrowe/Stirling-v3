@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.api;
 
 import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.Stirling;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
@@ -24,5 +25,11 @@ public class InfoAPI implements APIController {
     @RequestMapping(value = "/stirling/v3/supportedCalls", method = RequestMethod.GET)
     public String getSupportedCalls() {
         return gson.toJson(APIManager.getInstance().getApis());
+    }
+
+    @CallableAPI(fields = "")
+    @RequestMapping(value = "/stirling/v3/version", method = RequestMethod.GET)
+    public String getVersion() {
+        return gson.toJson(Stirling.getInstance().getVersion());
     }
 }
