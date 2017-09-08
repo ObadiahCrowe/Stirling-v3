@@ -120,7 +120,7 @@ public class DatabaseManager {
                 String json = gson.toJson(cursor.next());
                 objects.add(gson.fromJson(json, returnableObject));
             }
-            return objects;
+            return gson.toJson(objects);
         } else {
             Iterator itr = identifiers.entrySet().iterator();
             while (itr.hasNext()) {

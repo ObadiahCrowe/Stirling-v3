@@ -24,6 +24,21 @@ public class UtilTime {
         return now.getDayOfMonth() + "." + now.getMonthOfYear() + "." + now.getYear();
     }
 
+    public String getFriendlyDate() {
+        return now.getDayOfMonth() + "/" + now.getMonthOfYear() + "/" + now.getYear();
+    }
+
+    public String getFriendlyTime() {
+        String ampm = "am";
+        int hour = now.getHourOfDay();
+        if (hour >= 13) {
+            hour = hour - 12;
+            ampm = "pm";
+        }
+
+        return hour + ":" + now.getMinuteOfHour() + " " + ampm.toUpperCase();
+    }
+
     public static UtilTime getInstance() {
         if (instance == null)
             instance = new UtilTime();

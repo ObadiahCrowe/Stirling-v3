@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <start-class>me.obadiahpcrowe.stirling.Stirling</start-class>
+        <start-class>com.obadiahpcrowe.stirling.Stirling</start-class>
     </properties>
 
     <parent>
@@ -38,7 +38,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>me.obadiahpcrowe.stirling.Stirling</mainClass>
+                    <mainClass>com.obadiahpcrowe.stirling.Stirling</mainClass>
                 </configuration>
                 <executions>
                     <execution>
