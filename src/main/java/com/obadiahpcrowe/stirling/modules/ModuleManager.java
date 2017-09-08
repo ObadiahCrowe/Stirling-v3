@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.modules;
 import com.obadiahpcrowe.stirling.modules.interfaces.StirlingModule;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilFilter;
+import com.obadiahpcrowe.stirling.util.UtilLog;
 import lombok.Getter;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public class ModuleManager {
 
     private static ModuleManager instance;
     private List<StirlingModule> modules = new ArrayList<>();
+    private UtilLog utilLog = UtilLog.getInstance();
 
     public void registerModules() {
         try {
@@ -38,7 +40,10 @@ public class ModuleManager {
     }
 
     public void unregisterModules() {
-        modules.forEach(StirlingModule::unload);
+        modules.forEach(module -> {
+            module.unload();
+            utilLog.log("Unloaded module: " + module.getName());
+        });
     }
 
     public void loadModule(File file) {
@@ -55,13 +60,17 @@ public class ModuleManager {
 
             modules.add(module);
             module.load();
+            utilLog.log("Loaded module: " + module.getName());
         } catch (IOException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void unloadModule(String moduleName) {
-        modules.stream().filter(module -> module.getName().equalsIgnoreCase(moduleName)).forEach(StirlingModule::unload);
+        modules.stream().filter(module -> module.getName().equalsIgnoreCase(moduleName)).forEach(module -> {
+            module.unload();
+            utilLog.log("Unloaded module: " + module.getName());
+        });
     }
 
     public static ModuleManager getInstance() {
