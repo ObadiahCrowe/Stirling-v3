@@ -3,6 +3,8 @@ package com.obadiahpcrowe.stirling;
 import com.obadiahpcrowe.stirling.api.AccountAPI;
 import com.obadiahpcrowe.stirling.api.InfoAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
+import com.obadiahpcrowe.stirling.modules.ModuleManager;
+import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilFile;
@@ -43,7 +45,10 @@ public class Stirling {
         );
 
         utilLog.log("Loading modules..");
-        //
+        ModuleManager.getInstance().registerModules();
+
+        utilLog.log("Registering module event handlers..");
+        EventManager.getInstance().init();
 
         utilLog.log("Registering module databases..");
         //
@@ -59,7 +64,7 @@ public class Stirling {
             UtilConfig.getInstance().saveConfig();
 
             utilLog.log("Unloading modules..");
-            //
+            ModuleManager.getInstance().unregisterModules();
 
             utilLog.log("Finishing shutdown..");
             utilLog.saveLogs();

@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.JarURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class ModuleManager {
     }
 
     public void unregisterModules() {
-        modules.stream().forEach(module -> module.unload());
+        modules.forEach(StirlingModule::unload);
     }
 
     public void loadModule(File file) {

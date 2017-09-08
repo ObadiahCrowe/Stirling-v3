@@ -8,5 +8,4 @@ package com.obadiahpcrowe.stirling.modules.events;
  * Copyright (c) Obadiah Crowe 2017
  */
 public interface StirlingEvent {
-
 }

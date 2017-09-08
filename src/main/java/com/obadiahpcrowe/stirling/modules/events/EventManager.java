@@ -1,8 +1,11 @@
 package com.obadiahpcrowe.stirling.modules.events;
 
-import java.util.HashMap;
+import com.obadiahpcrowe.stirling.modules.ModuleManager;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -14,14 +17,24 @@ import java.util.Map;
 public class EventManager {
 
     private static EventManager instance;
-    private Map<StirlingEvent, Class> fireables = new HashMap<>();
+    private List<EventListener> listeners = new ArrayList<>();
 
     public void init() {
-
+        ModuleManager.getInstance().getModules().forEach(module -> listeners.addAll(module.getListeners()));
     }
 
     public void fireEvent(StirlingEvent event) {
-        //
+        for (EventListener eventListener : listeners) {
+            for (Method method : eventListener.getClass().getDeclaredMethods()) {
+                if (method.isAnnotationPresent(EventHandler.class)) {
+                    try {
+                        method.invoke(event);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     public static EventManager getInstance() {

@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.database.DatabaseManager;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.modules.events.EventManager;
+import com.obadiahpcrowe.stirling.modules.events.types.AccountCreatedEvent;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
@@ -40,7 +42,9 @@ public class AccountManager {
 
             UtilFile.getInstance().createUserFiles(account.getUuid());
 
-            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_CREATED, StirlingLocale.ENGLISH, accountName));
+            StirlingMsg msg = new StirlingMsg(MsgTemplate.ACCOUNT_CREATED, StirlingLocale.ENGLISH, accountName);
+            EventManager.getInstance().fireEvent(new AccountCreatedEvent(msg, accountName, account.getUuid()));
+            return gson.toJson(msg);
         } else {
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_EXISTS, StirlingLocale.ENGLISH, accountName));
         }

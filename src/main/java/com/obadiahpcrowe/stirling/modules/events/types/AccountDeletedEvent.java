@@ -17,13 +17,11 @@ import java.util.UUID;
 @Getter
 public class AccountDeletedEvent implements StirlingEvent {
 
-    private Map<String, Object> params;
     private StirlingMsg output;
     private String accountName;
     private UUID uuid;
 
-    public AccountDeletedEvent(Map<String, Object> params, StirlingMsg output, String accountName, UUID uuid) {
-        this.params = params;
+    public AccountDeletedEvent(StirlingMsg output, String accountName, UUID uuid) {
         this.output = output;
         this.accountName = accountName;
         this.uuid = uuid;
