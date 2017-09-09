@@ -1,8 +1,9 @@
-package com.obadiahpcrowe.stirling.announcements.obj;
+package com.obadiahpcrowe.stirling.announcements;
 
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilTime;
 import lombok.Getter;
 
@@ -27,11 +28,11 @@ public class StirlingAnnouncement {
     private UUID uuid;
     private String postTime;
     private String postDate;
-    private List<AnnouncementResource> resources;
+    private List<AttachableResource> resources;
     private List<AccountType> targetAudience;
 
     public StirlingAnnouncement(StirlingAccount account, String title, String shortDesc, AnnouncementType announcementType,
-                                String content, List<AnnouncementResource> resources, List<AccountType> targetAudience) {
+                                String content, List<AttachableResource> resources, List<AccountType> targetAudience) {
         this.title = title;
         this.shortDesc = shortDesc;
         this.sender = account.getDisplayName();

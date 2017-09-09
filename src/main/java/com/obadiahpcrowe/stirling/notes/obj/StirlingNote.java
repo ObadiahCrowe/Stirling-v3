@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.notes.obj;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,12 +20,12 @@ public class StirlingNote {
 
     private String owner;
     private UUID uuid;
-    private String title;
-    private String content;
+    private @Setter String title;
+    private @Setter String content;
     private List<AttachableResource> resources;
 
     public StirlingNote(StirlingAccount account, String title, String content, List<AttachableResource> resources) {
-        this.owner = account.getDisplayName();
+        this.owner = account.getAccountName();
         this.uuid = UUID.randomUUID();
         this.title = title;
         this.content = content;

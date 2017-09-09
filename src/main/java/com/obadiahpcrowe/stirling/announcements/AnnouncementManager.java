@@ -5,10 +5,9 @@ import com.google.gson.reflect.TypeToken;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
-import com.obadiahpcrowe.stirling.announcements.obj.AnnouncementResource;
-import com.obadiahpcrowe.stirling.announcements.obj.StirlingAnnouncement;
 import com.obadiahpcrowe.stirling.database.DatabaseManager;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -45,9 +44,10 @@ public class AnnouncementManager {
             audience.add(AccountType.valueOf(tokenizer.nextElement().toString()));
         }
 
-        Type jsonType = new TypeToken<List<AnnouncementResource>>(){}.getType();
+        // TODO: 9/9/17 This needs work
+        Type jsonType = new TypeToken<List<AttachableResource>>(){}.getType();
 
-        List<AnnouncementResource> resources = null;
+        List<AttachableResource> resources = null;
         try {
             resources = gson.fromJson(resourcesJson, jsonType);
         } catch (NullPointerException e) {
