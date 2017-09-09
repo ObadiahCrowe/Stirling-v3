@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.modules.interfaces;
 
+import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.database.obj.StirlingDatabase;
 import com.obadiahpcrowe.stirling.modules.events.EventListener;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
@@ -32,7 +33,7 @@ public interface StirlingModule {
 
     Map<String, StirlingDatabase> getDatabases();
 
-    List<Class> getAPICalls();
+    List<Class<? extends APIController>> getAPICalls();
 
     void load();
 

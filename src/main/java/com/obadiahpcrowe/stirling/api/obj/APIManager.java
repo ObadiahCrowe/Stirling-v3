@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.api.obj;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
@@ -19,7 +20,7 @@ public class APIManager {
 
     private static APIManager instance;
     private List<StirlingAPI> apis = new ArrayList<>();
-    private Map<StirlingAPI, Method> unregisteredApis = new HashMap<>();
+    private Map<StirlingAPI, Map<Class, Method>> unregisteredApis = new HashMap<>();
 
     public void registerDefaultCalls(APIController... apis) {
         for (APIController api : apis) {
@@ -32,7 +33,17 @@ public class APIManager {
     }
 
     public String handleWildCall(String var1, String var2) {
-        return "Called: " + var1 + " and " + var2;
+        // TODO: 9/9/17 check if method has values
+        Map<UUID, String> output = new HashMap<>();
+        UUID uuid = UUID.randomUUID();
+        unregisteredApis.forEach((key, value) -> value.forEach((key1, value1) -> {
+            try {
+                output.put(uuid, (String) value1.invoke(key1.newInstance()));
+            } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }));
+        return output.get(uuid);
     }
 
     private void registerCall(Class clazz, boolean registered) {
@@ -90,7 +101,9 @@ public class APIManager {
                 StirlingAPI api = new StirlingAPI(url, params, returned);
                 this.apis.add(api);
                 if (!registered) {
-                    unregisteredApis.put(api, method);
+                    unregisteredApis.put(api, new HashMap<Class, Method>() {{
+                        put(clazz, method);
+                    }});
                 }
             }
         }
