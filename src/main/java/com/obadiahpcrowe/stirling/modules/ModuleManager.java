@@ -83,7 +83,7 @@ public class ModuleManager {
     }
 
     public void registerAPICalls() {
-        modules.forEach(module -> module.getAPICalls().forEach(clazz -> APIManager.getInstance().registerModuleAPI(module.getName(), clazz)));
+        modules.forEach(module -> module.getAPICalls().forEach(clazz -> APIManager.getInstance().registerModuleAPI(clazz)));
     }
 
     public static ModuleManager getInstance() {

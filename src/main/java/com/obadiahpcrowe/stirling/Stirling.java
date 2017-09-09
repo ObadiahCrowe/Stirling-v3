@@ -2,6 +2,7 @@ package com.obadiahpcrowe.stirling;
 
 import com.obadiahpcrowe.stirling.api.AccountAPI;
 import com.obadiahpcrowe.stirling.api.InfoAPI;
+import com.obadiahpcrowe.stirling.api.ModuleAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
@@ -42,7 +43,8 @@ public class Stirling {
         utilLog.log("Registering default API calls..");
         APIManager.getInstance().registerDefaultCalls(
           new AccountAPI(),
-          new InfoAPI()
+          new InfoAPI(),
+          new ModuleAPI()
         );
 
         utilLog.log("Loading modules..");
