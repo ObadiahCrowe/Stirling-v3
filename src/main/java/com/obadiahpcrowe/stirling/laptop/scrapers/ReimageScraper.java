@@ -6,7 +6,7 @@ import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
 import com.google.gson.Gson;
-import com.obadiahpcrowe.stirling.laptop.ReimageLaptop;
+import com.obadiahpcrowe.stirling.laptop.obj.ReimageLaptop;
 import com.obadiahpcrowe.stirling.laptop.enums.LaptopStatus;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 

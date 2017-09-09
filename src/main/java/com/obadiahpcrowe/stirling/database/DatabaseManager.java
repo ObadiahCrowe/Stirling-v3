@@ -68,6 +68,9 @@ public class DatabaseManager {
     @Getter
     private final StirlingDatabase classesDB = new StirlingDatabase(address, dbName, "classes", null);
 
+    @Getter
+    private final StirlingDatabase laptopDB = new StirlingDatabase(address, dbName, "laptop", null);
+
     public Object makeCall(StirlingCall call) {
         UUID uuid = UUID.randomUUID();
         Thread t = new Thread(() -> {

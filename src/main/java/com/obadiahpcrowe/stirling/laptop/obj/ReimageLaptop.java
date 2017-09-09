@@ -1,4 +1,4 @@
-package com.obadiahpcrowe.stirling.laptop;
+package com.obadiahpcrowe.stirling.laptop.obj;
 
 import com.obadiahpcrowe.stirling.laptop.enums.LaptopStatus;
 import lombok.Getter;
