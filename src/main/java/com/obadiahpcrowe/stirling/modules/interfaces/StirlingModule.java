@@ -26,7 +26,7 @@ public interface StirlingModule {
 
     String[] getRequiredModules();
 
-    List<EventListener> getListeners();
+    List<Class<? extends EventListener>> getListeners();
 
     void load();
 

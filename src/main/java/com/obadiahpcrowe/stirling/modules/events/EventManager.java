@@ -17,20 +17,24 @@ import java.util.List;
 public class EventManager {
 
     private static EventManager instance;
-    private List<EventListener> listeners = new ArrayList<>();
+    private List<Class<? extends EventListener>> listeners = new ArrayList<>();
 
     public void init() {
         ModuleManager.getInstance().getModules().forEach(module -> listeners.addAll(module.getListeners()));
     }
 
     public void fireEvent(StirlingEvent event) {
-        for (EventListener eventListener : listeners) {
-            for (Method method : eventListener.getClass().getDeclaredMethods()) {
+        for (Class clazz : listeners) {
+            for (Method method : clazz.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(EventHandler.class)) {
-                    try {
-                        method.invoke(event);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
+                    EventHandler handler = method.getAnnotation(EventHandler.class);
+                    if (handler.eventClass().equals(event.getClass())) {
+                        try {
+                            method.setAccessible(true);
+                            method.invoke(clazz.newInstance(), event);
+                        } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
