@@ -79,6 +79,10 @@ public class APIManager {
         }
     }
 
+    public void registerModuleAPI(String moduleName, Class clazz) {
+        // TODO: 9/9/17
+    }
+
     public static APIManager getInstance() {
         if (instance == null)
             instance = new APIManager();

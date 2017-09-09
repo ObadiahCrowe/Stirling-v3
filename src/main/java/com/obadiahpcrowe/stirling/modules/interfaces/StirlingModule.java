@@ -1,9 +1,11 @@
 package com.obadiahpcrowe.stirling.modules.interfaces;
 
+import com.obadiahpcrowe.stirling.database.obj.StirlingDatabase;
 import com.obadiahpcrowe.stirling.modules.events.EventListener;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -27,6 +29,10 @@ public interface StirlingModule {
     String[] getRequiredModules();
 
     List<Class<? extends EventListener>> getListeners();
+
+    Map<String, StirlingDatabase> getDatabases();
+
+    List<Class> getAPICalls();
 
     void load();
 

@@ -21,6 +21,7 @@ public class DatabaseManager {
     private ServerAddress address = new ServerAddress("localhost", 27017);
     private String dbName = "stirling";
     private Map<UUID, Object> data = new HashMap<>();
+    private @Getter Map<String, Map<String, StirlingDatabase>> moduleDBs = new HashMap<>();
 
     @Getter
     private final StirlingDatabase accountDB = new StirlingDatabase(address, dbName, "accounts", null);

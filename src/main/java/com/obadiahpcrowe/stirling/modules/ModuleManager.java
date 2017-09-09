@@ -1,5 +1,8 @@
 package com.obadiahpcrowe.stirling.modules;
 
+import com.obadiahpcrowe.stirling.api.obj.APIManager;
+import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.obj.StirlingDatabase;
 import com.obadiahpcrowe.stirling.modules.interfaces.StirlingModule;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilFilter;
@@ -12,8 +15,7 @@ import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.jar.Manifest;
 
 /**
@@ -71,6 +73,17 @@ public class ModuleManager {
             module.unload();
             utilLog.log("Unloaded module: " + module.getName());
         });
+    }
+
+    public void registerModuleDBs() {
+        modules.forEach(module -> module.getDatabases().forEach((key, value) ->
+          DatabaseManager.getInstance().getModuleDBs().put(module.getName(), new HashMap<String, StirlingDatabase>() {{
+            put(key, value);
+        }})));
+    }
+
+    public void registerAPICalls() {
+        modules.forEach(module -> module.getAPICalls().forEach(clazz -> APIManager.getInstance().registerModuleAPI(module.getName(), clazz)));
     }
 
     public static ModuleManager getInstance() {

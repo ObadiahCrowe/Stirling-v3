@@ -1,11 +1,11 @@
 package com.obadiahpcrowe.stirling;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.api.AccountAPI;
 import com.obadiahpcrowe.stirling.api.InfoAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
+import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilFile;
@@ -51,10 +51,14 @@ public class Stirling {
         utilLog.log("Registering module event handlers..");
         EventManager.getInstance().init();
 
+        utilLog.log("Register module handoffs..");
+        HandoffManager.getInstance().init();
+
         utilLog.log("Registering module databases..");
-        //
+        ModuleManager.getInstance().registerModuleDBs();
 
         utilLog.log("Registering module API calls..");
+        ModuleManager.getInstance().registerAPICalls();
 
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
