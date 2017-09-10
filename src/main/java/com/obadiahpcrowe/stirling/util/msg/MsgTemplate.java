@@ -81,7 +81,10 @@ public enum MsgTemplate {
     TUTOR_ASSIGNED_TO(MsgResponse.SUCCESS, "You have assigned the tutor, {0}, to {1} on {2} at {3)!", 4),
     TUTOR_REQUEST_MADE(MsgResponse.SUCCESS, "You have requested a tutor at {0} on {1} for the following reason: {2}!", 3),
     TUTOR_REQUEST_DELETED(MsgResponse.SUCCESS, "The tutor request has been deleted!", 0),
-    TUTOR_ASSIGNMENT_DELETED(MsgResponse.SUCCESS, "The tutor assignment has been deleted!", 0);
+    TUTOR_ASSIGNMENT_DELETED(MsgResponse.SUCCESS, "The tutor assignment has been deleted!", 0),
+
+    SESSION_EXISTS(MsgResponse.USER_ERROR, "The session for, {0}, already exists!", 1),
+    SESSION_CREATED(MsgResponse.SUCCESS, "Created session for: {0}", 1);
 
     private MsgResponse response;
     private String message;
