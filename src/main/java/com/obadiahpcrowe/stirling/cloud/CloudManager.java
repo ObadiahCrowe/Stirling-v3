@@ -1,12 +1,9 @@
 package com.obadiahpcrowe.stirling.cloud;
 
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.cloud.interfaces.CloudDocument;
-import com.obadiahpcrowe.stirling.cloud.interfaces.CloudMedia;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 
 import java.io.File;
-import java.util.List;
 import java.util.UUID;
 
 /**

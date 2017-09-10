@@ -59,7 +59,7 @@ public class AnnouncementManager {
     public String deleteAnnouncement(StirlingAccount account, UUID uuid) {
         StirlingAnnouncement announcement = getAnnouncement(uuid);
         if (!announcement.getType().getAccountTypes().contains(account.getAccountType()) ||
-          account.getAccountType().getAccessLevel() < 7) {
+          account.getAccountType().getAccessLevel() < 9) {
             StringBuilder valid = new StringBuilder();
             for (AccountType accountType : announcement.getType().getAccountTypes()) {
                 if (account.getAccountType().equals(AccountType.SUB_SCHOOL_LEADER)) {

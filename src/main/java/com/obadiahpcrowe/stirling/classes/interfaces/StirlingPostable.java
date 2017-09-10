@@ -1,10 +1,8 @@
 package com.obadiahpcrowe.stirling.classes.interfaces;
 
 import com.obadiahpcrowe.stirling.classes.enums.PostableType;
-import com.obadiahpcrowe.stirling.cloud.interfaces.CloudDocument;
-import com.obadiahpcrowe.stirling.cloud.interfaces.CloudMedia;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 
-import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,11 +27,11 @@ public interface StirlingPostable {
 
     String getContent();
 
-    List<CloudMedia> getImages();
+    List<AttachableResource> getImages();
 
-    List<CloudMedia> getVideos();
+    List<AttachableResource> getVideos();
 
-    List<CloudDocument> getAttachments();
+    List<AttachableResource> getAttachments();
 
     List<String> getLinks();
 

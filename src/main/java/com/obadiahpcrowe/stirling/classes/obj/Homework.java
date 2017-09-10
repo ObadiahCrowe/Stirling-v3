@@ -4,10 +4,8 @@ import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.classes.enums.PostableType;
 import com.obadiahpcrowe.stirling.classes.interfaces.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.interfaces.StirlingWork;
-import com.obadiahpcrowe.stirling.cloud.interfaces.CloudDocument;
-import com.obadiahpcrowe.stirling.cloud.interfaces.CloudMedia;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 
-import com.obadiahpcrowe.stirling.cloud.interfaces.CloudMedia;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,16 +24,16 @@ public class Homework implements StirlingPostable, StirlingWork {
     private String date;
     private String title;
     private String content;
-    private List<CloudMedia> images;
-    private List<CloudMedia> videos;
-    private List<CloudDocument> attachments;
+    private List<AttachableResource> images;
+    private List<AttachableResource> videos;
+    private List<AttachableResource> attachments;
     private List<String> links;
     private String dueDate;
     private String dueTime;
     private UUID uuid;
 
-    public Homework(UUID poster, String time, String date, String title, String content, List<CloudMedia> images,
-                    List<CloudMedia> videos, List<CloudDocument> attachments, List<String> links, String dueDate, String dueTime, UUID uuid) {
+    public Homework(UUID poster, String time, String date, String title, String content, List<AttachableResource> images,
+                    List<AttachableResource> videos, List<AttachableResource> attachments, List<String> links, String dueDate, String dueTime, UUID uuid) {
         this.poster = poster;
         this.type = PostableType.HOMEWORK;
         this.time = time;
@@ -82,17 +80,17 @@ public class Homework implements StirlingPostable, StirlingWork {
     }
 
     @Override
-    public List<CloudMedia> getImages() {
+    public List<AttachableResource> getImages() {
         return images;
     }
 
     @Override
-    public List<CloudMedia> getVideos() {
+    public List<AttachableResource> getVideos() {
         return videos;
     }
 
     @Override
-    public List<CloudDocument> getAttachments() {
+    public List<AttachableResource> getAttachments() {
         return attachments;
     }
 

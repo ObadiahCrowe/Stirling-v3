@@ -5,9 +5,13 @@ import com.obadiahpcrowe.stirling.Stirling;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
+import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -31,5 +35,13 @@ public class InfoAPI implements APIController {
     @RequestMapping(value = "/stirling/v3/version", method = RequestMethod.GET)
     public String getVersion() {
         return gson.toJson(Stirling.getInstance().getVersion());
+    }
+
+    @CallableAPI(fields = "")
+    @RequestMapping(value = "/stirling/v3/loadedModules", method = RequestMethod.GET)
+    public String getLoadedModules() {
+        List<String> moduleNames = new ArrayList<>();
+        ModuleManager.getInstance().getModules().stream().forEach(module -> moduleNames.add(module.getName()));
+        return gson.toJson(moduleNames);
     }
 }

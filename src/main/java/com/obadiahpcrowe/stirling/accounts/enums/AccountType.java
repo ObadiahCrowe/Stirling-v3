@@ -18,13 +18,15 @@ public enum AccountType {
     CLUB_CAPTAIN("Club Captain", 3),
     PREFECT("Prefect", 4),
     TEACHER("Teacher", 5),
-    SERVICES("Services", 6),
-    SUB_SCHOOL_LEADER("Sub-School Leader", 7),
-    YEAR_LEVEL_LEADER("Year-Level Leader", 8),
-    DEPUTY_PRINCIPAL("Deputy Principal", 9),
-    PRINCIPAL("Principal", 10),
-    ADMINISTRATOR("Admin", 11),
-    DEVELOPER("Developer", 12);
+    TUTOR("Tutor", 6),
+    SERVICES("Services", 7),
+    POD("POD", 8),
+    SUB_SCHOOL_LEADER("Sub-School Leader", 9),
+    YEAR_LEVEL_LEADER("Year-Level Leader", 10),
+    DEPUTY_PRINCIPAL("Deputy Principal", 11),
+    PRINCIPAL("Principal", 12),
+    ADMINISTRATOR("Admin", 13),
+    DEVELOPER("Developer", 14);
 
     private String friendlyName;
     private int accessLevel;
