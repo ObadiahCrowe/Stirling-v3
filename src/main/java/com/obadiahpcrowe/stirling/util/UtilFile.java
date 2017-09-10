@@ -101,6 +101,14 @@ public class UtilFile {
         IOUtils.copy(inputStream, outputStream);
     }
 
+    public void copyFile(File file, File directory) {
+        try {
+            FileUtils.copyFileToDirectory(file, directory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<File> getAllFiles(File directory) {
         List<File> files = new ArrayList<>();
         try {

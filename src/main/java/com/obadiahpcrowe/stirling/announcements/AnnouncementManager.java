@@ -28,7 +28,7 @@ public class AnnouncementManager {
     private Gson gson = new Gson();
 
     public String postAnnouncement(StirlingAccount account, AnnouncementType type, String title, String shortDesc,
-                                   String content, String resourcesJson, String targetAudience) {
+                                   String content, String resources, String targetAudience) {
         if (!type.getAccountTypes().contains(account.getAccountType())) {
             StringBuilder valid = new StringBuilder();
             for (AccountType accountType : type.getAccountTypes()) {
@@ -44,18 +44,14 @@ public class AnnouncementManager {
             audience.add(AccountType.valueOf(tokenizer.nextElement().toString()));
         }
 
-        // TODO: 9/9/17 This needs work
-        Type jsonType = new TypeToken<List<AttachableResource>>(){}.getType();
-
-        List<AttachableResource> resources = null;
-        try {
-            resources = gson.fromJson(resourcesJson, jsonType);
-        } catch (NullPointerException e) {
-            resources = new ArrayList<>();
+        List<AttachableResource> resourcesList = new ArrayList<>();
+        StringTokenizer fileTokenizer = new StringTokenizer(resources, ",");
+        while (tokenizer.hasMoreElements()) {
+            resourcesList.add(new AttachableResource(account.getAccountName(), fileTokenizer.nextElement().toString()));
         }
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).insert(
-          new StirlingAnnouncement(account, title, shortDesc, type, content, resources, audience)));
+          new StirlingAnnouncement(account, title, shortDesc, type, content, resourcesList, audience)));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_CREATED, account.getLocale(), title));
     }

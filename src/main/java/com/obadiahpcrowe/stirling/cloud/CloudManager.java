@@ -37,22 +37,16 @@ public class CloudManager {
     }
 
     public void addFile(File file, UUID uuid) {
-
+        UtilFile.getInstance().copyFile(file, getCloudFolder(uuid));
     }
 
     public void removeFile(String filePath, UUID uuid) {
-
-    }
-
-    public List<CloudMedia> getMediaFiles(UUID uuid) {
-        for (File file : UtilFile.getInstance().getAllFiles(getCloudFolder(uuid))) {
-
+        File file = new File(getCloudFolder(uuid) + File.separator + filePath);
+        if (file.isDirectory()) {
+            UtilFile.getInstance().deleteDirectory(file);
+        } else {
+            file.delete();
         }
-        return null;
-    }
-
-    public List<CloudDocument> getDocuments(UUID uuid) {
-        return null;
     }
 
     public static CloudManager getInstance() {
