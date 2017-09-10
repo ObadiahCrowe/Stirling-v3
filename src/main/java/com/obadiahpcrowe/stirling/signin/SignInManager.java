@@ -26,7 +26,6 @@ public class SignInManager {
     private DatabaseManager databaseManager = DatabaseManager.getInstance();
     private Gson gson = new Gson();
 
-    // TODO: 10/9/17 this
     public String signIn(StirlingAccount account, SignInReason reason, String extraInfo) {
         if (!isSignedIn(account)) {
             databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).insert(
