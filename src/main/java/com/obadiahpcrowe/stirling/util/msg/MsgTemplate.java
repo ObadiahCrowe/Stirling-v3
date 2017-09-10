@@ -72,7 +72,14 @@ public enum MsgTemplate {
     LAPTOP_NAME_NOT_FOUND(MsgResponse.USER_ERROR, "Laptop name not found! Try setting it!", 0),
 
     FEEDBACK_CREATED(MsgResponse.SUCCESS, "You have posted feedback, with the id: {0}!", 1),
-    FEEDBACK_DELETED(MsgResponse.SUCCESS, "You have deleted feedback, with the id: {0}!", 1);
+    FEEDBACK_DELETED(MsgResponse.SUCCESS, "You have deleted feedback, with the id: {0}!", 1),
+
+    TUTOR_REGISTERED(MsgResponse.SUCCESS, "You have successfully registered as a tutor!", 0),
+    TUTOR_ALREADY_REGISTERED(MsgResponse.USER_ERROR, "You have already registered as a tutor!", 0),
+    TUTOR_ASSIGNED_TO(MsgResponse.SUCCESS, "You have assigned the tutor, {0}, to {1} on {2} at {3)!", 4),
+    TUTOR_REQUEST_MADE(MsgResponse.SUCCESS, "You have requested a tutor at {0} on {1} for the following reason: {2}!", 3),
+    TUTOR_REQUEST_DELETED(MsgResponse.SUCCESS, "The tutor request has been deleted!", 0),
+    TUTOR_ASSIGNMENT_DELETED(MsgResponse.SUCCESS, "The tutor assignment has been deleted!", 0);
 
     private MsgResponse response;
     private String message;

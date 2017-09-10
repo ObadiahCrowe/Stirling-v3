@@ -17,7 +17,9 @@ public enum RedisHeader {
     LAPTOP_REIMAGING("LAPTOP-"),
     PROGRESS_MARKER("PROGMARK-"),
     SURVEY("SURVEY-"),
-    SESSION("SESSION-");
+    SESSION("SESSION-"),
+    TUTOR("TUTOR-"),
+    TUTOR_REQUEST("TUTOR-REQUEST-");
 
     private String headerName;
 
