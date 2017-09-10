@@ -69,7 +69,10 @@ public enum MsgTemplate {
 
     LAPTOP_IS_HOTSWAP(MsgResponse.USER_ERROR, "Cannot set laptop to a hotswap!", 0),
     LAPTOP_NAME_SET(MsgResponse.SUCCESS, "Laptop set to {0}!", 1),
-    LAPTOP_NAME_NOT_FOUND(MsgResponse.USER_ERROR, "Laptop name not found! Try setting it!", 0);
+    LAPTOP_NAME_NOT_FOUND(MsgResponse.USER_ERROR, "Laptop name not found! Try setting it!", 0),
+
+    FEEDBACK_CREATED(MsgResponse.SUCCESS, "You have posted feedback, with the id: {0}!", 1),
+    FEEDBACK_DELETED(MsgResponse.SUCCESS, "You have deleted feedback, with the id: {0}!", 1);
 
     private MsgResponse response;
     private String message;

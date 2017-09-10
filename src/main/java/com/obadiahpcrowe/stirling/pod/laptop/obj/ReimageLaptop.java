@@ -1,13 +1,13 @@
-package com.obadiahpcrowe.stirling.laptop.obj;
+package com.obadiahpcrowe.stirling.pod.laptop.obj;
 
-import com.obadiahpcrowe.stirling.laptop.enums.LaptopStatus;
+import com.obadiahpcrowe.stirling.pod.laptop.enums.LaptopStatus;
 import lombok.Getter;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 9/9/17 at 9:06 PM
  * Project: Stirling
- * Package: com.obadiahpcrowe.stirling.laptop
+ * Package: com.obadiahpcrowe.stirling.pod.laptop
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter

@@ -1,11 +1,11 @@
-package com.obadiahpcrowe.stirling.laptop;
+package com.obadiahpcrowe.stirling.pod.laptop;
 
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.database.DatabaseManager;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
-import com.obadiahpcrowe.stirling.laptop.obj.LaptopUser;
-import com.obadiahpcrowe.stirling.laptop.scrapers.ReimageScraper;
+import com.obadiahpcrowe.stirling.pod.laptop.obj.LaptopUser;
+import com.obadiahpcrowe.stirling.pod.laptop.scrapers.ReimageScraper;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 9/9/17 at 9:04 PM
  * Project: Stirling
- * Package: com.obadiahpcrowe.stirling.laptop
+ * Package: com.obadiahpcrowe.stirling.pod.laptop
  * Copyright (c) Obadiah Crowe 2017
  */
 public class LaptopManager {
@@ -25,7 +25,6 @@ public class LaptopManager {
     private DatabaseManager databaseManager = DatabaseManager.getInstance();
     private Gson gson = new Gson();
 
-    // TODO: 9/9/17 this
     public String setLaptop(StirlingAccount account, String name) {
         boolean userExists = true;
         try {

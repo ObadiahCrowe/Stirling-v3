@@ -1,4 +1,4 @@
-package com.obadiahpcrowe.stirling.laptop.scrapers;
+package com.obadiahpcrowe.stirling.pod.laptop.scrapers;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -6,8 +6,8 @@ import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
 import com.google.gson.Gson;
-import com.obadiahpcrowe.stirling.laptop.obj.ReimageLaptop;
-import com.obadiahpcrowe.stirling.laptop.enums.LaptopStatus;
+import com.obadiahpcrowe.stirling.pod.laptop.obj.ReimageLaptop;
+import com.obadiahpcrowe.stirling.pod.laptop.enums.LaptopStatus;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.io.IOException;
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 9/9/17 at 9:06 PM
  * Project: Stirling
- * Package: com.obadiahpcrowe.stirling.laptop.scrapers
+ * Package: com.obadiahpcrowe.stirling.pod.laptop.scrapers
  * Copyright (c) Obadiah Crowe 2017
  */
 public class ReimageScraper {
