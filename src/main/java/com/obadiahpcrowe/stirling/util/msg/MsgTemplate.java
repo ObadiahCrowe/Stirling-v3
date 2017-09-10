@@ -34,6 +34,8 @@ public enum MsgTemplate {
 
     SCHOOL_SIGN_IN(MsgResponse.SUCCESS, "You have signed into school with the following reason: {0}!", 1),
     SCHOOL_SIGN_OUT(MsgResponse.SUCCESS, "You have signed out of school with the following reason: {0}!", 1),
+    SCHOOL_ALREADY_SIGNED_IN(MsgResponse.SUCCESS, "You are already signed in!", 0),
+    SCHOOL_NOT_SIGNED_IN(MsgResponse.USER_ERROR, "You are not signed in yet!", 0),
 
     POD_SIGN_IN(MsgResponse.SUCCESS, "You have signed into the pod for {0}!", 1),
 
