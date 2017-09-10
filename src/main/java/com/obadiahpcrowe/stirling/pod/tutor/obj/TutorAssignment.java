@@ -14,12 +14,14 @@ import java.util.UUID;
 @Getter
 public class TutorAssignment {
 
+    private UUID assignee;
     private UUID tutor;
     private UUID uuid;
     private String date;
     private String time;
 
-    public TutorAssignment(UUID tutor, String date, String time) {
+    public TutorAssignment(UUID assignee, UUID tutor, String date, String time) {
+        this.assignee = assignee;
         this.tutor = tutor;
         this.uuid = UUID.randomUUID();
         this.date = date;

@@ -6,12 +6,10 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.database.DatabaseManager;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.pod.tutor.obj.TutorAssignment;
 import com.obadiahpcrowe.stirling.pod.tutor.obj.TutorRequest;
 import com.obadiahpcrowe.stirling.pod.tutor.obj.Tutorer;
-import com.obadiahpcrowe.stirling.redis.RedisCall;
-import com.obadiahpcrowe.stirling.redis.RedisManager;
-import com.obadiahpcrowe.stirling.redis.enums.RedisHeader;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -30,22 +28,27 @@ public class TutorManager {
 
     private static TutorManager instance;
     private DatabaseManager databaseManager = DatabaseManager.getInstance();
-    private RedisManager redisManager = RedisManager.getInstance();
     private Gson gson = new Gson();
 
-    public String deleteRequest(UUID requester) {
-        redisManager.makeCall(new RedisCall(redisManager.getJedis(), RedisHeader.TUTOR_REQUEST).delete(requester.toString()));
-        return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_REQUEST_DELETED, AccountManager.getInstance().getAccount(requester).getLocale()));
+    public String deleteRequest(UUID uuid) {
+        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).remove(new HashMap<String, Object>() {{
+            put("uuid", uuid);
+        }}));
+
+        return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_REQUEST_DELETED, StirlingLocale.ENGLISH));
     }
 
-    public String deleteAssignment(UUID assignee) {
-        redisManager.makeCall(new RedisCall(redisManager.getJedis(), RedisHeader.TUTOR).delete(assignee.toString()));
-        return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_ASSIGNMENT_DELETED, AccountManager.getInstance().getAccount(assignee).getLocale()));
+    public String deleteAssignment(UUID uuid) {
+        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).remove(new HashMap<String, Object>() {{
+            put("uuid", uuid);
+        }}));
+
+        return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_ASSIGNMENT_DELETED, StirlingLocale.ENGLISH));
     }
 
     public String requestTutor(StirlingAccount account, String reason, String date, String time) {
-        redisManager.makeCall(new RedisCall(redisManager.getJedis(), RedisHeader.TUTOR_REQUEST)
-          .insert(account.getUuid().toString(), gson.toJson(new TutorRequest(reason, date, time))));
+        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).insert(
+          new TutorRequest(account.getUuid(), reason, date, time)));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_REQUEST_MADE, account.getLocale(), time, date, reason));
     }
@@ -55,8 +58,8 @@ public class TutorManager {
     }
 
     public String assignTutor(StirlingAccount account, Tutorer tutorer, String date, String time) {
-        redisManager.makeCall(new RedisCall(redisManager.getJedis(), RedisHeader.TUTOR)
-          .insert(account.getUuid().toString(), gson.toJson(new TutorAssignment(tutorer.getUuid(), date, time))));
+        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).insert(
+          new TutorAssignment(account.getUuid(), tutorer.getUuid(), date, time)));
 
         return gson.toJson(new StirlingMsg(
           MsgTemplate.TUTOR_ASSIGNED_TO, account.getLocale(), tutorer.getName(), account.getDisplayName(), date, time));
