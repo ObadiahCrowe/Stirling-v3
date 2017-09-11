@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,12 +41,11 @@ public class AccountAPI implements APIController {
         return AccountManager.getInstance().deleteAccount(accountName, password);
     }
 
-    @CallableAPI(fields = {"accountName", "password", "field", "value"})
-    @RequestMapping(value = "/stirling/v3/accounts/update", method = RequestMethod.GET)
-    public String updateAccountField(@RequestParam("accountName") String accountName,
-                                     @RequestParam("password") String password,
-                                     @RequestParam("field") String field,
-                                     @RequestParam("value") String value) {
+    @CallableAPI(fields = {"accountName", "password", "displayName"})
+    @RequestMapping(value = "/stirling/v3/accounts/update/displayName", method = RequestMethod.GET)
+    public String updateDisplayName(@RequestParam("accountName") String accountName,
+                                    @RequestParam("password") String password,
+                                    @RequestParam("displayName") String displayName) {
         StirlingAccount account = AccountManager.getInstance().getAccount(accountName);
         if (account == null) {
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
@@ -55,13 +55,76 @@ public class AccountAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        //AccountManager.getInstance().updateField(account, field);
-        return "NOT FINISHED";
+        AccountManager.getInstance().updateField(account, "displayName", displayName);
+        return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(),
+          "displayName", account.getAccountName()));
     }
 
-    @CallableAPI(fields = "")
-    @RequestMapping(value = "/stirling/v3/accounts/getUpdateFields", method = RequestMethod.GET)
-    public String getUpdateFields() {
-        return "NOT FINISHED";
+    @CallableAPI(fields = {"accountName", "password", "emailAddress"})
+    @RequestMapping(value = "/stirling/v3/accounts/update/emailAddress", method = RequestMethod.GET)
+    public String updateEmailAddress(@RequestParam("accountName") String accountName,
+                                     @RequestParam("password") String password,
+                                     @RequestParam("emailAddress") String emailAddress) {
+        StirlingAccount account = AccountManager.getInstance().getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!AccountManager.getInstance().validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        AccountManager.getInstance().updateField(account, "emailAddress", emailAddress);
+        return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(),
+          "emailAddress", account.getAccountName()));
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "locale"})
+    @RequestMapping(value = "/stirling/v3/accounts/update/locale", method = RequestMethod.GET)
+    public String updateLocale(@RequestParam("accountName") String accountName,
+                               @RequestParam("password") String password,
+                               @RequestParam("locale") String locale) {
+        StirlingAccount account = AccountManager.getInstance().getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!AccountManager.getInstance().validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        AccountManager.getInstance().updateField(account, "locale", StirlingLocale.valueOf(locale));
+        return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(),
+          "locale", account.getAccountName()));
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "newPassword"})
+    @RequestMapping(value = "/stirling/v3/accounts/update/password", method = RequestMethod.GET)
+    public String updatePassword(@RequestParam("accountName") String accountName,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("newPassword") String newPassword) {
+        StirlingAccount account = AccountManager.getInstance().getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!AccountManager.getInstance().validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        String salt = BCrypt.gensalt();
+        String ePassword = BCrypt.hashpw(newPassword, salt);
+
+        AccountManager.getInstance().updateField(account, "salt", salt);
+        AccountManager.getInstance().updateField(account, "password", ePassword);
+        return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(),
+          "password", account.getAccountName()));
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "avatar"})
+    @RequestMapping(value = "/stirling/v3/accounts/update/avatar", method = RequestMethod.GET)
+    public String updateAvatar() {
+        // TODO: 11/9/17 this
+        return "";
     }
 }

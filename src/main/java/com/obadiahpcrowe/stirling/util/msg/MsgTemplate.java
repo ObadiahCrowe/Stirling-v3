@@ -84,7 +84,10 @@ public enum MsgTemplate {
     TUTOR_ASSIGNMENT_DELETED(MsgResponse.SUCCESS, "The tutor assignment has been deleted!", 0),
 
     SESSION_EXISTS(MsgResponse.USER_ERROR, "The session for, {0}, already exists!", 1),
-    SESSION_CREATED(MsgResponse.SUCCESS, "Created session for: {0}", 1);
+    SESSION_CREATED(MsgResponse.SUCCESS, "Created session for: {0}", 1),
+
+    STUDENT_ID_ADDED(MsgResponse.SUCCESS, "{0}'s student ID has been set to: {1}!",  2),
+    STUDENT_ID_NOT_FOUND(MsgResponse.USER_ERROR, "Student ID not found for: {0}!", 1);
 
     private MsgResponse response;
     private String message;

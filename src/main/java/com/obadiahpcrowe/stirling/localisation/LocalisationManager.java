@@ -1,5 +1,9 @@
 package com.obadiahpcrowe.stirling.localisation;
 
+import com.obadiahpcrowe.stirling.localisation.translation.TranslateManager;
+
+import java.io.IOException;
+
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 5/9/17 at 4:31 PM
@@ -12,6 +16,11 @@ public class LocalisationManager {
     private static LocalisationManager instance;
 
     public String translate(String originalStr, StirlingLocale locale) {
+        try {
+            return TranslateManager.getInstance().translate(originalStr, StirlingLocale.ENGLISH, locale);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return originalStr;
     }
 
