@@ -75,6 +75,15 @@ public class UtilFile {
         } finally {
             zipFile.close();
         }
+
+        File garbage = new File(outputDir + File.separator + "__MACOSX");
+        if (garbage.exists()) {
+            FileUtils.deleteDirectory(garbage);
+        }
+
+        if (file.exists()) {
+            file.delete();
+        }
     }
 
     public void createUserFiles(UUID uuid) {

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/util/UtilFile$1.class" afterPath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/util/UtilFile$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/util/UtilFile.class" afterPath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/util/UtilFile.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" />
     </list>
@@ -16,10 +18,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
+            <state relative-caret-position="493">
               <caret line="66" column="55" lean-forward="false" selection-start-line="66" selection-start-column="55" selection-end-line="66" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -40,14 +42,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UtilFile.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UtilFile.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
-              <caret line="56" column="73" lean-forward="false" selection-start-line="56" selection-start-column="73" selection-end-line="56" selection-end-column="73" />
-              <folding>
-                <element signature="method#extractZip#0;class#UtilFile#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="336">
+              <caret line="79" column="19" lean-forward="false" selection-start-line="79" selection-start-column="19" selection-end-line="79" selection-end-column="19" />
+              <caret line="80" column="45" lean-forward="false" selection-start-line="80" selection-start-column="45" selection-end-line="80" selection-end-column="45" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -88,6 +89,7 @@
       <find>getAccessLevel</find>
       <find>assignee</find>
       <find>getPo</find>
+      <find>file1</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -150,8 +152,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TokenManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/LocalisationManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TranslateManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" />
       </list>
     </option>
   </component>
@@ -477,7 +479,7 @@
       <workItem from="1505185398066" duration="55000" />
       <workItem from="1505192630405" duration="10000" />
       <workItem from="1505194056311" duration="2381000" />
-      <workItem from="1505197330379" duration="1971000" />
+      <workItem from="1505197330379" duration="2131000" />
     </task>
     <task id="LOCAL-00001" summary="Laying groundwork">
       <created>1504608481845</created>
@@ -738,11 +740,18 @@
       <option name="project" value="LOCAL" />
       <updated>1505199655007</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Finished translation stuff">
+      <created>1505200107706</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1505200107706</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79604000" />
+    <option name="totallyTimeSpent" value="79764000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="42" y="22" width="1638" height="1028" extended-state="0" />
@@ -757,7 +766,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.57217574" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.57217574" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -786,7 +795,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Announcement things" />
     <MESSAGE value="Module stuff" />
     <MESSAGE value="Testing event stuff" />
     <MESSAGE value="Small things" />
@@ -811,7 +819,8 @@
     <MESSAGE value="POD scrapers" />
     <MESSAGE value="Sign in / out events" />
     <MESSAGE value="Adding translation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding translation" />
+    <MESSAGE value="Finished translation stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished translation stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1154,6 +1163,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="66" column="55" lean-forward="false" selection-start-line="66" selection-start-column="55" selection-end-line="66" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TranslateManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
@@ -1166,21 +1185,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="56" column="73" lean-forward="false" selection-start-line="56" selection-start-column="73" selection-end-line="56" selection-end-column="73" />
-          <folding>
-            <element signature="method#extractZip#0;class#UtilFile#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="66" column="55" lean-forward="false" selection-start-line="66" selection-start-column="55" selection-end-line="66" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="336">
+          <caret line="79" column="19" lean-forward="false" selection-start-line="79" selection-start-column="19" selection-end-line="79" selection-end-column="19" />
+          <caret line="80" column="45" lean-forward="false" selection-start-line="80" selection-start-column="45" selection-end-line="80" selection-end-column="45" />
+          <folding />
         </state>
       </provider>
     </entry>
