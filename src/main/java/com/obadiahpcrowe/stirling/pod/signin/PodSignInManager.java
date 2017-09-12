@@ -26,7 +26,7 @@ public class PodSignInManager {
     private Gson gson = new Gson();
 
     public String setStudentId(StirlingAccount account, int studentId) {
-        PodUser podUser = new PodUser(account.getUuid(), studentId);
+        PodUser podUser = new PodUser(account.getUuid(), studentId, false);
         if (!studentIdExists(account)) {
             databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB())
               .insert(podUser));
@@ -55,9 +55,27 @@ public class PodSignInManager {
         }
     }
 
+    public PodUser getPodUser(StirlingAccount account) {
+        try {
+            return  (PodUser) databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).get(new HashMap<String, Object>() {{
+                put("uuid", account.getUuid());
+            }}, PodUser.class));
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
     public String signInToPod(StirlingAccount account, PodLine line, PodReason reason) {
         if (studentIdExists(account)) {
-            // TODO: 11/9/17 this
+            PodUser podUser = getPodUser(account).setSignInOptions(line, reason);
+            podUser.setSignedIn(true);
+
+            databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).replace(new HashMap<String, Object>() {{
+                put("uuid", account.getUuid());
+            }}, podUser));
+
+            PodScraper.getInstance().signIn(podUser.getStudentId(), line, reason);
+            return gson.toJson(new StirlingMsg(MsgTemplate.POD_SIGN_IN, account.getLocale(), reason.getFriendlyName()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_ID_NOT_FOUND, account.getLocale(), account.getDisplayName()));
     }

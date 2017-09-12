@@ -1,6 +1,9 @@
 package com.obadiahpcrowe.stirling.pod.signin.obj;
 
+import com.obadiahpcrowe.stirling.pod.signin.enums.PodLine;
+import com.obadiahpcrowe.stirling.pod.signin.enums.PodReason;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -16,9 +19,24 @@ public class PodUser {
 
     private UUID uuid;
     private int studentId;
+    private @Setter boolean signedIn;
+    private PodLine line;
+    private PodReason reason;
 
-    public PodUser(UUID uuid, int studentId) {
+    public PodUser(UUID uuid, int studentId, boolean signedIn) {
         this.uuid = uuid;
         this.studentId = studentId;
+        this.signedIn = signedIn;
+    }
+
+    public PodUser setSignInOptions(PodLine line, PodReason reason) {
+        if (signedIn) {
+            this.line = line;
+            this.reason = reason;
+        } else {
+            this.signedIn = true;
+            return setSignInOptions(line, reason);
+        }
+        return this;
     }
 }

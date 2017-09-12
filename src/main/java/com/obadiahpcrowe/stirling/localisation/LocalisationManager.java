@@ -16,10 +16,12 @@ public class LocalisationManager {
     private static LocalisationManager instance;
 
     public String translate(String originalStr, StirlingLocale locale) {
-        try {
-            return TranslateManager.getInstance().translate(originalStr, StirlingLocale.ENGLISH, locale);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!locale.equals(StirlingLocale.ENGLISH)) {
+            try {
+                return TranslateManager.getInstance().translate(originalStr, StirlingLocale.ENGLISH, locale);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return originalStr;
     }
