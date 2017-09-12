@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.database.DatabaseManager;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.modules.events.EventManager;
+import com.obadiahpcrowe.stirling.modules.events.types.SchoolSignInEvent;
+import com.obadiahpcrowe.stirling.modules.events.types.SchoolSignOutEvent;
 import com.obadiahpcrowe.stirling.signin.enums.SignInReason;
 import com.obadiahpcrowe.stirling.signin.enums.SignOutReason;
 import com.obadiahpcrowe.stirling.signin.obj.PresentUser;
@@ -27,16 +30,26 @@ public class SignInManager {
     private Gson gson = new Gson();
 
     public String signIn(StirlingAccount account, SignInReason reason, String extraInfo) {
+        PresentUser user = new PresentUser(account.getUuid()).signIn(new HashMap<SignInReason, String>() {{
+            put(reason, extraInfo);
+        }});
+        StirlingMsg msg = new StirlingMsg(MsgTemplate.SCHOOL_SIGN_IN, account.getLocale(),
+          reason.getFriendlyName() + ": " + extraInfo);
         if (!isSignedIn(account)) {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).insert(
-              new PresentUser(account.getUuid()).signIn(new HashMap<SignInReason, String>() {{
-                put(reason, extraInfo);
-            }})));
+            databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).insert(user));
 
-            return gson.toJson(new StirlingMsg(MsgTemplate.SCHOOL_SIGN_IN, account.getLocale(),
-              reason.getFriendlyName() + ": " + extraInfo));
+            EventManager.getInstance().fireEvent(new SchoolSignInEvent(msg, account.getUuid(), reason, extraInfo));
+
+            return gson.toJson(msg);
+        } else {
+            databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).replace(new HashMap<String, Object>() {{
+                put("uuid", account.getUuid());
+            }}, user));
+
+            EventManager.getInstance().fireEvent(new SchoolSignInEvent(msg, account.getUuid(), reason, extraInfo));
+
+            return gson.toJson(msg);
         }
-        return gson.toJson(new StirlingMsg(MsgTemplate.SCHOOL_ALREADY_SIGNED_IN, account.getLocale()));
     }
 
     public String signOut(StirlingAccount account, SignOutReason reason, String extraInfo) {
@@ -52,8 +65,12 @@ public class SignInManager {
                 put("uuid", account.getUuid());
             }}, presentUser));
 
-            return gson.toJson(new StirlingMsg(MsgTemplate.SCHOOL_SIGN_OUT, account.getLocale(),
-              reason.getFriendlyName() + ": " + extraInfo));
+            StirlingMsg output = new StirlingMsg(MsgTemplate.SCHOOL_SIGN_OUT, account.getLocale(),
+              reason.getFriendlyName() + ": " + extraInfo);
+
+            EventManager.getInstance().fireEvent(new SchoolSignOutEvent(output, account.getUuid(), reason, extraInfo));
+
+            return gson.toJson(output);
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.SCHOOL_NOT_SIGNED_IN, account.getLocale()));
     }
