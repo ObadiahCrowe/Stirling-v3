@@ -27,6 +27,7 @@ public class UtilFile {
           new File("Logs"),
           new File("Marketplace"),
           new File("Modules"),
+          new File("Translator"),
           new File("UserData"),
           new File("Updates")
         };
@@ -44,6 +45,7 @@ public class UtilFile {
 
         try {
             copyInternalFile("client_secret.json", home);
+            copyInternalFile("Translator.zip", new File(home + File.separator + "Translator"));
         } catch (IOException e) {
             e.printStackTrace();
         }

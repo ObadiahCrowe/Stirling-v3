@@ -1,9 +1,12 @@
 package com.obadiahpcrowe.stirling.localisation.translation;
 
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.io.InputStreamReader;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -15,15 +18,31 @@ import java.net.URLEncoder;
 public class TranslateManager {
 
     private static TranslateManager instance;
-    private final String GOOGLE_API = "http://translate.google.com/translate_a/";
-    private final String GOOGLE_PARAMS = "single?client=z&sl=%s&tl=%s-CN&ie=UTF-8&oe=UTF-8&dt=t&dt=rm&q=%s";
-    private final String PATTERN = "\"(.*?)\"";
 
-    public String translate(String text, StirlingLocale input, StirlingLocale output) throws IOException {
-        String encodedText = URLEncoder.encode(text, "UTF-8");
-        String params = String.format(GOOGLE_PARAMS, input.getLocaleCode(), output.getLocaleCode(), encodedText);
+    public void init() {
+        // TODO: 12/9/17
+    }
 
-        return "";
+    public String translate(String text, StirlingLocale input, StirlingLocale output) {
+        File main = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Translator" +
+          File.separator + "main.js");
+        StringBuilder builder = new StringBuilder();
+        try {
+            Process process = Runtime.getRuntime().exec("node " + main.getPath() + " " +
+              output.getLocaleCode() + " " + text);
+            process.waitFor();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = "";
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line).append(" ");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return builder.toString();
     }
 
     public static TranslateManager getInstance() {

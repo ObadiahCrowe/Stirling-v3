@@ -17,11 +17,7 @@ public class LocalisationManager {
 
     public String translate(String originalStr, StirlingLocale locale) {
         if (!locale.equals(StirlingLocale.ENGLISH)) {
-            try {
-                return TranslateManager.getInstance().translate(originalStr, StirlingLocale.ENGLISH, locale);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            return TranslateManager.getInstance().translate(originalStr, StirlingLocale.ENGLISH, locale);
         }
         return originalStr;
     }
