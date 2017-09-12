@@ -6,8 +6,11 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -27,7 +30,6 @@ public class UtilFile {
           new File("Logs"),
           new File("Marketplace"),
           new File("Modules"),
-          new File("Translator"),
           new File("UserData"),
           new File("Updates")
         };
@@ -45,9 +47,33 @@ public class UtilFile {
 
         try {
             copyInternalFile("client_secret.json", home);
-            copyInternalFile("Translator.zip", new File(home + File.separator + "Translator"));
+            copyInternalFile("Translator.zip", home);
+            extractZip(new File(home + File.separator + "Translator.zip"), home);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void extractZip(File file, File outputDir) throws IOException {
+        ZipFile zipFile = new ZipFile(file);
+        try {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                File dest = new File(outputDir, entry.getName());
+                if (entry.isDirectory()) {
+                    dest.mkdirs();
+                } else {
+                    dest.getParentFile().mkdirs();
+                    InputStream in = zipFile.getInputStream(entry);
+                    OutputStream out = new FileOutputStream(dest);
+                    IOUtils.copy(in, out);
+                    IOUtils.closeQuietly(in);
+                    out.close();
+                }
+            }
+        } finally {
+            zipFile.close();
         }
     }
 
