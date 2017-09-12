@@ -10,6 +10,7 @@ import com.obadiahpcrowe.stirling.pod.signin.obj.PodUser;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -65,16 +66,20 @@ public class PodSignInManager {
         }
     }
 
-    public String signInToPod(StirlingAccount account, PodLine line, PodReason reason) {
+    public String signInToPod(StirlingAccount account, PodLine line, String assigningTeacher, PodReason reason) {
         if (studentIdExists(account)) {
-            PodUser podUser = getPodUser(account).setSignInOptions(line, reason);
+            PodUser podUser = getPodUser(account).setSignInOptions(line, assigningTeacher, reason);
             podUser.setSignedIn(true);
 
             databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).replace(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid());
             }}, podUser));
 
-            PodScraper.getInstance().signIn(podUser.getStudentId(), line, reason);
+            try {
+                PodScraper.getInstance().signIn(podUser.getStudentId(), line, assigningTeacher, reason);
+            } catch (IOException e) {
+                return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "working with POD compatibility layer"));
+            }
             return gson.toJson(new StirlingMsg(MsgTemplate.POD_SIGN_IN, account.getLocale(), reason.getFriendlyName()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_ID_NOT_FOUND, account.getLocale(), account.getDisplayName()));

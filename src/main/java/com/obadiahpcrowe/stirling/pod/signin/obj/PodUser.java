@@ -20,6 +20,7 @@ public class PodUser {
     private UUID uuid;
     private int studentId;
     private @Setter boolean signedIn;
+    private String assigningTeacher;
     private PodLine line;
     private PodReason reason;
 
@@ -29,13 +30,14 @@ public class PodUser {
         this.signedIn = signedIn;
     }
 
-    public PodUser setSignInOptions(PodLine line, PodReason reason) {
+    public PodUser setSignInOptions(PodLine line, String assigningTeacher, PodReason reason) {
         if (signedIn) {
             this.line = line;
             this.reason = reason;
+            this.assigningTeacher = assigningTeacher;
         } else {
             this.signedIn = true;
-            return setSignInOptions(line, reason);
+            return setSignInOptions(line, assigningTeacher, reason);
         }
         return this;
     }
