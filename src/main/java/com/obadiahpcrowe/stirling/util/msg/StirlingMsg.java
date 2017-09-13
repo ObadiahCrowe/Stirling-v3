@@ -20,9 +20,9 @@ public class StirlingMsg {
     public StirlingMsg(MsgTemplate template, StirlingLocale locale, String... args) {
         this.response = template.getResponse();
 
-        String rawMessage = "";
+        String rawMessage = template.getMessage();
         for (int i = 0; i < template.getArgs(); i++) {
-            rawMessage = template.getMessage().replace("{" + i + "}", args[i]);
+            rawMessage = rawMessage.replace("{" + i + "}", args[i]);
         }
 
         this.message = LocalisationManager.getInstance().translate(rawMessage, locale);

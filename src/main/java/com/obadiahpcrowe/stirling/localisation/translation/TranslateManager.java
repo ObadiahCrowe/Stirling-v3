@@ -19,10 +19,6 @@ public class TranslateManager {
 
     private static TranslateManager instance;
 
-    public void init() {
-        // TODO: 12/9/17
-    }
-
     public String translate(String text, StirlingLocale input, StirlingLocale output) {
         File main = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Translator" +
           File.separator + "main.js");

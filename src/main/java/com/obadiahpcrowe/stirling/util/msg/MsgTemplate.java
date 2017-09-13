@@ -42,7 +42,7 @@ public enum MsgTemplate {
     CONTACT_ADDED(MsgResponse.SUCCESS, "You have added, {0}, as a contact!", 1),
     CONTACT_REMOVED(MsgResponse.SUCCESS, "You have removed, {0}, as a contact!", 1),
     CONTACT_REQUESTED(MsgResponse.SUCCESS, "You have requested {0} to add you as a contact!", 1),
-    CONTACT_REQUEST_RECEIVED(MsgResponse.SUCCESS, "You have recieved a contact request from {0}!", 1),
+    CONTACT_REQUEST_RECEIVED(MsgResponse.SUCCESS, "You have received a contact request from {0}!", 1),
 
     LOCALE_SET(MsgResponse.SUCCESS, "You have set your locale to: {0}!", 1),
 

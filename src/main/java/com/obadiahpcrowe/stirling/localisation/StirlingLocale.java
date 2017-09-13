@@ -20,7 +20,15 @@ public enum StirlingLocale {
     JAPANESE("ja"),
     ITALIAN("it"),
     RUSSIAN("ru"),
-    GREEK("el");
+    GREEK("el"),
+    ARABIC("ar"),
+    DUTCH("nl"),
+    DANISH("da"),
+    GERMAN("de"),
+    PUNJAB("ma"),
+    SWEDISH("sv"),
+    HINDI("hi"),
+    SCOTTISH_GAELIC("gd");
 
     private String localeCode;
 
