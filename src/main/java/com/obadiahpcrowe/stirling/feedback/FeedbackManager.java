@@ -40,7 +40,7 @@ public class FeedbackManager {
     public String deleteFeedback(StirlingAccount account, UUID uuid) {
         if (account.getAccountType().equals(AccountType.DEVELOPER)) {
             databaseManager.makeCall(new StirlingCall(databaseManager.getFeedbackDB()).remove(new HashMap<String, Object>() {{
-                put("uuid", uuid);
+                put("uuid", uuid.toString());
             }}));
             return gson.toJson(new StirlingMsg(MsgTemplate.FEEDBACK_DELETED, account.getLocale(), uuid.toString()));
         }
@@ -63,7 +63,7 @@ public class FeedbackManager {
             try {
                 StirlingFeedback feedback = (StirlingFeedback) databaseManager.makeCall(new StirlingCall(databaseManager.getFeedbackDB())
                   .get(new HashMap<String, Object>() {{
-                    put("uuid", uuid);
+                    put("uuid", uuid.toString());
                 }}, StirlingFeedback.class));
                 return feedback;
             } catch (NullPointerException e) {

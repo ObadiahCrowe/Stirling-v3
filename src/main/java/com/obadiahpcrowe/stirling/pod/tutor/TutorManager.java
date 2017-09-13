@@ -32,7 +32,7 @@ public class TutorManager {
 
     public String deleteRequest(UUID uuid) {
         databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).remove(new HashMap<String, Object>() {{
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_REQUEST_DELETED, StirlingLocale.ENGLISH));
@@ -40,7 +40,7 @@ public class TutorManager {
 
     public String deleteAssignment(UUID uuid) {
         databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).remove(new HashMap<String, Object>() {{
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_ASSIGNMENT_DELETED, StirlingLocale.ENGLISH));
@@ -81,7 +81,7 @@ public class TutorManager {
     public boolean tutorExists(UUID uuid) {
         try {
             Tutorer tutorer = (Tutorer) databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).get(new HashMap<String, Object>() {{
-                put("uuid", uuid);
+                put("uuid", uuid.toString());
             }}, Tutorer.class));
 
             if (tutorer != null) {
@@ -107,7 +107,7 @@ public class TutorManager {
     public Tutorer getTutor(UUID uuid) {
         try {
             return (Tutorer) databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).get(new HashMap<String, Object>() {{
-                put("uuid", uuid);
+                put("uuid", uuid.toString());
             }}, Tutorer.class));
         } catch (NullPointerException e) {
             return null;

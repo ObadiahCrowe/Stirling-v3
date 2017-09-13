@@ -33,7 +33,7 @@ public class PodSignInManager {
               .insert(podUser));
         } else {
             databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).replace(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, podUser));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_ID_ADDED, account.getLocale(), account.getDisplayName(),
@@ -44,7 +44,7 @@ public class PodSignInManager {
         try {
             PodUser user = (PodUser) databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB())
               .get(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, PodUser.class));
 
             if (user != null) {
@@ -59,7 +59,7 @@ public class PodSignInManager {
     public PodUser getPodUser(StirlingAccount account) {
         try {
             return  (PodUser) databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).get(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, PodUser.class));
         } catch (NullPointerException e) {
             return null;
@@ -72,7 +72,7 @@ public class PodSignInManager {
             podUser.setSignedIn(true);
 
             databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).replace(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, podUser));
 
             try {

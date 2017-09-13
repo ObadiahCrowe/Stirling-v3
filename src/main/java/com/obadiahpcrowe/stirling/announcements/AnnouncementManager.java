@@ -74,7 +74,7 @@ public class AnnouncementManager {
         }
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).remove(new HashMap<String, Object>() {{
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_DELETED, account.getLocale(), announcement.getTitle()));
@@ -93,7 +93,7 @@ public class AnnouncementManager {
         }
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).replaceField(new HashMap<String, Object>() {{
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}, field, value));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_EDITED, account.getLocale(), announcement.getTitle()));
@@ -102,7 +102,7 @@ public class AnnouncementManager {
     public StirlingAnnouncement getAnnouncement(UUID uuid) {
         return (StirlingAnnouncement) databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).get(
           new HashMap<String, Object>() {{
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}, StirlingAnnouncement.class));
     }
 

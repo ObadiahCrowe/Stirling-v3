@@ -40,7 +40,7 @@ public class NoteManager {
         String title = getNote(account, uuid).getTitle();
         databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).remove(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}));
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DELETED, account.getLocale(), title));
     }
@@ -48,7 +48,7 @@ public class NoteManager {
     public StirlingNote getNote(StirlingAccount account, UUID uuid) {
         return (StirlingNote) databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).get(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}, StirlingNote.class));
     }
 
@@ -70,7 +70,7 @@ public class NoteManager {
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}, note));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
@@ -82,7 +82,7 @@ public class NoteManager {
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}, note));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
@@ -94,7 +94,7 @@ public class NoteManager {
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}, note));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
@@ -106,7 +106,7 @@ public class NoteManager {
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
-            put("uuid", uuid);
+            put("uuid", uuid.toString());
         }}, note));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));

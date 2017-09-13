@@ -29,7 +29,7 @@ public class LaptopManager {
         boolean userExists = true;
         try {
             databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB()).get(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, LaptopUser.class));
         } catch (NullPointerException e) {
             userExists = false;
@@ -41,7 +41,7 @@ public class LaptopManager {
 
         if (userExists) {
             databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB()).replaceField(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, name, "laptopName"));
         } else {
             databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB()).insert(new LaptopUser(account.getUuid(), name)));
@@ -55,7 +55,7 @@ public class LaptopManager {
         try {
             user = (LaptopUser) databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB())
               .get(new HashMap<String, Object>() {{
-                  put("uuid", account.getUuid());
+                  put("uuid", account.getUuid().toString());
               }}, LaptopUser.class));
         } catch (NullPointerException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.LAPTOP_NAME_NOT_FOUND, account.getLocale()));

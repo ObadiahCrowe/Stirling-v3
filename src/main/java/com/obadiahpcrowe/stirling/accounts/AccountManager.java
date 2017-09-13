@@ -66,7 +66,7 @@ public class AccountManager {
         if (accountExists(uuid)) {
             StirlingAccount account = getAccount(uuid);
             databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).remove(new HashMap<String, Object>() {{
-                put("uuid", uuid);
+                put("uuid", uuid.toString());
             }}));
 
             UtilFile.getInstance().deleteUserFiles(uuid);
@@ -113,7 +113,7 @@ public class AccountManager {
         try {
             StirlingAccount account = (StirlingAccount) databaseManager.makeCall(new StirlingCall(
               databaseManager.getAccountDB()).get(new HashMap<String, Object>() {{
-                put("uuid", uuid);
+                put("uuid", uuid.toString());
             }}, StirlingAccount.class));
 
             if (account != null) {
@@ -128,7 +128,7 @@ public class AccountManager {
     public StirlingAccount getAccount(UUID uuid) {
         if (accountExists(uuid)) {
             return (StirlingAccount) databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).get(new HashMap<String, Object>() {{
-                put("uuid", uuid);
+                put("uuid", uuid.toString());
             }}, StirlingAccount.class));
         }
         return null;

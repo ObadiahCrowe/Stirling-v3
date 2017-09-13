@@ -43,7 +43,7 @@ public class SignInManager {
             return gson.toJson(msg);
         } else {
             databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).replace(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, user));
 
             EventManager.getInstance().fireEvent(new SchoolSignInEvent(msg, account.getUuid(), reason, extraInfo));
@@ -62,7 +62,7 @@ public class SignInManager {
             presentUser.setTimeSignedOut(UtilTime.getInstance().getFriendlyTime());
 
             databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).replace(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, presentUser));
 
             StirlingMsg output = new StirlingMsg(MsgTemplate.SCHOOL_SIGN_OUT, account.getLocale(),
@@ -79,7 +79,7 @@ public class SignInManager {
         try {
             return (PresentUser) databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).get(
               new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, PresentUser.class));
         } catch (NullPointerException e) {
             return null;
@@ -90,7 +90,7 @@ public class SignInManager {
         try {
             PresentUser presentUser = (PresentUser) databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB())
               .get(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
+                put("uuid", account.getUuid().toString());
             }}, PresentUser.class));
 
             if (presentUser != null) {
