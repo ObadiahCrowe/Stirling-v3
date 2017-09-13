@@ -9,6 +9,7 @@ import com.obadiahpcrowe.stirling.sace.scrapers.SaceScraper;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -37,7 +38,11 @@ public class SaceManager {
     }
 
     public String getSaceResults(StirlingAccount account) {
-        return gson.toJson(SaceScraper.getInstance().getResults(getSaceUser(account)));
+        try {
+            return gson.toJson(SaceScraper.getInstance().getResults(getSaceUser(account)));
+        } catch (IOException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "getting your SACE data"));
+        }
     }
 
     public String getSaceCompletion(StirlingAccount account) {
