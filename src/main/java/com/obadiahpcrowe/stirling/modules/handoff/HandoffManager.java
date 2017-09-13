@@ -12,7 +12,7 @@ public class HandoffManager {
     private static HandoffManager instance;
 
     public void init() {
-
+        // TODO: 13/9/17 this is required for platform support
     }
 
     public static HandoffManager getInstance() {

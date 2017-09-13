@@ -28,6 +28,10 @@ public class SaceManager {
     private DatabaseManager databaseManager = DatabaseManager.getInstance();
     private Gson gson = new Gson();
 
+    public void init() {
+        // TODO: 13/9/17 Get list of all sace subjects if not exists, insert into new mongodb, then run errands to download all shit
+    }
+
     public String setSaceCreds(StirlingAccount account, String saceId, String sacePassword) {
         SaceUser user = new SaceUser(account.getUuid(), saceId, sacePassword);
         if (isSaceUserPresent(account)) {

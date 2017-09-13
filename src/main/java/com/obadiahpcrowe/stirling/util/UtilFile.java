@@ -27,9 +27,11 @@ public class UtilFile {
     public void init() {
         File[] folders = new File[] {
           new File("Classes"),
+          new File("IB"),
           new File("Logs"),
           new File("Marketplace"),
           new File("Modules"),
+          new File("SACE"),
           new File("UserData"),
           new File("Updates")
         };

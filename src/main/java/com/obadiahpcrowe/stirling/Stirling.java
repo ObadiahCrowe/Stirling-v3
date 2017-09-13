@@ -71,6 +71,9 @@ public class Stirling {
         utilLog.log("Registering module API calls..");
         ModuleManager.getInstance().registerAPICalls();
 
+        utilLog.log("Initialising SACE resources..");
+        SaceManager.getInstance().init();
+
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
 

@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/Stirling.class" afterPath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/Stirling.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.class" afterPath="$PROJECT_DIR$/target/classes/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceSubject.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/modules/handoff/HandoffManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/modules/handoff/HandoffManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/SaceManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/SaceManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceUser.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceUser.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/scrapers/SaceScraper.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/scrapers/SaceScraper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -21,11 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="535">
-              <caret line="74" column="8" lean-forward="true" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+            <state relative-caret-position="409">
+              <caret line="65" column="41" lean-forward="false" selection-start-line="65" selection-start-column="41" selection-end-line="65" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -33,11 +33,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SaceScraper.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="HandoffManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/modules/handoff/HandoffManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="196">
+              <caret line="14" column="62" lean-forward="false" selection-start-line="14" selection-start-column="62" selection-end-line="14" selection-end-column="62" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SaceScraper.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/scrapers/SaceScraper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="563">
-              <caret line="100" column="81" lean-forward="false" selection-start-line="100" selection-start-column="81" selection-end-line="100" selection-end-column="81" />
+            <state relative-caret-position="759">
+              <caret line="122" column="20" lean-forward="false" selection-start-line="122" selection-start-column="20" selection-end-line="122" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -58,8 +68,8 @@
       <file leaf-file-name="SaceManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/SaceManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="52" column="62" lean-forward="true" selection-start-line="52" selection-start-column="62" selection-end-line="52" selection-end-column="62" />
+            <state relative-caret-position="252">
+              <caret line="31" column="132" lean-forward="false" selection-start-line="31" selection-start-column="132" selection-end-line="31" selection-end-column="132" />
               <folding>
                 <element signature="method#setSaceCreds#0;class#SaceManager#0" expanded="false" />
                 <element signature="method#isSaceUserPresent#0;class#SaceManager#0" expanded="false" />
@@ -115,8 +125,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/signin/enums/SignInReason.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/signin/obj/SignInUser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/signin/obj/PresentUser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/session/SessionUser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/session/StirlingSession.java" />
@@ -140,7 +148,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TokenFinder.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TokenManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/LocalisationManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TranslateManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/StirlingLocale.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/calendar/interfaces/CalEntry.java" />
@@ -163,9 +170,12 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceResult.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceCompletion.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceUser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/SaceManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/scrapers/SaceScraper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceSubject.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/SaceManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/modules/handoff/HandoffManager.java" />
       </list>
     </option>
   </component>
@@ -265,6 +275,25 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="calendar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Stirling" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="calendar" type="462c0819:PsiDirectoryNode" />
+              <item name="obj" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Stirling" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="stirling" type="462c0819:PsiDirectoryNode" />
               <item name="sace" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -286,6 +315,15 @@
               <item name="stirling" type="462c0819:PsiDirectoryNode" />
               <item name="sace" type="462c0819:PsiDirectoryNode" />
               <item name="scrapers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Stirling" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -511,7 +549,7 @@
       <workItem from="1505268268455" duration="17000" />
       <workItem from="1505268538463" duration="81000" />
       <workItem from="1505279006921" duration="4318000" />
-      <workItem from="1505283496765" duration="4854000" />
+      <workItem from="1505283496765" duration="7266000" />
     </task>
     <task id="LOCAL-00001" summary="Laying groundwork">
       <created>1504608481845</created>
@@ -821,11 +859,18 @@
       <option name="project" value="LOCAL" />
       <updated>1505286716297</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Sace completion scrapers">
+      <created>1505288472388</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1505288472388</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="93632000" />
+    <option name="totallyTimeSpent" value="96044000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="42" y="22" width="1638" height="1028" extended-state="0" />
@@ -869,7 +914,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Beginning note stuff" />
     <MESSAGE value="Note stuff" />
     <MESSAGE value="Starting laptop reimage stuff" />
     <MESSAGE value="Reimage stuff" />
@@ -894,7 +938,8 @@
     <MESSAGE value="Fixing uuid db calls" />
     <MESSAGE value="Sace stuff" />
     <MESSAGE value="Sace get results" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sace get results" />
+    <MESSAGE value="Sace completion scrapers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sace completion scrapers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -903,20 +948,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/session/StirlingSession.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/session/SessionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="29" column="57" lean-forward="false" selection-start-line="29" selection-start-column="57" selection-end-line="29" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/modules/ModuleManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="87">
@@ -1032,15 +1063,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="79" column="19" lean-forward="false" selection-start-line="79" selection-start-column="19" selection-end-line="79" selection-end-column="19" />
-          <caret line="80" column="45" lean-forward="false" selection-start-line="80" selection-start-column="45" selection-end-line="80" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TranslateManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
@@ -1081,13 +1103,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="15" column="43" lean-forward="false" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/calendar/obj/ExamCalEntry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="784">
-          <caret line="68" column="23" lean-forward="false" selection-start-line="68" selection-start-column="23" selection-end-line="68" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -1245,10 +1260,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/SaceManager.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceCompletion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/calendar/obj/ExamCalEntry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="742">
+          <caret line="68" column="23" lean-forward="false" selection-start-line="68" selection-start-column="23" selection-end-line="68" selection-end-column="23" />
+          <folding>
+            <element signature="e#1538#1539#0" expanded="true" />
+            <element signature="e#1569#1570#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceSubject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="406">
-          <caret line="52" column="62" lean-forward="true" selection-start-line="52" selection-start-column="62" selection-end-line="52" selection-end-column="62" />
+          <caret line="29" column="52" lean-forward="false" selection-start-line="29" selection-start-column="52" selection-end-line="29" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/SaceManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="31" column="132" lean-forward="false" selection-start-line="31" selection-start-column="132" selection-end-line="31" selection-end-column="132" />
           <folding>
             <element signature="method#setSaceCreds#0;class#SaceManager#0" expanded="false" />
             <element signature="method#isSaceUserPresent#0;class#SaceManager#0" expanded="false" />
@@ -1258,28 +1302,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/obj/SaceCompletion.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/scrapers/SaceScraper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="100" column="81" lean-forward="false" selection-start-line="100" selection-start-column="81" selection-end-line="100" selection-end-column="81" />
+        <state relative-caret-position="409">
+          <caret line="65" column="41" lean-forward="false" selection-start-line="65" selection-start-column="41" selection-end-line="65" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/modules/handoff/HandoffManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="74" column="8" lean-forward="true" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
+        <state relative-caret-position="196">
+          <caret line="14" column="62" lean-forward="false" selection-start-line="14" selection-start-column="62" selection-end-line="14" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="29" column="25" lean-forward="false" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/scrapers/SaceScraper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="759">
+          <caret line="122" column="20" lean-forward="false" selection-start-line="122" selection-start-column="20" selection-end-line="122" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
