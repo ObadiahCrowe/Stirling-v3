@@ -94,7 +94,7 @@ public class AnnouncementManager {
 
         databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).replaceField(new HashMap<String, Object>() {{
             put("uuid", uuid);
-        }}, value, field));
+        }}, field, value));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_EDITED, account.getLocale(), announcement.getTitle()));
     }

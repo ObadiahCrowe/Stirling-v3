@@ -86,8 +86,8 @@ public class AccountManager {
     public void updateField(StirlingAccount account, String field, Object value) {
         if (accountExists(account.getUuid())) {
             databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).replaceField(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid());
-            }}, value, field));
+                put("uuid", account.getUuid().toString());
+            }}, field, value));
         }
     }
 

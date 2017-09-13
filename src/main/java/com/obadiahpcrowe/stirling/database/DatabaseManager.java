@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.mongodb.*;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.database.obj.StirlingDatabase;
+import com.obadiahpcrowe.stirling.util.UtilLog;
 import lombok.Getter;
 
 import java.util.*;
@@ -88,7 +89,7 @@ public class DatabaseManager {
                     replaceObject(call.getDatabase(), call.getIdentifiers(), call.getInsertableObject());
                     break;
                 case REPLACE_FIELD:
-                    replaceField(call.getDatabase(), call.getIdentifiers(), call.getInsertableObject(), call.getField());
+                    replaceField(call.getDatabase(), call.getIdentifiers(), call.getField(), call.getInsertableObject());
                     break;
                 case REMOVE:
                     remove(call.getDatabase(), call.getIdentifiers());
@@ -134,6 +135,7 @@ public class DatabaseManager {
         }
 
         cursor = database.getCollection().find(query);
+        UtilLog.getInstance().log("[DATABASE CALL] " + cursor);
         if (cursor.hasNext()) {
             String json = gson.toJson(cursor.next());
             return gson.fromJson(json, returnableObject);
@@ -172,6 +174,7 @@ public class DatabaseManager {
         }
 
         cursor = database.getCollection().find(query);
+        UtilLog.getInstance().log("[DATABASE CALL] " + cursor);
         if (cursor.hasNext()) {
             DBObject next = cursor.next();
             if (next.containsField(field)) {
@@ -185,7 +188,7 @@ public class DatabaseManager {
 
     private void insert(StirlingDatabase database, Object insertableObject) {
         Gson gson = new Gson();
-        database.getCollection().insert(BasicDBObject.parse(gson.toJson(insertableObject)));
+        UtilLog.getInstance().log("[DATABASE CALL] " + database.getCollection().insert(BasicDBObject.parse(gson.toJson(insertableObject))));
     }
 
     private void replaceObject(StirlingDatabase database, Map<String, Object> identifiers, Object insertableObject) {
@@ -199,21 +202,20 @@ public class DatabaseManager {
             query.append(next.getKey().toString(), next.getValue());
         }
 
-        database.getCollection().update(query, object);
+        UtilLog.getInstance().log("[DATABASE CALL] " + database.getCollection().update(query, object));
     }
 
-    private void replaceField(StirlingDatabase database, Map<String, Object> identifiers, Object insertableObject, String field) {
-        Gson gson = new Gson();
+    private void replaceField(StirlingDatabase database, Map<String, Object> identifiers, String field, Object insertableObject) {
         BasicDBObject object = new BasicDBObject();
         BasicDBObject query = new BasicDBObject();
-        object.append("$set", new BasicDBObject().append(field, gson.toJson(insertableObject)));
+        object.append("$set", new BasicDBObject().append(field, insertableObject));
 
         Iterator itr = identifiers.entrySet().iterator();
         while (itr.hasNext()) {
             Map.Entry next = (Map.Entry) itr.next();
             query.append(next.getKey().toString(), next.getValue());
         }
-        database.getCollection().update(query, object);
+        UtilLog.getInstance().log("[DATABASE CALL] " + database.getCollection().update(query, object));
     }
 
     private void remove(StirlingDatabase database, Map<String, Object> identifiers) {
@@ -223,7 +225,7 @@ public class DatabaseManager {
             Map.Entry next = (Map.Entry) itr.next();
             query.append(next.getKey().toString(), next.getValue());
         }
-        database.getCollection().remove(query);
+        UtilLog.getInstance().log("[DATABASE CALL] " + database.getCollection().remove(query));
     }
 
     public static DatabaseManager getInstance() {

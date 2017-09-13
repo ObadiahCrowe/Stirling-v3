@@ -93,8 +93,8 @@ public class AccountAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        AccountManager.getInstance().updateField(account, "locale", StirlingLocale.valueOf(locale));
-        return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(),
+        AccountManager.getInstance().updateField(account, "locale", StirlingLocale.valueOf(locale).toString());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, AccountManager.getInstance().getAccount(accountName).getLocale(),
           "locale", account.getAccountName()));
     }
 
