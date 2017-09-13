@@ -69,8 +69,46 @@ public class SaceScraper {
         return resultList;
     }
 
-    public List<SaceCompletion> getCompletion(SaceUser user) {
-        return null;
+    public List<SaceCompletion> getCompletion(SaceUser user) throws IOException {
+        final WebClient client = new StirlingWebClient(BrowserVersion.CHROME).getClient(null, ajaxController);
+
+        HtmlPage login = client.getPage("https://apps.sace.sa.edu.au/students-online/login.do");
+
+        HtmlTextInput username = (HtmlTextInput) login.getByXPath("//*[@id=\"username\"]").get(0);
+        HtmlPasswordInput password = (HtmlPasswordInput) login.getByXPath("//*[@id=\"password\"]").get(0);
+        HtmlButton button = (HtmlButton) login.getByXPath("//*[@id=\"loginCommand\"]/div[2]/button").get(0);
+
+        username.setText(user.getSaceId());
+        password.setText(user.getSacePassword());
+
+        login = button.click();
+
+        List<SaceCompletion> completions = new ArrayList<>();
+        HtmlPage results = client.getPage("https://apps.sace.sa.edu.au/students-online/checker.do");
+        HtmlTable table = (HtmlTable) results.getByXPath("//*[@id=\"printWrapper\"]/div[1]/table").get(0);
+        for (DomElement element : table.getChildElements()) {
+            if (element.getTagName().equals("tbody")) {
+                if (element.getAttribute("id") != null) {
+                    if (element.getAttribute("id").length() > 3) {
+                        for (DomElement e : element.getChildElements()) {
+                            if (e.getTagName().equals("tr")) {
+                                String name = e.getChildNodes().get(1).getTextContent();
+                                int potentialCredits = Integer.valueOf(e.getChildNodes().get(3).getTextContent().replace(" ", ""));
+                                int awardedCredits = Integer.valueOf(e.getChildNodes().get(5).getTextContent().replace(" ", ""));
+
+                                String rawTarget = e.getChildNodes().get(7).getTextContent();
+                                String[] parts = rawTarget.split("/");
+                                int target = Integer.valueOf(parts[1].substring(1));
+
+                                completions.add(new SaceCompletion(name, potentialCredits, awardedCredits, target));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return completions;
     }
 
     public static SaceScraper getInstance() {

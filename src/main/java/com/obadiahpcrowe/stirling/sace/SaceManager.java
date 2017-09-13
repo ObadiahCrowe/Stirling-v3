@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.database.DatabaseManager;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.sace.obj.SaceCompletion;
+import com.obadiahpcrowe.stirling.sace.obj.SaceResult;
 import com.obadiahpcrowe.stirling.sace.obj.SaceUser;
 import com.obadiahpcrowe.stirling.sace.scrapers.SaceScraper;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
@@ -11,6 +13,7 @@ import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -39,14 +42,32 @@ public class SaceManager {
 
     public String getSaceResults(StirlingAccount account) {
         try {
-            return gson.toJson(SaceScraper.getInstance().getResults(getSaceUser(account)));
+            List<SaceResult> results = SaceScraper.getInstance().getResults(getSaceUser(account));
+            updateResultsCache(account, results);
+            return gson.toJson(results);
         } catch (IOException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "getting your SACE data"));
         }
     }
 
     public String getSaceCompletion(StirlingAccount account) {
-        return gson.toJson(SaceScraper.getInstance().getCompletion(getSaceUser(account)));
+        try {
+            List<SaceCompletion> completions = SaceScraper.getInstance().getCompletion(getSaceUser(account));
+            updateCompletionCache(account, completions);
+            return gson.toJson(completions);
+        } catch (IOException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "getting your SACE data"));
+        }
+    }
+
+    private void updateResultsCache(StirlingAccount account, List<SaceResult> results) {
+        // TODO: 13/9/17  
+        return;
+    }
+
+    private void updateCompletionCache(StirlingAccount account, List<SaceCompletion> completions) {
+        // TODO: 13/9/17
+        return;
     }
 
     private boolean isSaceUserPresent(StirlingAccount account) {

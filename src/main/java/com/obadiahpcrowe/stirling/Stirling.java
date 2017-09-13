@@ -71,11 +71,8 @@ public class Stirling {
         utilLog.log("Registering module API calls..");
         ModuleManager.getInstance().registerAPICalls();
 
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        System.out.println(SaceManager.getInstance().getSaceResults(account));
-
         utilLog.log("Starting REST API service..");
-        //SpringApplication.run(Stirling.class, args);
+        SpringApplication.run(Stirling.class, args);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
