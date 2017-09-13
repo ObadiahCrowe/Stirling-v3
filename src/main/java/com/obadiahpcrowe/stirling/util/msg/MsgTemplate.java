@@ -48,7 +48,8 @@ public enum MsgTemplate {
 
     MESSENGER_IS_TYPING(MsgResponse.SUCCESS, "{0} is typing..", 1),
 
-    SACE_ID_ADDED(MsgResponse.SUCCESS, "Your SACE ID, {0}, has been added!", 1),
+    SACE_CREDS_SET(MsgResponse.SUCCESS, "Your SACE credentials have been added to {0}!", 1),
+    SACE_CREDS_NOT_FOUND(MsgResponse.USER_ERROR, "Your SACE credentials were not found! Try adding them!", 0),
 
     INSUFFICIENT_PERMISSIONS(MsgResponse.USER_ERROR, "You have insufficient permissions to {0}! The minimum account type is: {1}!", 2),
     INCORRECT_PASSWORD(MsgResponse.USER_ERROR, "Your password is incorrect!", 0),
