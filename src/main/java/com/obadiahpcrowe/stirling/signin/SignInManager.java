@@ -35,7 +35,8 @@ public class SignInManager {
         }});
         StirlingMsg msg = new StirlingMsg(MsgTemplate.SCHOOL_SIGN_IN, account.getLocale(),
           reason.getFriendlyName() + ": " + extraInfo);
-        if (!isSignedIn(account)) {
+
+        if (getPresentUser(account) == null) {
             databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).insert(user));
 
             EventManager.getInstance().fireEvent(new SchoolSignInEvent(msg, account.getUuid(), reason, extraInfo));

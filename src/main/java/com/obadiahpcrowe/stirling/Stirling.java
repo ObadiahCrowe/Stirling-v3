@@ -11,7 +11,13 @@ import com.obadiahpcrowe.stirling.localisation.translation.TranslateManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
+import com.obadiahpcrowe.stirling.pod.signin.PodSignInManager;
+import com.obadiahpcrowe.stirling.pod.signin.enums.PodLine;
+import com.obadiahpcrowe.stirling.pod.signin.enums.PodReason;
 import com.obadiahpcrowe.stirling.sace.SaceManager;
+import com.obadiahpcrowe.stirling.signin.SignInManager;
+import com.obadiahpcrowe.stirling.signin.enums.SignInReason;
+import com.obadiahpcrowe.stirling.signin.enums.SignOutReason;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilFile;
@@ -74,8 +80,11 @@ public class Stirling {
         utilLog.log("Initialising SACE resources..");
         SaceManager.getInstance().init();
 
+        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
+        System.out.println(SignInManager.getInstance().signIn(account, SignInReason.LATE_START, "None"));
+
         utilLog.log("Starting REST API service..");
-        SpringApplication.run(Stirling.class, args);
+        //SpringApplication.run(Stirling.class, args);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

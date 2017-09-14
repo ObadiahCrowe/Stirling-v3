@@ -36,7 +36,15 @@ public class UtilTime {
             ampm = "pm";
         }
 
-        return hour + ":" + now.getMinuteOfHour() + " " + ampm.toUpperCase();
+        String minStr = "";
+        int min = now.getMinuteOfHour();
+        if (min < 10) {
+            minStr = "0" + String.valueOf(min);
+        } else {
+            minStr = String.valueOf(min);
+        }
+
+        return hour + ":" + minStr + " " + ampm.toUpperCase();
     }
 
     public static UtilTime getInstance() {
