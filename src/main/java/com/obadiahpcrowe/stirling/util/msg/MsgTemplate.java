@@ -88,7 +88,13 @@ public enum MsgTemplate {
     SESSION_CREATED(MsgResponse.SUCCESS, "Created session for: {0}", 1),
 
     STUDENT_ID_ADDED(MsgResponse.SUCCESS, "{0}'s student ID has been set to: {1}!",  2),
-    STUDENT_ID_NOT_FOUND(MsgResponse.USER_ERROR, "Student ID not found for: {0}!", 1);
+    STUDENT_ID_NOT_FOUND(MsgResponse.USER_ERROR, "Student ID not found for: {0}!", 1),
+
+    BLOG_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The blog, {0}, already exists!", 1),
+    BLOG_CREATED(MsgResponse.SUCCESS, "The blog, {0}, has been created!", 1),
+    BLOG_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The blog, {0}, does not exist!", 1),
+    BLOG_FIELD_EDITED(MsgResponse.SUCCESS, "The field, {0}, was edited for the blog: {1}!", 2),
+    BLOG_DELETED(MsgResponse.SUCCESS, "the blog, {0}, has been deleted!", 1);
 
     private MsgResponse response;
     private String message;

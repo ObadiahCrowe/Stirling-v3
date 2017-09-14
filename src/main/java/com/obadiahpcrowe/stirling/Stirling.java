@@ -42,8 +42,6 @@ public class Stirling {
     private static Stirling instance;
     private @Getter StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
-    // TODO: 12/9/17 Signin module
-
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
         System.out.println("Initialising Stirling..");

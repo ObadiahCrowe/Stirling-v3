@@ -24,7 +24,7 @@ public class StirlingBlog {
     private UUID uuid;
     private String owner;
     private String desc;
-    private File bannerImage;
+    private String bannerImage;
     private List<AccountType> targetAudience;
     private List<BlogPost> blogPosts;
 
@@ -34,7 +34,7 @@ public class StirlingBlog {
         this.owner = account.getDisplayName();
         this.uuid = UUID.randomUUID();
         this.desc = desc;
-        this.bannerImage = bannerImage.getFile();
+        this.bannerImage = bannerImage.getFile().getPath();
         this.targetAudience = targetAudience;
         this.blogPosts = new ArrayList<>();
     }
