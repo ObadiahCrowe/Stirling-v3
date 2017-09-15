@@ -92,9 +92,13 @@ public enum MsgTemplate {
 
     BLOG_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The blog, {0}, already exists!", 1),
     BLOG_CREATED(MsgResponse.SUCCESS, "The blog, {0}, has been created!", 1),
-    BLOG_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The blog, {0}, does not exist!", 1),
+    BLOG_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The blog id, {0}, does not exist!", 1),
     BLOG_FIELD_EDITED(MsgResponse.SUCCESS, "The field, {0}, was edited for the blog: {1}!", 2),
-    BLOG_DELETED(MsgResponse.SUCCESS, "the blog, {0}, has been deleted!", 1);
+    BLOG_DELETED(MsgResponse.SUCCESS, "the blog, {0}, has been deleted!", 1),
+
+    BLOG_POST_CREATED(MsgResponse.SUCCESS, "You have created a blog post with the title: {0}, on the blog: {1}!", 2),
+    BLOG_POST_DELETED(MsgResponse.SUCCESS, "You have deleted a blog post with the id: {0}, on the blog: {1}!", 2),
+    BLOG_POST_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The blog post id, {0}, does not exist!", 1);
 
     private MsgResponse response;
     private String message;

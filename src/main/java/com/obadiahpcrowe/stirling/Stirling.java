@@ -78,11 +78,8 @@ public class Stirling {
         utilLog.log("Initialising SACE resources..");
         SaceManager.getInstance().init();
 
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        System.out.println(SignInManager.getInstance().signIn(account, SignInReason.LATE_START, "None"));
-
         utilLog.log("Starting REST API service..");
-        //SpringApplication.run(Stirling.class, args);
+        SpringApplication.run(Stirling.class, args);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

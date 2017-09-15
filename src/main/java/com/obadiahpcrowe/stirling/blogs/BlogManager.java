@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.blogs;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
+import com.obadiahpcrowe.stirling.blogs.obj.BlogPost;
 import com.obadiahpcrowe.stirling.blogs.obj.StirlingBlog;
 import com.obadiahpcrowe.stirling.database.DatabaseManager;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
@@ -132,12 +133,55 @@ public class BlogManager {
         }
     }
 
-    public String createBlogPost(StirlingAccount account, UUID blogUuid) {
-        return "";
+    public String createBlogPost(StirlingAccount account, UUID blogUuid, String title, String desc, String content,
+                                 List<AttachableResource> resources) {
+        if (account.getAccountType().getAccessLevel() > 9) {
+            if (blogExists(blogUuid)) {
+                BlogPost blogPost = new BlogPost(account, title, desc, content, resources);
+                StirlingBlog blog = getBlog(blogUuid);
+
+                blog.getBlogPosts().add(blogPost);
+                databaseManager.makeCall(new StirlingCall(databaseManager.getBlogDB()).replaceField(new HashMap<String, Object>() {{
+                    put("uuid", blog.getUuid());
+                }}, "blogPosts", blog.getBlogPosts()));
+
+                return gson.toJson(new StirlingMsg(MsgTemplate.BLOG_POST_CREATED, account.getLocale(), title, blog.getTitle()));
+            } else {
+                return gson.toJson(new StirlingMsg(MsgTemplate.BLOG_DOES_NOT_EXIST, account.getLocale(), blogUuid.toString()));
+            }
+        } else {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(),
+              "create blog posts", AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
     }
 
     public String deleteBlogPost(StirlingAccount account, UUID blogUuid, UUID postUuid) {
-        return "";
+        if (account.getAccountType().getAccessLevel() > 9) {
+            if (blogExists(blogUuid)) {
+                if (postExists(blogUuid, postUuid)) {
+                    StirlingBlog blog = getBlog(blogUuid);
+                    List<BlogPost> blogPosts = blog.getBlogPosts();
+                    blogPosts.forEach(post -> {
+                        if (post.getUuid().equals(postUuid)) {
+                            blogPosts.remove(post);
+                        }
+                    });
+
+                    databaseManager.makeCall(new StirlingCall(databaseManager.getBlogDB()).replaceField(new HashMap<String, Object>() {{
+                        put("uuid", blogUuid.toString());
+                    }}, "blogPosts", blogPosts));
+                    return gson.toJson(new StirlingMsg(MsgTemplate.BLOG_POST_DELETED, account.getLocale(),
+                      postUuid.toString(), blog.getTitle()));
+                } else {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.BLOG_POST_DOES_NOT_EXIST, account.getLocale(), postUuid.toString()));
+                }
+            } else {
+                return gson.toJson(new StirlingMsg(MsgTemplate.BLOG_DOES_NOT_EXIST, account.getLocale(), blogUuid.toString()));
+            }
+        } else {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(),
+              "delete blog posts", AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
     }
 
     public String editBlogPost(StirlingAccount account, UUID blogUuid, UUID postUuid) {
@@ -183,6 +227,16 @@ public class BlogManager {
         } catch (NullPointerException e) {
             return false;
         }
+    }
+
+    private boolean postExists(UUID blogUuid, UUID postUuid) {
+        List<BlogPost> blogPosts = getBlog(blogUuid).getBlogPosts();
+        for (BlogPost post : blogPosts) {
+            if (post.getUuid().equals(postUuid)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static BlogManager getInstance() {
