@@ -17,7 +17,6 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-@Setter
 public class BlogPost {
 
     private String title;

@@ -118,7 +118,7 @@ public class BlogManager {
 
     public String deleteBlog(StirlingAccount account, UUID blogUuid) {
         if (account.getAccountType().getAccessLevel() > 9) {
-            if (!blogExists(blogUuid)) {
+            if (blogExists(blogUuid)) {
                 StirlingBlog blog = getBlog(blogUuid);
                 databaseManager.makeCall(new StirlingCall(databaseManager.getBlogDB()).remove(new HashMap<String, Object>() {{
                     put("uuid", blogUuid.toString());
@@ -184,8 +184,22 @@ public class BlogManager {
         }
     }
 
-    public String editBlogPost(StirlingAccount account, UUID blogUuid, UUID postUuid) {
-        return "";
+    public String editBlogTitle(StirlingAccount account, UUID blogUuid, UUID postUuid, String title) {
+        if (account.getAccountType().getAccessLevel() > 9) {
+            if (blogExists(blogUuid)) {
+                if (postExists(blogUuid, postUuid)) {
+                    StirlingBlog blog = getBlog(blogUuid);
+                    BlogPost post = blog.getBlogPosts().stream().filter(blogPost -> blogPost.getUuid().equals(postUuid)).findFirst().get();
+
+                    System.out.println(post.getTitle());
+
+                    databaseManager.makeCall(new StirlingCall(databaseManager.getBlogDB()).replaceField(new HashMap<String, Object>() {{
+                        put("uuid", blogUuid.toString());
+                    }}, "blogPOsts", blog.getBlogPosts()));
+                }
+            }
+        }
+        return "test";
     }
 
     public StirlingBlog getBlog(UUID uuid) {
@@ -205,12 +219,9 @@ public class BlogManager {
 
             if (blog != null) {
                 return true;
-            } else {
-                return false;
             }
-        } catch (NullPointerException e) {
-            return false;
-        }
+        } catch (NullPointerException e) { }
+        return false;
     }
 
     private boolean blogExists(UUID uuid) {
@@ -221,12 +232,9 @@ public class BlogManager {
 
             if (blog != null) {
                 return true;
-            } else {
-                return false;
             }
-        } catch (NullPointerException e) {
-            return false;
-        }
+        } catch (NullPointerException ignored) { }
+        return false;
     }
 
     private boolean postExists(UUID blogUuid, UUID postUuid) {

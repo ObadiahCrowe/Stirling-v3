@@ -206,9 +206,14 @@ public class DatabaseManager {
     }
 
     private void replaceField(StirlingDatabase database, Map<String, Object> identifiers, String field, Object insertableObject) {
+        Gson gson = new Gson();
         BasicDBObject object = new BasicDBObject();
         BasicDBObject query = new BasicDBObject();
-        object.append("$set", new BasicDBObject().append(field, insertableObject));
+        if (insertableObject.getClass().equals(String.class)) {
+            object.append("$set", new BasicDBObject().append(field, insertableObject));
+        } else {
+            object.append("$set", new BasicDBObject().append(field, gson.toJson(insertableObject)));
+        }
 
         Iterator itr = identifiers.entrySet().iterator();
         while (itr.hasNext()) {
