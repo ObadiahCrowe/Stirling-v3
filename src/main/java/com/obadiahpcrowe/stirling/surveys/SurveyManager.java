@@ -1,5 +1,10 @@
 package com.obadiahpcrowe.stirling.surveys;
 
+import com.obadiahpcrowe.stirling.database.MorphiaService;
+import com.obadiahpcrowe.stirling.database.dao.SurveyDAOImpl;
+import com.obadiahpcrowe.stirling.database.dao.interfaces.SurveyDAO;
+import com.obadiahpcrowe.stirling.surveys.obj.StirlingSurvey;
+
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 12/9/17 at 8:15 PM
@@ -9,11 +14,15 @@ package com.obadiahpcrowe.stirling.surveys;
  */
 public class SurveyManager {
 
-    private static SurveyManager instance;
+    private MorphiaService morphiaService;
+    private SurveyDAO surveyDAO;
 
-    public static SurveyManager getInstance() {
-        if (instance == null)
-            instance = new SurveyManager();
-        return instance;
+    public SurveyManager() {
+        this.morphiaService = new MorphiaService();
+        this.surveyDAO = new SurveyDAOImpl(StirlingSurvey.class, morphiaService.getDatastore());
+    }
+
+    public String createSurvey() {
+        return "";
     }
 }
