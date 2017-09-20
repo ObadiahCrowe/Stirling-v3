@@ -3,6 +3,8 @@ package com.obadiahpcrowe.stirling.database.dao.interfaces;
 import com.obadiahpcrowe.stirling.signin.enums.SignInReason;
 import com.obadiahpcrowe.stirling.signin.enums.SignOutReason;
 import com.obadiahpcrowe.stirling.signin.obj.PresentUser;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.dao.DAO;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +16,7 @@ import java.util.UUID;
  * Package: com.obadiahpcrowe.stirling.database.dao.interfaces
  * Copyright (c) Obadiah Crowe 2017
  */
-public interface SignInDAO {
+public interface SignInDAO extends DAO<PresentUser, ObjectId> {
 
     PresentUser getByUuid(UUID uuid);
 

@@ -1,18 +1,16 @@
 package com.obadiahpcrowe.stirling.feedback;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
-import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.database.dao.FeedbackDAOImpl;
+import com.obadiahpcrowe.stirling.database.dao.interfaces.FeedbackDAO;
 import com.obadiahpcrowe.stirling.feedback.enums.FeedbackType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,22 +24,26 @@ import java.util.UUID;
 public class FeedbackManager {
 
     private static FeedbackManager instance;
-    private MorphiaService morphiaService = MorphiaService.getInstance();
+    private MorphiaService morphiaService;
+    private FeedbackDAO feedbackDAO;
     private Gson gson = new Gson();
+
+    public FeedbackManager() {
+        this.morphiaService = new MorphiaService();
+        this.feedbackDAO = new FeedbackDAOImpl(StirlingFeedback.class, morphiaService.getDatastore());
+    }
 
     public String createFeedback(StirlingAccount account, String title, String content,
                                  List<AttachableResource> resources, FeedbackType type) {
         StirlingFeedback feedback = new StirlingFeedback(account, title, content, resources, type);
-        morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB()).insert(feedback));
+        feedbackDAO.save(feedback);
 
         return gson.toJson(new StirlingMsg(MsgTemplate.FEEDBACK_CREATED, account.getLocale(), feedback.getUuid().toString()));
     }
 
     public String deleteFeedback(StirlingAccount account, UUID uuid) {
         if (account.getAccountType().equals(AccountType.DEVELOPER)) {
-            morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB()).remove(new HashMap<String, Object>() {{
-                put("uuid", uuid.toString());
-            }}));
+            feedbackDAO.delete(getFeedback(account, uuid));
             return gson.toJson(new StirlingMsg(MsgTemplate.FEEDBACK_DELETED, account.getLocale(), uuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete feedback", "developer"));
@@ -49,26 +51,14 @@ public class FeedbackManager {
 
     public List<StirlingFeedback> getAllFeedback(StirlingAccount account) {
         if (account.getAccountType().equals(AccountType.DEVELOPER)) {
-            Type type = new TypeToken<List<StirlingFeedback>>(){}.getType();
-            String raw = (String) morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB()).get(
-              new HashMap<>(), StirlingFeedback.class));
-
-            return gson.fromJson(raw, type);
+            return feedbackDAO.getAll();
         }
         return null;
     }
 
     public StirlingFeedback getFeedback(StirlingAccount account, UUID uuid) {
         if (account.getAccountType().equals(AccountType.DEVELOPER)) {
-            try {
-                StirlingFeedback feedback = (StirlingFeedback) morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB())
-                  .get(new HashMap<String, Object>() {{
-                    put("uuid", uuid.toString());
-                }}, StirlingFeedback.class));
-                return feedback;
-            } catch (NullPointerException e) {
-                return null;
-            }
+            return feedbackDAO.getByUuid(uuid);
         }
         return null;
     }
