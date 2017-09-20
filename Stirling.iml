@@ -88,5 +88,8 @@
     <orderEntry type="library" name="Maven: com.google.http-client:google-http-client-jackson2:1.22.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava-jdk5:17.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.apis:google-api-services-classroom:v1-rev62-1.22.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb.morphia:morphia:1.3.2" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.2.2" level="project" />
+    <orderEntry type="library" name="Maven: com.thoughtworks.proxytoys:proxytoys:1.0" level="project" />
   </component>
 </module>

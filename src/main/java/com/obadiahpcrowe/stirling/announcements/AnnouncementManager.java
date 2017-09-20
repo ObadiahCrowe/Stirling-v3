@@ -1,17 +1,16 @@
 package com.obadiahpcrowe.stirling.announcements;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
-import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
+import com.obadiahpcrowe.stirling.database.dao.AnnouncementDAOImpl;
+import com.obadiahpcrowe.stirling.database.dao.interfaces.AnnouncementDAO;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -23,12 +22,17 @@ import java.util.*;
  */
 public class AnnouncementManager {
 
-    private static AnnouncementManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService;
+    private AnnouncementDAO announcementDAO;
     private Gson gson = new Gson();
 
-    public String postAnnouncement(StirlingAccount account, AnnouncementType type, String title, String shortDesc,
-                                   String content, String resources, String targetAudience) {
+    public AnnouncementManager() {
+        this.morphiaService = new MorphiaService();
+        this.announcementDAO = new AnnouncementDAOImpl(StirlingAnnouncement.class, morphiaService.getDatastore());
+    }
+
+    public String postAnnouncement(StirlingAccount account, AnnouncementType type, String bannerImage, String title,
+                                   String shortDesc, String content, String resources, String targetAudience, String tags) {
         if (!type.getAccountTypes().contains(account.getAccountType())) {
             StringBuilder valid = new StringBuilder();
             for (AccountType accountType : type.getAccountTypes()) {
@@ -50,8 +54,14 @@ public class AnnouncementManager {
             resourcesList.add(new AttachableResource(account.getAccountName(), fileTokenizer.nextElement().toString()));
         }
 
-        databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).insert(
-          new StirlingAnnouncement(account, title, shortDesc, type, content, resourcesList, audience)));
+        List<String> tagsList = new ArrayList<>();
+        StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
+        while (tokenizer.hasMoreElements()) {
+            tagsList.add(tagTokenizer.nextElement().toString());
+        }
+
+        announcementDAO.save(new StirlingAnnouncement(account, title, shortDesc, type,
+          new AttachableResource(account.getAccountName(), bannerImage), content, resourcesList, audience, tagsList));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_CREATED, account.getLocale(), title));
     }
@@ -73,56 +83,16 @@ public class AnnouncementManager {
               "delete this announcement", valid.toString()));
         }
 
-        databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).remove(new HashMap<String, Object>() {{
-            put("uuid", uuid.toString());
-        }}));
+        announcementDAO.delete(announcement);
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_DELETED, account.getLocale(), announcement.getTitle()));
     }
 
-    public String editAnnouncement(StirlingAccount account, UUID uuid, String field, Object value) {
-        StirlingAnnouncement announcement = getAnnouncement(uuid);
-        if (!announcement.getType().getAccountTypes().contains(account.getAccountType())) {
-            StringBuilder valid = new StringBuilder();
-            for (AccountType accountType : announcement.getType().getAccountTypes()) {
-                valid.append(accountType.getFriendlyName()).append(", ");
-            }
-
-            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(),
-              "edit this announcement", valid.toString()));
-        }
-
-        databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).replaceField(new HashMap<String, Object>() {{
-            put("uuid", uuid.toString());
-        }}, field, value));
-
-        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_EDITED, account.getLocale(), announcement.getTitle()));
-    }
-
     public StirlingAnnouncement getAnnouncement(UUID uuid) {
-        return (StirlingAnnouncement) databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).get(
-          new HashMap<String, Object>() {{
-            put("uuid", uuid.toString());
-        }}, StirlingAnnouncement.class));
+        return announcementDAO.getByUuid(uuid);
     }
 
     public List<StirlingAnnouncement> getAnnouncements(StirlingAccount account) {
-        Type type = new TypeToken<List<StirlingAnnouncement>>(){}.getType();
-        String raw = (String) databaseManager.makeCall(new StirlingCall(databaseManager.getAnnouncementDB()).get(
-          new HashMap<>(), StirlingAnnouncement.class));
-
-        List<StirlingAnnouncement> announcements = gson.fromJson(raw, type);
-        for (StirlingAnnouncement announcement : announcements) {
-            if (!announcement.getTargetAudience().contains(account.getAccountType())) {
-                announcements.remove(announcement);
-            }
-        }
-        return announcements;
-    }
-
-    public static AnnouncementManager getInstance() {
-        if (instance == null)
-            instance = new AnnouncementManager();
-        return instance;
+        return announcementDAO.getByAudience(Arrays.asList(account.getAccountType()));
     }
 }

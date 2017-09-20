@@ -2,7 +2,7 @@ package com.obadiahpcrowe.stirling.sace;
 
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.sace.obj.SaceCompletion;
 import com.obadiahpcrowe.stirling.sace.obj.SaceResult;
@@ -25,7 +25,7 @@ import java.util.List;
 public class SaceManager {
 
     private static SaceManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService = MorphiaService.getInstance();
     private Gson gson = new Gson();
 
     public void init() {
@@ -35,11 +35,11 @@ public class SaceManager {
     public String setSaceCreds(StirlingAccount account, String saceId, String sacePassword) {
         SaceUser user = new SaceUser(account.getUuid(), saceId, sacePassword);
         if (isSaceUserPresent(account)) {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getSaceDB()).replace(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).replace(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, user));
         } else {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getSaceDB()).insert(user));
+            morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).insert(user));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.SACE_CREDS_SET, account.getLocale(), account.getDisplayName()));
     }
@@ -76,7 +76,7 @@ public class SaceManager {
 
     private boolean isSaceUserPresent(StirlingAccount account) {
         try {
-            SaceUser user = (SaceUser) databaseManager.makeCall(new StirlingCall(databaseManager.getSaceDB()).get(
+            SaceUser user = (SaceUser) morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).get(
               new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, SaceUser.class));
@@ -90,7 +90,7 @@ public class SaceManager {
 
     public SaceUser getSaceUser(StirlingAccount account) {
         try {
-            SaceUser user = (SaceUser) databaseManager.makeCall(new StirlingCall(databaseManager.getSaceDB()).get(
+            SaceUser user = (SaceUser) morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).get(
               new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, SaceUser.class));

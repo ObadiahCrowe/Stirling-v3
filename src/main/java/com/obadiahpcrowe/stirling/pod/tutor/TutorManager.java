@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.pod.tutor.obj.TutorAssignment;
@@ -27,11 +27,11 @@ import java.util.UUID;
 public class TutorManager {
 
     private static TutorManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService = MorphiaService.getInstance();
     private Gson gson = new Gson();
 
     public String deleteRequest(UUID uuid) {
-        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).remove(new HashMap<String, Object>() {{
+        morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).remove(new HashMap<String, Object>() {{
             put("uuid", uuid.toString());
         }}));
 
@@ -39,7 +39,7 @@ public class TutorManager {
     }
 
     public String deleteAssignment(UUID uuid) {
-        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).remove(new HashMap<String, Object>() {{
+        morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).remove(new HashMap<String, Object>() {{
             put("uuid", uuid.toString());
         }}));
 
@@ -47,7 +47,7 @@ public class TutorManager {
     }
 
     public String requestTutor(StirlingAccount account, String reason, String date, String time) {
-        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).insert(
+        morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).insert(
           new TutorRequest(account.getUuid(), reason, date, time)));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_REQUEST_MADE, account.getLocale(), time, date, reason));
@@ -58,7 +58,7 @@ public class TutorManager {
     }
 
     public String assignTutor(StirlingAccount account, Tutorer tutorer, String date, String time) {
-        databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).insert(
+        morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).insert(
           new TutorAssignment(account.getUuid(), tutorer.getUuid(), date, time)));
 
         return gson.toJson(new StirlingMsg(
@@ -68,7 +68,7 @@ public class TutorManager {
     public String registerAsTutor(StirlingAccount account, List<String> specialities) {
         if (account.getAccountType().equals(AccountType.TUTOR)) {
             if (tutorExists(account.getUuid())) {
-                databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).insert(new Tutorer(account, specialities)));
+                morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).insert(new Tutorer(account, specialities)));
                 return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_REGISTERED, account.getLocale()));
             } else {
                 return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_ALREADY_REGISTERED, account.getLocale()));
@@ -80,7 +80,7 @@ public class TutorManager {
 
     public boolean tutorExists(UUID uuid) {
         try {
-            Tutorer tutorer = (Tutorer) databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).get(new HashMap<String, Object>() {{
+            Tutorer tutorer = (Tutorer) morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).get(new HashMap<String, Object>() {{
                 put("uuid", uuid.toString());
             }}, Tutorer.class));
 
@@ -96,7 +96,7 @@ public class TutorManager {
 
     public Tutorer getTutor(String tutorName) {
         try {
-            return (Tutorer) databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).get(new HashMap<String, Object>() {{
+            return (Tutorer) morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).get(new HashMap<String, Object>() {{
                 put("name", tutorName);
             }}, Tutorer.class));
         } catch (NullPointerException e) {
@@ -106,7 +106,7 @@ public class TutorManager {
 
     public Tutorer getTutor(UUID uuid) {
         try {
-            return (Tutorer) databaseManager.makeCall(new StirlingCall(databaseManager.getTutorDB()).get(new HashMap<String, Object>() {{
+            return (Tutorer) morphiaService.makeCall(new StirlingCall(morphiaService.getTutorDB()).get(new HashMap<String, Object>() {{
                 put("uuid", uuid.toString());
             }}, Tutorer.class));
         } catch (NullPointerException e) {

@@ -1,8 +1,9 @@
 package com.obadiahpcrowe.stirling.accounts;
 
 import com.google.gson.Gson;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
-import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
+import com.obadiahpcrowe.stirling.database.dao.AccountDAOImpl;
+import com.obadiahpcrowe.stirling.database.dao.interfaces.AccountDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.events.types.AccountCreatedEvent;
@@ -11,7 +12,6 @@ import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -23,9 +23,14 @@ import java.util.UUID;
  */
 public class AccountManager {
 
-    private static AccountManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService;
+    private AccountDAO accountDAO;
     private Gson gson = new Gson();
+
+    public AccountManager() {
+        this.morphiaService = new MorphiaService();
+        this.accountDAO = new AccountDAOImpl(StirlingAccount.class, morphiaService.getDatastore());
+    }
 
     public String createAccount(String accountName, String emailAddress, String password) {
         if (!accountExists(accountName)) {
@@ -38,7 +43,7 @@ public class AccountManager {
             }
 
             StirlingAccount account = new StirlingAccount(accountName, emailAddress, password);
-            databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).insert(account));
+            accountDAO.save(account);
 
             UtilFile.getInstance().createUserFiles(account.getUuid());
 
@@ -65,9 +70,7 @@ public class AccountManager {
     public String deleteAccount(UUID uuid) {
         if (accountExists(uuid)) {
             StirlingAccount account = getAccount(uuid);
-            databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).remove(new HashMap<String, Object>() {{
-                put("uuid", uuid.toString());
-            }}));
+            accountDAO.delete(account);
 
             UtilFile.getInstance().deleteUserFiles(uuid);
 
@@ -77,70 +80,26 @@ public class AccountManager {
         }
     }
 
-    public Object getField(StirlingAccount account, String field) {
-        return databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).getField(new HashMap<String, Object>() {{
-            put("accountName", account.getAccountName());
-        }}, StirlingAccount.class, field));
-    }
-
-    public void updateField(StirlingAccount account, String field, Object value) {
-        if (accountExists(account.getUuid())) {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).replaceField(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid().toString());
-            }}, field, value));
-        }
-    }
-
     public boolean accountExists(String accountName) {
-        try {
-            StirlingAccount account = (StirlingAccount) databaseManager.makeCall(new StirlingCall(
-              databaseManager.getAccountDB()).get(new HashMap<String, Object>() {{
-                put("accountName", accountName);
-            }}, StirlingAccount.class));
-
-            if (account != null) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        if (getAccount(accountName) == null) {
             return false;
         }
+        return true;
     }
 
     public boolean accountExists(UUID uuid) {
-        try {
-            StirlingAccount account = (StirlingAccount) databaseManager.makeCall(new StirlingCall(
-              databaseManager.getAccountDB()).get(new HashMap<String, Object>() {{
-                put("uuid", uuid.toString());
-            }}, StirlingAccount.class));
-
-            if (account != null) {
-                return true;
-            }
-        } catch (NullPointerException e) {
+        if (getAccount(uuid) == null) {
             return false;
         }
         return true;
     }
 
     public StirlingAccount getAccount(UUID uuid) {
-        if (accountExists(uuid)) {
-            return (StirlingAccount) databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).get(new HashMap<String, Object>() {{
-                put("uuid", uuid.toString());
-            }}, StirlingAccount.class));
-        }
-        return null;
+        return accountDAO.getByUuid(uuid);
     }
 
     public StirlingAccount getAccount(String accountName) {
-        if (accountExists(accountName)) {
-            return (StirlingAccount) databaseManager.makeCall(new StirlingCall(databaseManager.getAccountDB()).get(new HashMap<String, Object>() {{
-                put("accountName", accountName);
-            }}, StirlingAccount.class));
-        }
-        return null;
+        return accountDAO.getByAccountName(accountName);
     }
 
     public boolean validCredentials(String accountName, String password) {
@@ -151,11 +110,5 @@ public class AccountManager {
             }
         }
         return false;
-    }
-
-    public static AccountManager getInstance() {
-        if (instance == null)
-            instance = new AccountManager();
-        return instance;
     }
 }

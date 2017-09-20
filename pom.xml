@@ -170,5 +170,10 @@
             <version>v1-rev62-1.22.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mongodb.morphia</groupId>
+            <artifactId>morphia</artifactId>
+            <version>1.3.2</version>
+        </dependency>
     </dependencies>
 </project>

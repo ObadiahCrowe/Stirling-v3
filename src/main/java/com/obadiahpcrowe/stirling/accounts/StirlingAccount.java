@@ -5,7 +5,11 @@ import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.messaging.contacts.ContactableAccount;
 import lombok.Getter;
+import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,11 +24,16 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Entity("accounts")
 public class StirlingAccount {
+
+    @Id
+    private ObjectId objectId;
 
     private String displayName;
     private String accountName;
     private String emailAddress;
+
     private UUID uuid;
     private StirlingLocale locale;
     private AccountType accountType;
@@ -32,6 +41,7 @@ public class StirlingAccount {
     private String password;
     private String salt;
 
+    @Reference
     private List<StirlingClass> stirlingClasses;
 
     private File avatarImage;

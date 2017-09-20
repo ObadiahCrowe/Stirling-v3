@@ -22,26 +22,35 @@ public class StirlingAnnouncement {
 
     private String title;
     private String shortDesc;
-    private String sender;
+    private String poster;
     private AnnouncementType type;
+    private AttachableResource bannerImage;
     private String content;
     private UUID uuid;
     private String postTime;
     private String postDate;
+    private String editTime;
+    private String editDate;
     private List<AttachableResource> resources;
     private List<AccountType> targetAudience;
+    private List<String> tags;
 
     public StirlingAnnouncement(StirlingAccount account, String title, String shortDesc, AnnouncementType announcementType,
-                                String content, List<AttachableResource> resources, List<AccountType> targetAudience) {
+                                AttachableResource bannerImage, String content, List<AttachableResource> resources,
+                                List<AccountType> targetAudience, List<String> tags) {
         this.title = title;
         this.shortDesc = shortDesc;
-        this.sender = account.getDisplayName();
+        this.poster = account.getAccountName();
         this.type = announcementType;
+        this.bannerImage = bannerImage;
         this.content = content;
         this.uuid = UUID.randomUUID();
         this.postTime = UtilTime.getInstance().getFriendlyTime();
         this.postDate = UtilTime.getInstance().getFriendlyDate();
+        this.editTime = UtilTime.getInstance().getFriendlyTime();
+        this.editDate = UtilTime.getInstance().getFriendlyDate();
         this.resources = resources;
         this.targetAudience = targetAudience;
+        this.tags = tags;
     }
 }

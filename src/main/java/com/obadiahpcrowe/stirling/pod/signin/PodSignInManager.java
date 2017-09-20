@@ -2,7 +2,7 @@ package com.obadiahpcrowe.stirling.pod.signin;
 
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.pod.signin.enums.PodLine;
 import com.obadiahpcrowe.stirling.pod.signin.enums.PodReason;
@@ -23,16 +23,16 @@ import java.util.HashMap;
 public class PodSignInManager {
 
     private static PodSignInManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService = MorphiaService.getInstance();
     private Gson gson = new Gson();
 
     public String setStudentId(StirlingAccount account, int studentId) {
         PodUser podUser = new PodUser(account.getUuid(), studentId, false);
         if (!studentIdExists(account)) {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB())
+            morphiaService.makeCall(new StirlingCall(morphiaService.getPodDB())
               .insert(podUser));
         } else {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).replace(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getPodDB()).replace(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, podUser));
         }
@@ -42,7 +42,7 @@ public class PodSignInManager {
 
     public boolean studentIdExists(StirlingAccount account) {
         try {
-            PodUser user = (PodUser) databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB())
+            PodUser user = (PodUser) morphiaService.makeCall(new StirlingCall(morphiaService.getPodDB())
               .get(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, PodUser.class));
@@ -58,7 +58,7 @@ public class PodSignInManager {
 
     public PodUser getPodUser(StirlingAccount account) {
         try {
-            return  (PodUser) databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).get(new HashMap<String, Object>() {{
+            return  (PodUser) morphiaService.makeCall(new StirlingCall(morphiaService.getPodDB()).get(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, PodUser.class));
         } catch (NullPointerException e) {
@@ -71,7 +71,7 @@ public class PodSignInManager {
             PodUser podUser = getPodUser(account).setSignInOptions(line, assigningTeacher, reason);
             podUser.setSignedIn(true);
 
-            databaseManager.makeCall(new StirlingCall(databaseManager.getPodDB()).replace(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getPodDB()).replace(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, podUser));
 

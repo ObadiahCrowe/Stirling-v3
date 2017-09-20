@@ -4,7 +4,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.feedback.enums.FeedbackType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
@@ -26,20 +26,20 @@ import java.util.UUID;
 public class FeedbackManager {
 
     private static FeedbackManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService = MorphiaService.getInstance();
     private Gson gson = new Gson();
 
     public String createFeedback(StirlingAccount account, String title, String content,
                                  List<AttachableResource> resources, FeedbackType type) {
         StirlingFeedback feedback = new StirlingFeedback(account, title, content, resources, type);
-        databaseManager.makeCall(new StirlingCall(databaseManager.getFeedbackDB()).insert(feedback));
+        morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB()).insert(feedback));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.FEEDBACK_CREATED, account.getLocale(), feedback.getUuid().toString()));
     }
 
     public String deleteFeedback(StirlingAccount account, UUID uuid) {
         if (account.getAccountType().equals(AccountType.DEVELOPER)) {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getFeedbackDB()).remove(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB()).remove(new HashMap<String, Object>() {{
                 put("uuid", uuid.toString());
             }}));
             return gson.toJson(new StirlingMsg(MsgTemplate.FEEDBACK_DELETED, account.getLocale(), uuid.toString()));
@@ -50,7 +50,7 @@ public class FeedbackManager {
     public List<StirlingFeedback> getAllFeedback(StirlingAccount account) {
         if (account.getAccountType().equals(AccountType.DEVELOPER)) {
             Type type = new TypeToken<List<StirlingFeedback>>(){}.getType();
-            String raw = (String) databaseManager.makeCall(new StirlingCall(databaseManager.getFeedbackDB()).get(
+            String raw = (String) morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB()).get(
               new HashMap<>(), StirlingFeedback.class));
 
             return gson.fromJson(raw, type);
@@ -61,7 +61,7 @@ public class FeedbackManager {
     public StirlingFeedback getFeedback(StirlingAccount account, UUID uuid) {
         if (account.getAccountType().equals(AccountType.DEVELOPER)) {
             try {
-                StirlingFeedback feedback = (StirlingFeedback) databaseManager.makeCall(new StirlingCall(databaseManager.getFeedbackDB())
+                StirlingFeedback feedback = (StirlingFeedback) morphiaService.makeCall(new StirlingCall(morphiaService.getFeedbackDB())
                   .get(new HashMap<String, Object>() {{
                     put("uuid", uuid.toString());
                 }}, StirlingFeedback.class));

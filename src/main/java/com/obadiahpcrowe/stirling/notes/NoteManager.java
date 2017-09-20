@@ -3,7 +3,7 @@ package com.obadiahpcrowe.stirling.notes;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.notes.obj.StirlingNote;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
@@ -26,11 +26,11 @@ import java.util.UUID;
 public class NoteManager {
 
     private static NoteManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService = MorphiaService.getInstance();
     private Gson gson = new Gson();
 
     public String createNote(StirlingAccount account, String title, String content, List<AttachableResource> resources) {
-        databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).insert(
+        morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB()).insert(
           new StirlingNote(account, title, content, resources)));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_CREATED, account.getLocale(), title));
@@ -38,7 +38,7 @@ public class NoteManager {
 
     public String deleteNote(StirlingAccount account, UUID uuid) {
         String title = getNote(account, uuid).getTitle();
-        databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).remove(new HashMap<String, Object>() {{
+        morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB()).remove(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
             put("uuid", uuid.toString());
         }}));
@@ -46,14 +46,14 @@ public class NoteManager {
     }
 
     public StirlingNote getNote(StirlingAccount account, UUID uuid) {
-        return (StirlingNote) databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).get(new HashMap<String, Object>() {{
+        return (StirlingNote) morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB()).get(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
             put("uuid", uuid.toString());
         }}, StirlingNote.class));
     }
 
     public List<StirlingNote> getNotes(StirlingAccount account) {
-        String json = (String) databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB())
+        String json = (String) morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB())
           .get(new HashMap<>(), StirlingNote.class));
 
         Type type = new TypeToken<List<StirlingNote>>(){}.getType();
@@ -68,7 +68,7 @@ public class NoteManager {
         StirlingNote note = getNote(account, uuid);
         note.getResources().addAll(resources);
 
-        databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
+        morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
             put("uuid", uuid.toString());
         }}, note));
@@ -80,7 +80,7 @@ public class NoteManager {
         StirlingNote note = getNote(account, uuid);
         note.getResources().removeAll(resources);
 
-        databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
+        morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
             put("uuid", uuid.toString());
         }}, note));
@@ -92,7 +92,7 @@ public class NoteManager {
         StirlingNote note = getNote(account, uuid);
         note.setTitle(title);
 
-        databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
+        morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
             put("uuid", uuid.toString());
         }}, note));
@@ -104,7 +104,7 @@ public class NoteManager {
         StirlingNote note = getNote(account, uuid);
         note.setContent(content);
 
-        databaseManager.makeCall(new StirlingCall(databaseManager.getNotesDB()).replace(new HashMap<String, Object>() {{
+        morphiaService.makeCall(new StirlingCall(morphiaService.getNotesDB()).replace(new HashMap<String, Object>() {{
             put("owner", account.getAccountName());
             put("uuid", uuid.toString());
         }}, note));

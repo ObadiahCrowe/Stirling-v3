@@ -23,7 +23,8 @@ public enum AnnouncementType {
     POD("POD", AccountType.SERVICES),
     SUB_SCHOOL("Sub-School", AccountType.SUB_SCHOOL_LEADER),
     YEAR_LEVEL("Year Level", AccountType.YEAR_LEVEL_LEADER),
-    PRINCIPAL("Principal Notice", AccountType.DEPUTY_PRINCIPAL, AccountType.PRINCIPAL);
+    PRINCIPAL("Principal Notice", AccountType.DEPUTY_PRINCIPAL, AccountType.PRINCIPAL),
+    BLOG("Blog", AccountType.SERVICES);
 
     private String friendlyName;
     private List<AccountType> accountTypes;

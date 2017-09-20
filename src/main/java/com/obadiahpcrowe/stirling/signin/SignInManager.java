@@ -2,7 +2,8 @@ package com.obadiahpcrowe.stirling.signin;
 
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
+import com.obadiahpcrowe.stirling.database.dao.interfaces.SignInDAO;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.events.types.SchoolSignInEvent;
@@ -25,9 +26,13 @@ import java.util.HashMap;
  */
 public class SignInManager {
 
-    private static SignInManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService;
+    private SignInDAO signInDAO;
     private Gson gson = new Gson();
+
+    public SignInManager() {
+        //
+    }
 
     public String signIn(StirlingAccount account, SignInReason reason, String extraInfo) {
         PresentUser user = new PresentUser(account.getUuid()).signIn(new HashMap<SignInReason, String>() {{
@@ -37,13 +42,13 @@ public class SignInManager {
           reason.getFriendlyName() + ": " + extraInfo);
 
         if (getPresentUser(account) == null) {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).insert(user));
+            morphiaService.makeCall(new StirlingCall(morphiaService.getSignInDB()).insert(user));
 
             EventManager.getInstance().fireEvent(new SchoolSignInEvent(msg, account.getUuid(), reason, extraInfo));
 
             return gson.toJson(msg);
         } else {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).replace(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getSignInDB()).replace(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, user));
 
@@ -62,7 +67,7 @@ public class SignInManager {
             }});
             presentUser.setTimeSignedOut(UtilTime.getInstance().getFriendlyTime());
 
-            databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).replace(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getSignInDB()).replace(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, presentUser));
 
@@ -78,7 +83,7 @@ public class SignInManager {
 
     public PresentUser getPresentUser(StirlingAccount account) {
         try {
-            return (PresentUser) databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB()).get(
+            return (PresentUser) morphiaService.makeCall(new StirlingCall(morphiaService.getSignInDB()).get(
               new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, PresentUser.class));
@@ -89,7 +94,7 @@ public class SignInManager {
 
     public boolean isSignedIn(StirlingAccount account) {
         try {
-            PresentUser presentUser = (PresentUser) databaseManager.makeCall(new StirlingCall(databaseManager.getSignInDB())
+            PresentUser presentUser = (PresentUser) morphiaService.makeCall(new StirlingCall(morphiaService.getSignInDB())
               .get(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, PresentUser.class));
@@ -106,11 +111,5 @@ public class SignInManager {
         } catch (NullPointerException e) {
             return false;
         }
-    }
-
-    public static SignInManager getInstance() {
-        if (instance == null)
-            instance = new SignInManager();
-        return instance;
     }
 }

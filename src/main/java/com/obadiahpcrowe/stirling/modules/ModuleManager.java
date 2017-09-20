@@ -1,7 +1,7 @@
 package com.obadiahpcrowe.stirling.modules;
 
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.obj.StirlingDatabase;
 import com.obadiahpcrowe.stirling.modules.interfaces.StirlingModule;
 import com.obadiahpcrowe.stirling.util.UtilFile;
@@ -77,7 +77,7 @@ public class ModuleManager {
 
     public void registerModuleDBs() {
         modules.forEach(module -> module.getDatabases().forEach((key, value) ->
-          DatabaseManager.getInstance().getModuleDBs().put(module.getName(), new HashMap<String, StirlingDatabase>() {{
+          MorphiaService.getInstance().getModuleDBs().put(module.getName(), new HashMap<String, StirlingDatabase>() {{
             put(key, value);
         }})));
     }

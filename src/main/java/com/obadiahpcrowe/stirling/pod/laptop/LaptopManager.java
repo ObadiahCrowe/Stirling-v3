@@ -2,7 +2,7 @@ package com.obadiahpcrowe.stirling.pod.laptop;
 
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.database.DatabaseManager;
+import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
 import com.obadiahpcrowe.stirling.pod.laptop.obj.LaptopUser;
 import com.obadiahpcrowe.stirling.pod.laptop.scrapers.ReimageScraper;
@@ -22,13 +22,13 @@ import java.util.HashMap;
 public class LaptopManager {
 
     private static LaptopManager instance;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+    private MorphiaService morphiaService = MorphiaService.getInstance();
     private Gson gson = new Gson();
 
     public String setLaptop(StirlingAccount account, String name) {
         boolean userExists = true;
         try {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB()).get(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getLaptopDB()).get(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, LaptopUser.class));
         } catch (NullPointerException e) {
@@ -40,11 +40,11 @@ public class LaptopManager {
         }
 
         if (userExists) {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB()).replaceField(new HashMap<String, Object>() {{
+            morphiaService.makeCall(new StirlingCall(morphiaService.getLaptopDB()).replaceField(new HashMap<String, Object>() {{
                 put("uuid", account.getUuid().toString());
             }}, name, "laptopName"));
         } else {
-            databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB()).insert(new LaptopUser(account.getUuid(), name)));
+            morphiaService.makeCall(new StirlingCall(morphiaService.getLaptopDB()).insert(new LaptopUser(account.getUuid(), name)));
         }
 
         return gson.toJson(new StirlingMsg(MsgTemplate.LAPTOP_NAME_SET, account.getLocale(), name));
@@ -53,7 +53,7 @@ public class LaptopManager {
     public String getLaptopStatus(StirlingAccount account) {
         LaptopUser user = null;
         try {
-            user = (LaptopUser) databaseManager.makeCall(new StirlingCall(databaseManager.getLaptopDB())
+            user = (LaptopUser) morphiaService.makeCall(new StirlingCall(morphiaService.getLaptopDB())
               .get(new HashMap<String, Object>() {{
                   put("uuid", account.getUuid().toString());
               }}, LaptopUser.class));

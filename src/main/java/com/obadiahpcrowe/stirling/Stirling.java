@@ -1,40 +1,21 @@
 package com.obadiahpcrowe.stirling;
 
-import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.api.AccountAPI;
 import com.obadiahpcrowe.stirling.api.InfoAPI;
 import com.obadiahpcrowe.stirling.api.ModuleAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.blogs.BlogManager;
-import com.obadiahpcrowe.stirling.blogs.obj.StirlingBlog;
-import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
-import com.obadiahpcrowe.stirling.localisation.translation.TranslateManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
-import com.obadiahpcrowe.stirling.pod.signin.PodSignInManager;
-import com.obadiahpcrowe.stirling.pod.signin.enums.PodLine;
-import com.obadiahpcrowe.stirling.pod.signin.enums.PodReason;
-import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.sace.SaceManager;
-import com.obadiahpcrowe.stirling.signin.SignInManager;
-import com.obadiahpcrowe.stirling.signin.enums.SignInReason;
-import com.obadiahpcrowe.stirling.signin.enums.SignOutReason;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -85,11 +66,8 @@ public class Stirling {
         utilLog.log("Initialising SACE resources..");
         SaceManager.getInstance().init();
 
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        System.out.println(BlogManager.getInstance().createBlog(account, "Test", "Testing",
-          new AttachableResource(account.getDisplayName(), "banner.jpg"),
-          Arrays.asList(AccountType.DEVELOPER)));
-        //System.out.println(BlogManager.getInstance().createBlogPost(account, blog.getUuid(), "Hello", "test", "fuck", Arrays.asList()));
+        String output = new AccountManager().createAccount("ObadiahCrowe", "obadiahpcrowe@gmail.com", "@nMV6dHRQmKac");
+        System.out.println(output);
 
         utilLog.log("Starting REST API service..");
         //SpringApplication.run(Stirling.class, args);
