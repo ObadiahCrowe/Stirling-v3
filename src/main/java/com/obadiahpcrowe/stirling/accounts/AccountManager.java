@@ -80,6 +80,10 @@ public class AccountManager {
         }
     }
 
+    public void updateField(StirlingAccount account, String field, Object value) {
+        accountDAO.updateField(account, field, value);
+    }
+
     public boolean accountExists(String accountName) {
         if (getAccount(accountName) == null) {
             return false;

@@ -25,4 +25,6 @@ public interface AccountDAO extends DAO<StirlingAccount, ObjectId> {
     List<StirlingAccount> getByAccountType(AccountType accountType);
 
     List<StirlingAccount> getByLocale(StirlingLocale locale);
+
+    void updateField(StirlingAccount account, String field, Object value);
 }

@@ -6,6 +6,9 @@ import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilTime;
 import lombok.Getter;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +21,11 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Entity("announcements")
 public class StirlingAnnouncement {
+
+    @Id
+    private ObjectId id;
 
     private String title;
     private String shortDesc;

@@ -4,6 +4,9 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +19,11 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Entity("notes")
 public class StirlingNote {
+
+    @Id
+    private ObjectId id;
 
     private String owner;
     private UUID uuid;

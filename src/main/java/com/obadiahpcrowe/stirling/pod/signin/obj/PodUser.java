@@ -4,6 +4,9 @@ import com.obadiahpcrowe.stirling.pod.signin.enums.PodLine;
 import com.obadiahpcrowe.stirling.pod.signin.enums.PodReason;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.UUID;
 
@@ -15,7 +18,11 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Entity("pod")
 public class PodUser {
+
+    @Id
+    private ObjectId id;
 
     private UUID uuid;
     private int studentId;

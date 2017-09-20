@@ -2,6 +2,9 @@ package com.obadiahpcrowe.stirling.sace.obj;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +17,11 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Entity("sace")
 public class SaceUser {
+
+    @Id
+    private ObjectId id;
 
     private UUID uuid;
     private String saceId;

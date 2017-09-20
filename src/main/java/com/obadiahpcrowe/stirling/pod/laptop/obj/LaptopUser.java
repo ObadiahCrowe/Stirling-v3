@@ -1,6 +1,9 @@
 package com.obadiahpcrowe.stirling.pod.laptop.obj;
 
 import lombok.Getter;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.UUID;
 
@@ -12,7 +15,11 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Entity("laptop")
 public class LaptopUser {
+
+    @Id
+    private ObjectId id;
 
     private UUID uuid;
     private String laptopName;

@@ -9,6 +9,10 @@ import com.obadiahpcrowe.stirling.classes.obj.StirlingSection;
 import com.obadiahpcrowe.stirling.messaging.MessageGroup;
 import com.obadiahpcrowe.stirling.messaging.contacts.ContactableAccount;
 import lombok.Getter;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +26,11 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Entity("classes")
 public class StirlingClass {
+
+    @Id
+    private ObjectId objectId;
 
     private List<ContactableAccount> teachers;
     private UUID uuid;

@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 import java.util.UUID;
@@ -55,5 +56,13 @@ public class AccountDAOImpl extends BasicDAO<StirlingAccount, ObjectId> implemen
           .field("locale").equal(locale);
 
         return query.asList();
+    }
+
+    @Override
+    public void updateField(StirlingAccount account, String field, Object value) {
+        Query<StirlingAccount> query = createQuery().field("uuid").equal(account.getUuid());
+        UpdateOperations<StirlingAccount> updateOps = createUpdateOperations().set(field, value);
+
+        update(query, updateOps);
     }
 }

@@ -5,6 +5,9 @@ import com.obadiahpcrowe.stirling.signin.enums.SignOutReason;
 import com.obadiahpcrowe.stirling.util.UtilTime;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.Map;
 import java.util.UUID;
@@ -18,7 +21,11 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@Entity("signin")
 public class PresentUser {
+
+    @Id
+    private ObjectId id;
 
     private UUID uuid;
     private boolean present;
