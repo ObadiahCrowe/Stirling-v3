@@ -31,6 +31,8 @@ public class StirlingNote {
     private @Setter String content;
     private List<AttachableResource> resources;
 
+    public StirlingNote() {}
+
     public StirlingNote(StirlingAccount account, String title, String content, List<AttachableResource> resources) {
         this.owner = account.getAccountName();
         this.uuid = UUID.randomUUID();

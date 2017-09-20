@@ -32,6 +32,8 @@ public class StirlingFeedback {
     private List<AttachableResource> resources;
     private FeedbackType type;
 
+    public StirlingFeedback() {}
+
     public StirlingFeedback(StirlingAccount account, String title, String content,
                             List<AttachableResource> resources, FeedbackType type) {
         this.poster = account.getAccountName();

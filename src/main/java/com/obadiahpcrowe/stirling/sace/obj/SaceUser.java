@@ -29,6 +29,8 @@ public class SaceUser {
     private @Setter List<SaceResult> results;
     private @Setter List<SaceCompletion> completions;
 
+    public SaceUser() {}
+
     public SaceUser(UUID uuid, String saceId, String sacePassword) {
         this.uuid = uuid;
         this.saceId = saceId;

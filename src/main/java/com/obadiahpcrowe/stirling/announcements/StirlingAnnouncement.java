@@ -42,6 +42,8 @@ public class StirlingAnnouncement {
     private List<AccountType> targetAudience;
     private List<String> tags;
 
+    public StirlingAnnouncement() {}
+
     public StirlingAnnouncement(StirlingAccount account, String title, String shortDesc, AnnouncementType announcementType,
                                 AttachableResource bannerImage, String content, List<AttachableResource> resources,
                                 List<AccountType> targetAudience, List<String> tags) {

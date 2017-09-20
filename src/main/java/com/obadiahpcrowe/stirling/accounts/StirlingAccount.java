@@ -47,6 +47,8 @@ public class StirlingAccount {
     private File avatarImage;
     private File bannerImage;
 
+    public StirlingAccount() {}
+
     public StirlingAccount(String accountName, String emailAddress, String password) {
         String salt = BCrypt.gensalt();
 

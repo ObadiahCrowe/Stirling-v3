@@ -34,6 +34,8 @@ public class PresentUser {
     private String timeSignedIn;
     private String timeSignedOut;
 
+    public PresentUser() {}
+
     public PresentUser(UUID uuid) {
         this.uuid = uuid;
     }

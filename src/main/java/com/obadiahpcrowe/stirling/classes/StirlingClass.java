@@ -46,6 +46,8 @@ public class StirlingClass {
     private List<ContactableAccount> classMates;
     private MessageGroup messageGroup;
 
+    public StirlingClass() {}
+
     public StirlingClass(List<ContactableAccount> teachers, String room, String name, String desc, StirlingOutline outline,
                          List<StirlingSection> sections, List<StirlingPostable> postables, List<StirlingCatchup> catchupModules,
                          List<LessonCalEntry> lessons, List<StirlingAssessment> assessments, List<ContactableAccount> classMates,

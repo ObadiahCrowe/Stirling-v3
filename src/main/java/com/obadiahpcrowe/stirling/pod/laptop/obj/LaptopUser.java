@@ -24,6 +24,8 @@ public class LaptopUser {
     private UUID uuid;
     private String laptopName;
 
+    public LaptopUser() {}
+
     public LaptopUser(UUID uuid, String laptopName) {
         this.uuid = uuid;
         this.laptopName = laptopName;

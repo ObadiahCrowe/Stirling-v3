@@ -31,6 +31,8 @@ public class PodUser {
     private PodLine line;
     private PodReason reason;
 
+    public PodUser() {}
+
     public PodUser(UUID uuid, int studentId, boolean signedIn) {
         this.uuid = uuid;
         this.studentId = studentId;

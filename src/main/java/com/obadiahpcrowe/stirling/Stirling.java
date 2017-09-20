@@ -8,13 +8,13 @@ import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
-import com.obadiahpcrowe.stirling.sace.SaceManager;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -64,7 +64,7 @@ public class Stirling {
         System.out.println(output);
 
         utilLog.log("Starting REST API service..");
-        //SpringApplication.run(Stirling.class, args);
+        SpringApplication.run(Stirling.class, args);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
