@@ -3,7 +3,8 @@ package com.obadiahpcrowe.stirling.sace;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
-import com.obadiahpcrowe.stirling.database.obj.StirlingCall;
+import com.obadiahpcrowe.stirling.database.dao.SaceDAOImpl;
+import com.obadiahpcrowe.stirling.database.dao.interfaces.SaceDAO;
 import com.obadiahpcrowe.stirling.sace.obj.SaceCompletion;
 import com.obadiahpcrowe.stirling.sace.obj.SaceResult;
 import com.obadiahpcrowe.stirling.sace.obj.SaceUser;
@@ -12,7 +13,6 @@ import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,22 +24,22 @@ import java.util.List;
  */
 public class SaceManager {
 
-    private static SaceManager instance;
-    private MorphiaService morphiaService = MorphiaService.getInstance();
+    private MorphiaService morphiaService;
+    private SaceDAO saceDAO;
     private Gson gson = new Gson();
 
-    public void init() {
-        // TODO: 13/9/17 Get list of all sace subjects if not exists, insert into new mongodb, then run errands to download all shit
+    public SaceManager() {
+        this.morphiaService = new MorphiaService();
+        this.saceDAO = new SaceDAOImpl(SaceUser.class, morphiaService.getDatastore());
     }
 
     public String setSaceCreds(StirlingAccount account, String saceId, String sacePassword) {
         SaceUser user = new SaceUser(account.getUuid(), saceId, sacePassword);
         if (isSaceUserPresent(account)) {
-            morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).replace(new HashMap<String, Object>() {{
-                put("uuid", account.getUuid().toString());
-            }}, user));
+            saceDAO.delete(getSaceUser(account));
+            saceDAO.save(user);
         } else {
-            morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).insert(user));
+            saceDAO.save(user);
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.SACE_CREDS_SET, account.getLocale(), account.getDisplayName()));
     }
@@ -75,29 +75,14 @@ public class SaceManager {
     }
 
     private boolean isSaceUserPresent(StirlingAccount account) {
-        try {
-            SaceUser user = (SaceUser) morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).get(
-              new HashMap<String, Object>() {{
-                put("uuid", account.getUuid().toString());
-            }}, SaceUser.class));
-
-            if (user != null) {
-                return true;
-            }
-        } catch (NullPointerException ignored) { }
-        return false;
+        if (getSaceUser(account) == null) {
+            return false;
+        }
+        return true;
     }
 
     public SaceUser getSaceUser(StirlingAccount account) {
-        try {
-            SaceUser user = (SaceUser) morphiaService.makeCall(new StirlingCall(morphiaService.getSaceDB()).get(
-              new HashMap<String, Object>() {{
-                put("uuid", account.getUuid().toString());
-            }}, SaceUser.class));
-
-            return user;
-        } catch (NullPointerException ignored) { }
-        return null;
+        return saceDAO.getByUuid(account.getUuid());
     }
 
     public String getSaceId(StirlingAccount account) {
@@ -106,11 +91,5 @@ public class SaceManager {
             return user.getSaceId();
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.SACE_CREDS_NOT_FOUND, account.getLocale()));
-    }
-
-    public static SaceManager getInstance() {
-        if (instance == null)
-            instance = new SaceManager();
-        return instance;
     }
 }

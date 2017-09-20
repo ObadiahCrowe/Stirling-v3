@@ -57,14 +57,8 @@ public class Stirling {
         utilLog.log("Register module handoffs..");
         HandoffManager.getInstance().init();
 
-        utilLog.log("Registering module databases..");
-        ModuleManager.getInstance().registerModuleDBs();
-
         utilLog.log("Registering module API calls..");
         ModuleManager.getInstance().registerAPICalls();
-
-        utilLog.log("Initialising SACE resources..");
-        SaceManager.getInstance().init();
 
         String output = new AccountManager().createAccount("ObadiahCrowe", "obadiahpcrowe@gmail.com", "@nMV6dHRQmKac");
         System.out.println(output);

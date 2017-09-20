@@ -51,7 +51,7 @@ public class Homework implements StirlingPostable, StirlingWork {
 
     @Override
     public String getPoster() {
-        return (String) AccountManager.getInstance().getField(AccountManager.getInstance().getAccount(poster), "displayName");
+        return new AccountManager().getAccount(poster).getDisplayName();
     }
 
     @Override

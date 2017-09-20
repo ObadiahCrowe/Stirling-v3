@@ -46,7 +46,8 @@ public class ClassNote implements StirlingPostable {
 
     @Override
     public String getPoster() {
-        return (String) AccountManager.getInstance().getField(AccountManager.getInstance().getAccount(poster), "displayName");
+        AccountManager accountManager = new AccountManager();
+        return accountManager.getAccount(poster).getDisplayName();
     }
 
     @Override

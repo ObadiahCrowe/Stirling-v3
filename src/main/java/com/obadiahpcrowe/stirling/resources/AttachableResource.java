@@ -26,6 +26,6 @@ public class AttachableResource {
 
     public File getFile() {
         return new File(CloudManager.getInstance().getCloudFolder(
-          AccountManager.getInstance().getAccount(owner).getUuid()) + File.separator + filePath);
+          new AccountManager().getAccount(owner).getUuid()) + File.separator + filePath);
     }
 }
