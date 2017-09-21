@@ -100,6 +100,7 @@ public class CalendarManager {
 
             calendarDAO.delete(getCalendar(owner));
             calendarDAO.save(calendar);
+            return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_TITLE_CHANGED, StirlingLocale.ENGLISH, title));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, owner.toString()));
     }
@@ -111,6 +112,7 @@ public class CalendarManager {
 
             calendarDAO.delete(getCalendar(owner));
             calendarDAO.save(calendar);
+            return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DESC_CHANGED, StirlingLocale.ENGLISH, desc));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, owner.toString()));
     }

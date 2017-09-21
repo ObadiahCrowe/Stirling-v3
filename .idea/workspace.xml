@@ -32,8 +32,8 @@
       <file leaf-file-name="CalendarManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/calendar/CalendarManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="835">
-              <caret line="114" column="123" lean-forward="false" selection-start-line="114" selection-start-column="123" selection-end-line="114" selection-end-column="123" />
+            <state relative-caret-position="619">
+              <caret line="102" column="115" lean-forward="false" selection-start-line="102" selection-start-column="115" selection-end-line="102" selection-end-column="115" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2135#2136#0" expanded="true" />
@@ -54,16 +54,6 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MsgTemplate.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="29" column="81" lean-forward="false" selection-start-line="29" selection-start-column="81" selection-end-line="29" selection-end-column="81" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -594,14 +584,7 @@
       <workItem from="1505874404240" duration="15918000" />
       <workItem from="1505894665652" duration="5893000" />
       <workItem from="1505962479545" duration="710000" />
-      <workItem from="1505963291183" duration="2593000" />
-    </task>
-    <task id="LOCAL-00011" summary="Redis stuff">
-      <created>1504777263803</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1504777263803</updated>
+      <workItem from="1505963291183" duration="2718000" />
     </task>
     <task id="LOCAL-00012" summary="Announcement things">
       <created>1504842908039</created>
@@ -939,11 +922,18 @@
       <option name="project" value="LOCAL" />
       <updated>1505964839288</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="More stuff">
+      <created>1505966002264</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1505966002264</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131430000" />
+    <option name="totallyTimeSpent" value="131555000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="42" y="22" width="1638" height="1028" extended-state="6" />
@@ -987,7 +977,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="POD scrapers" />
     <MESSAGE value="Sign in / out events" />
     <MESSAGE value="Adding translation" />
     <MESSAGE value="Finished translation stuff" />
@@ -1012,7 +1001,8 @@
     <MESSAGE value="Calendar and class stuff" />
     <MESSAGE value="More calendar stuff" />
     <MESSAGE value="Calendar stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="Calendar stuff" />
+    <MESSAGE value="More stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="More stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1385,8 +1375,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
-          <caret line="29" column="81" lean-forward="false" selection-start-line="29" selection-start-column="81" selection-end-line="29" selection-end-column="81" />
+        <state relative-caret-position="339">
+          <caret line="26" column="105" lean-forward="false" selection-start-line="26" selection-start-column="105" selection-end-line="26" selection-end-column="105" />
           <folding />
         </state>
       </provider>
@@ -1403,8 +1393,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/calendar/CalendarManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="835">
-          <caret line="114" column="123" lean-forward="false" selection-start-line="114" selection-start-column="123" selection-end-line="114" selection-end-column="123" />
+        <state relative-caret-position="619">
+          <caret line="102" column="115" lean-forward="false" selection-start-line="102" selection-start-column="115" selection-end-line="102" selection-end-column="115" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2135#2136#0" expanded="true" />
