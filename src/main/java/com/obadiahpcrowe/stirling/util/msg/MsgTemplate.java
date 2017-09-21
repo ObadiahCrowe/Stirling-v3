@@ -23,11 +23,11 @@ public enum MsgTemplate {
     ANNOUNCEMENT_EDITED(MsgResponse.SUCCESS, "The announcement, {0}, has been edited!", 1),
 
     CALENDAR_ALREADY_EXISTS(MsgResponse.USER_ERROR, "Your calendar already exists!", 0),
+    CALENDAR_ENTRY_ADDED(MsgResponse.SUCCESS, "A calendar entry has been added to: {0}!", 1),
+    CALENDAR_ENTRY_DELETED(MsgResponse.SUCCESS, "A calendar entry has been removed from: {0}!", 1),
     CALENDAR_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The calendar, {0}, does not exist!", 1),
     CALENDAR_DELETED(MsgResponse.SUCCESS, "{0}'s calendar has been deleted!", 1),
     CALENDAR_CREATED(MsgResponse.SUCCESS, "{0}'s calendar has been created!", 1),
-    CALENDAR_EVENT_ADDED(MsgResponse.SUCCESS, "The event, {0}, has been added!", 1),
-    CALENDAR_EVENT_DELETED(MsgResponse.SUCCESS, "The event, {0}, has been deleted!", 1),
     CALENDAR_EVENT_EDITED(MsgResponse.SUCCESS, "The event, {0}, has been edited!", 1),
 
     CLOUD_STORAGE_FULL(MsgResponse.USER_ERROR, "Your cloud storage is full!", 0),

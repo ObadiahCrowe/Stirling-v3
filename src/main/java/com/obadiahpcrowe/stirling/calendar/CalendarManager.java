@@ -60,23 +60,58 @@ public class CalendarManager {
         return true;
     }
 
-    public String addCalendarEvent() {
-        return "";
+    public String addCalendarEvent(UUID owner, String title, String desc, String startDate, String endDate,
+                                   String startTime, String endTime, String location) {
+        if (calendarExists(owner)) {
+            StirlingCalendar calendar = getCalendar(owner);
+            calendar.getCalendarEntries().add(new CalendarEntry(title, desc, startDate, endDate, startTime, endTime, location));
+
+            calendarDAO.delete(getCalendar(owner));
+            calendarDAO.save(calendar);
+            return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_ENTRY_ADDED, StirlingLocale.ENGLISH, owner.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, owner.toString()));
     }
 
-    public String removeCalendarEvent() {
-        return "";
+    public String removeCalendarEvent(UUID owner, UUID eventUuid) {
+        if (calendarExists(owner)) {
+            StirlingCalendar calendar = getCalendar(owner);
+            calendar.getCalendarEntries().forEach(entry -> {
+                if (entry.getUuid().equals(eventUuid)) {
+                    calendar.getCalendarEntries().remove(entry);
+                }
+            });
+
+            calendarDAO.delete(getCalendar(owner));
+            calendarDAO.save(calendar);
+            return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_ENTRY_DELETED, StirlingLocale.ENGLISH, owner.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, owner.toString()));
     }
 
     public String editCalendarEvent() {
         return "";
     }
 
-    public String setTitle() {
-        return "";
+    public String setTitle(UUID owner, String title) {
+        if (calendarExists(owner)) {
+            StirlingCalendar calendar = getCalendar(owner);
+            calendar.setTitle(title);
+
+            calendarDAO.delete(getCalendar(owner));
+            calendarDAO.save(calendar);
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, owner.toString()));
     }
 
-    public String setDesc() {
-        return "";
+    public String setDesc(UUID owner, String desc) {
+        if (calendarExists(owner)) {
+            StirlingCalendar calendar = getCalendar(owner);
+            calendar.setDesc(desc);
+
+            calendarDAO.delete(getCalendar(owner));
+            calendarDAO.save(calendar);
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, owner.toString()));
     }
 }
