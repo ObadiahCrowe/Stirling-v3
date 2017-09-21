@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.util;
 
 import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.schools.enums.RegisteredSchool;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 
 import java.io.BufferedReader;
@@ -38,7 +39,7 @@ public class UtilConfig {
             try {
                 configFile.createNewFile();
 
-                config = new StirlingConfig(VersionType.DEVELOPMENT_BUILD, true,
+                config = new StirlingConfig(VersionType.DEVELOPMENT_BUILD, RegisteredSchool.UNREGISTERED, true,
                   true, false);
                 saveConfig();
             } catch (IOException e) {
