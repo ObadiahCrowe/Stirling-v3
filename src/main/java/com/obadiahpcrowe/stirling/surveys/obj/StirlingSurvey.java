@@ -8,9 +8,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -33,6 +31,7 @@ public class StirlingSurvey {
     private List<AccountType> targetAudiences;
 
     private List<SurveyQuestion> surveyQuestions;
+    private Map<UUID, List<SurveyQuestion>> completedResponses;
 
     public StirlingSurvey() {}
 
@@ -41,5 +40,6 @@ public class StirlingSurvey {
         this.usersCompleted = new ArrayList<>();
         this.targetAudiences = targetAudience;
         this.surveyQuestions = questions;
+        this.completedResponses = new HashMap<>();
     }
 }

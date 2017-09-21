@@ -25,6 +25,7 @@ public enum MsgTemplate {
     CALENDAR_ALREADY_EXISTS(MsgResponse.USER_ERROR, "Your calendar already exists!", 0),
     CALENDAR_TITLE_CHANGED(MsgResponse.SUCCESS, "You have changed this calendar's title to: {0}!", 1),
     CALENDAR_DESC_CHANGED(MsgResponse.SUCCESS, "You have changed this calendar's description to: {0}!", 1),
+    CALENDAR_EVENT_FIELD_EDITED(MsgResponse.SUCCESS, "You changed the {0} for {1}!", 2),
     CALENDAR_ENTRY_ADDED(MsgResponse.SUCCESS, "A calendar entry has been added to: {0}!", 1),
     CALENDAR_ENTRY_DELETED(MsgResponse.SUCCESS, "A calendar entry has been removed from: {0}!", 1),
     CALENDAR_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The calendar, {0}, does not exist!", 1),

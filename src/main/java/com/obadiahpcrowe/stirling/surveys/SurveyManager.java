@@ -35,4 +35,8 @@ public class SurveyManager {
     public String editSurvey() {
         return "";
     }
+
+    public String sendCompletedResponse() {
+        return "";
+    }
 }
