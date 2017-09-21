@@ -105,7 +105,15 @@ public enum MsgTemplate {
 
     BLOG_POST_CREATED(MsgResponse.SUCCESS, "You have created a blog post with the title: {0}, on the blog: {1}!", 2),
     BLOG_POST_DELETED(MsgResponse.SUCCESS, "You have deleted a blog post with the id: {0}, on the blog: {1}!", 2),
-    BLOG_POST_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The blog post id, {0}, does not exist!", 1);
+    BLOG_POST_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The blog post id, {0}, does not exist!", 1),
+
+    NOT_OWNER(MsgResponse.USER_ERROR, "You are not the owner of {0}! You are unable to {1}!", 2),
+
+    SURVEY_CREATED(MsgResponse.SUCCESS, "You have created a survey with the title: {0}!", 1),
+    SURVEY_DELETED(MsgResponse.SUCCESS, "You have deleted the survey, {0}!", 1),
+    SURVEY_SUBMITTED(MsgResponse.SUCCESS, "You have submitted your responses to the survey: {0}!", 1),
+    SURVEY_ALREADY_SUBMITTED(MsgResponse.USER_ERROR, "You have already submitted a response to this survey!", 0),
+    SURVEY_UPDATED(MsgResponse.SUCCESS, "The survey, {0}, has had the field, {1}, updated!", 2);
 
     private MsgResponse response;
     private String message;

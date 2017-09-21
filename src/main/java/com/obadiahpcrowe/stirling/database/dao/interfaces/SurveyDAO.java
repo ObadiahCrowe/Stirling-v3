@@ -25,4 +25,6 @@ public interface SurveyDAO extends DAO<StirlingSurvey, ObjectId> {
     List<StirlingSurvey> getByUnCompleted(StirlingAccount account);
 
     List<StirlingSurvey> getByAudience(List<AccountType> targetAudience);
+
+    void updateField(StirlingSurvey survey, String field, Object value);
 }

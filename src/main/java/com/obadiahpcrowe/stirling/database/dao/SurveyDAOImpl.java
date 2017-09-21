@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.*;
 
@@ -38,7 +39,7 @@ public class SurveyDAOImpl extends BasicDAO<StirlingSurvey, ObjectId> implements
         List<StirlingSurvey> finalSurveys = new ArrayList<>();
 
         query.forEach(survey -> {
-            if (survey.getUsersCompleted().contains(account.getAccountName())) {
+            if (survey.getCompletedResponses().containsKey(account.getUuid())) {
                 finalSurveys.add(survey);
             }
         });
@@ -52,7 +53,7 @@ public class SurveyDAOImpl extends BasicDAO<StirlingSurvey, ObjectId> implements
         List<StirlingSurvey> finalSurveys = new ArrayList<>();
 
         query.forEach(survey -> {
-            if (!survey.getUsersCompleted().contains(account.getAccountName())) {
+            if (!survey.getCompletedResponses().containsKey(account.getUuid())) {
                 finalSurveys.add(survey);
             }
         });
@@ -65,5 +66,13 @@ public class SurveyDAOImpl extends BasicDAO<StirlingSurvey, ObjectId> implements
         Query<StirlingSurvey> query = createQuery().field("targetAudiences").equal(targetAudience);
 
         return query.asList();
+    }
+
+    @Override
+    public void updateField(StirlingSurvey survey, String field, Object value) {
+        Query<StirlingSurvey> query = createQuery().field("uuid").equal(survey.getUuid());
+        UpdateOperations<StirlingSurvey> updateOps = createUpdateOperations().set(field, value);
+
+        update(query, updateOps);
     }
 }

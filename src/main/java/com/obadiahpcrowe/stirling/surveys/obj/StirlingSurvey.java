@@ -27,7 +27,8 @@ public class StirlingSurvey {
 
     private String owner;
     private UUID uuid;
-    private List<String> usersCompleted;
+    private String title;
+    private String desc;
     private List<AccountType> targetAudiences;
 
     private List<SurveyQuestion> surveyQuestions;
@@ -35,9 +36,12 @@ public class StirlingSurvey {
 
     public StirlingSurvey() {}
 
-    public StirlingSurvey(StirlingAccount account, List<AccountType> targetAudience, List<SurveyQuestion> questions) {
+    public StirlingSurvey(StirlingAccount account, String title, String desc, List<AccountType> targetAudience,
+                          List<SurveyQuestion> questions) {
         this.owner = account.getAccountName();
-        this.usersCompleted = new ArrayList<>();
+        this.uuid = UUID.randomUUID();
+        this.title = title;
+        this.desc = desc;
         this.targetAudiences = targetAudience;
         this.surveyQuestions = questions;
         this.completedResponses = new HashMap<>();
