@@ -6,7 +6,7 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.gson.Gson;
-import com.obadiahpcrowe.stirling.calendar.obj.ExamCalEntry;
+import com.obadiahpcrowe.stirling.calendar.obj.CalendarEntry;
 import com.obadiahpcrowe.stirling.sace.obj.SaceCompletion;
 import com.obadiahpcrowe.stirling.sace.obj.SaceResult;
 import com.obadiahpcrowe.stirling.sace.obj.SaceSubject;
@@ -113,7 +113,7 @@ public class SaceScraper {
         return completions;
     }
 
-    public List<ExamCalEntry> getSaceExams(SaceUser user) {
+    public List<CalendarEntry> getSaceExams(SaceUser user) {
         //https://www.sace.sa.edu.au/web/sace-operations/calendars/south-australia?p_p_id=8&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-2&p_p_col_pos=1&p_p_col_count=2&_8_struts_action=%2Fcalendar%2Fview&_8_tabs1=month&_8_month=10&_8_day=13&_8_year=2017&_8_eventType=
         return null;
     }

@@ -1,7 +1,7 @@
 package com.obadiahpcrowe.stirling.classes;
 
-import com.obadiahpcrowe.stirling.calendar.CalendarEntry;
-import com.obadiahpcrowe.stirling.calendar.StirlingCalendar;
+import com.obadiahpcrowe.stirling.calendar.obj.CalendarEntry;
+import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.interfaces.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingAssessment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingCatchup;

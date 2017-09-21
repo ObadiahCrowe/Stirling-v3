@@ -1,4 +1,4 @@
-package com.obadiahpcrowe.stirling.calendar;
+package com.obadiahpcrowe.stirling.calendar.obj;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.util.UUID;
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 21/9/17 at 12:31 PM
  * Project: Stirling
- * Package: com.obadiahpcrowe.stirling.calendar
+ * Package: com.obadiahpcrowe.stirling.calendar.obj
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter

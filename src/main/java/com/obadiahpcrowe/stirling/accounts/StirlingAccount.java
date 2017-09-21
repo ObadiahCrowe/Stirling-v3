@@ -1,7 +1,7 @@
 package com.obadiahpcrowe.stirling.accounts;
 
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
-import com.obadiahpcrowe.stirling.calendar.StirlingCalendar;
+import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import lombok.Getter;
