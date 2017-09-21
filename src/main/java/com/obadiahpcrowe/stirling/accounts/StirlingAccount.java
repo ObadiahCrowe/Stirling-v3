@@ -1,9 +1,9 @@
 package com.obadiahpcrowe.stirling.accounts;
 
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
+import com.obadiahpcrowe.stirling.calendar.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
-import com.obadiahpcrowe.stirling.messaging.contacts.ContactableAccount;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
@@ -42,6 +42,9 @@ public class StirlingAccount {
     private String salt;
 
     @Reference
+    private StirlingCalendar calendar;
+
+    @Reference
     private List<StirlingClass> stirlingClasses;
 
     private File avatarImage;
@@ -60,6 +63,7 @@ public class StirlingAccount {
         this.accountType = AccountType.STUDENT;
         this.password = BCrypt.hashpw(password, salt);
         this.salt = salt;
+        this.calendar = new StirlingCalendar(this, accountName + "'s Calendar", "", new ArrayList<>());
         this.stirlingClasses = new ArrayList<>();
         this.avatarImage = null;
         this.bannerImage = null;

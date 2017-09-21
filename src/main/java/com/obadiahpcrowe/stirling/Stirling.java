@@ -60,9 +60,6 @@ public class Stirling {
         utilLog.log("Registering module API calls..");
         ModuleManager.getInstance().registerAPICalls();
 
-        String output = new AccountManager().createAccount("ObadiahCrowe", "obadiahpcrowe@gmail.com", "@nMV6dHRQmKac");
-        System.out.println(output);
-
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
 

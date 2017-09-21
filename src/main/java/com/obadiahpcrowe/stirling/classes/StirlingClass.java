@@ -1,19 +1,18 @@
 package com.obadiahpcrowe.stirling.classes;
 
-import com.obadiahpcrowe.stirling.calendar.obj.LessonCalEntry;
+import com.obadiahpcrowe.stirling.calendar.CalendarEntry;
+import com.obadiahpcrowe.stirling.calendar.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.interfaces.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingAssessment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingCatchup;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingOutline;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingSection;
-import com.obadiahpcrowe.stirling.messaging.MessageGroup;
-import com.obadiahpcrowe.stirling.messaging.contacts.ContactableAccount;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,7 +31,7 @@ public class StirlingClass {
     @Id
     private ObjectId objectId;
 
-    private List<ContactableAccount> teachers;
+    private List<String> teachers;
     private UUID uuid;
     private String room;
     private String name;
@@ -41,17 +40,16 @@ public class StirlingClass {
     private List<StirlingSection> sections;
     private List<StirlingPostable> postables;
     private List<StirlingCatchup> catchupModules;
-    private List<LessonCalEntry> lessons;
+    private List<StirlingCalendar> lessons;
+    private Map<CalendarEntry, Map<String, Boolean>> attendance;
     private List<StirlingAssessment> assessments;
-    private List<ContactableAccount> classMates;
-    private MessageGroup messageGroup;
+    private List<String> students;
 
     public StirlingClass() {}
 
-    public StirlingClass(List<ContactableAccount> teachers, String room, String name, String desc, StirlingOutline outline,
+    public StirlingClass(List<String> teachers, String room, String name, String desc, StirlingOutline outline,
                          List<StirlingSection> sections, List<StirlingPostable> postables, List<StirlingCatchup> catchupModules,
-                         List<LessonCalEntry> lessons, List<StirlingAssessment> assessments, List<ContactableAccount> classMates,
-                         MessageGroup messageGroup) {
+                         List<StirlingCalendar> lessons, List<StirlingAssessment> assessments, List<String> students) {
         this.teachers = teachers;
         this.uuid = UUID.randomUUID();
         this.room = room;
@@ -62,8 +60,8 @@ public class StirlingClass {
         this.postables = postables;
         this.catchupModules = catchupModules;
         this.lessons = lessons;
+        this.attendance = new HashMap<>();
         this.assessments = assessments;
-        this.classMates = classMates;
-        this.messageGroup = messageGroup;
+        this.students = students;
     }
 }

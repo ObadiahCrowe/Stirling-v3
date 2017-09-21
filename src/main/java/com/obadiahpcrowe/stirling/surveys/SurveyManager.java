@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.surveys;
 
+import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.SurveyDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.SurveyDAO;
@@ -16,6 +17,7 @@ public class SurveyManager {
 
     private MorphiaService morphiaService;
     private SurveyDAO surveyDAO;
+    private Gson gson = new Gson();
 
     public SurveyManager() {
         this.morphiaService = new MorphiaService();
@@ -23,6 +25,14 @@ public class SurveyManager {
     }
 
     public String createSurvey() {
+        return "";
+    }
+
+    public String deleteSurvey() {
+        return "";
+    }
+
+    public String editSurvey() {
         return "";
     }
 }

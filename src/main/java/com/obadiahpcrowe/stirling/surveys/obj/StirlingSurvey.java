@@ -10,6 +10,7 @@ import org.mongodb.morphia.annotations.Id;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -27,6 +28,7 @@ public class StirlingSurvey {
     private ObjectId id;
 
     private String owner;
+    private UUID uuid;
     private List<String> usersCompleted;
     private List<AccountType> targetAudiences;
 
