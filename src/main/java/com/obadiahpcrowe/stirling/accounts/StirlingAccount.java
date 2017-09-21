@@ -63,7 +63,7 @@ public class StirlingAccount {
         this.accountType = AccountType.STUDENT;
         this.password = BCrypt.hashpw(password, salt);
         this.salt = salt;
-        this.calendar = new StirlingCalendar(this, accountName + "'s Calendar", "", new ArrayList<>());
+        this.calendar = null;
         this.stirlingClasses = new ArrayList<>();
         this.avatarImage = null;
         this.bannerImage = null;

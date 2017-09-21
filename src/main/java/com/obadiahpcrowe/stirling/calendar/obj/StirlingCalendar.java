@@ -1,6 +1,5 @@
 package com.obadiahpcrowe.stirling.calendar.obj;
 
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -33,8 +32,8 @@ public class StirlingCalendar {
 
     public StirlingCalendar() {}
 
-    public StirlingCalendar(StirlingAccount account, String title, String desc, List<CalendarEntry> calendarEntries) {
-        this.owner = account.getUuid();
+    public StirlingCalendar(UUID owner, String title, String desc, List<CalendarEntry> calendarEntries) {
+        this.owner = owner;
         this.uuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;

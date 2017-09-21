@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.accounts;
 
 import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.AccountDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.AccountDAO;
@@ -12,6 +13,7 @@ import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -44,6 +46,8 @@ public class AccountManager {
 
             StirlingAccount account = new StirlingAccount(accountName, emailAddress, password);
             accountDAO.save(account);
+
+            new CalendarManager().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
 
             UtilFile.getInstance().createUserFiles(account.getUuid());
 
