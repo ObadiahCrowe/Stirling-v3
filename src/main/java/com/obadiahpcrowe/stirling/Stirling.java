@@ -1,9 +1,7 @@
 package com.obadiahpcrowe.stirling;
 
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.api.AccountAPI;
-import com.obadiahpcrowe.stirling.api.InfoAPI;
-import com.obadiahpcrowe.stirling.api.ModuleAPI;
+import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
@@ -48,8 +46,18 @@ public class Stirling {
         utilLog.log("Registering default API calls..");
         APIManager.getInstance().registerDefaultCalls(
           new AccountAPI(),
+          new AnnouncementAPI(),
+          new CalendarAPI(),
+          new ClassesAPI(),
+          new CloudAPI(),
+          new FeedbackAPI(),
           new InfoAPI(),
-          new ModuleAPI()
+          new ModuleAPI(),
+          new NotesAPI(),
+          new SaceAPI(),
+          new SessionAPI(),
+          new SignInAPI(),
+          new SurveyAPI()
         );
 
         utilLog.log("Loading modules..");
