@@ -15,7 +15,7 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-@Entity("laptop")
+@Entity("laptops")
 public class LaptopUser {
 
     @Id
