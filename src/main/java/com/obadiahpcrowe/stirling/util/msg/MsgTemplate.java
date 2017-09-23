@@ -86,6 +86,8 @@ public enum MsgTemplate {
 
     TUTOR_REGISTERED(MsgResponse.SUCCESS, "You have successfully registered as a tutor!", 0),
     TUTOR_ALREADY_REGISTERED(MsgResponse.USER_ERROR, "You have already registered as a tutor!", 0),
+    TUTOR_UNREGISTERED(MsgResponse.SUCCESS, "You have successfully unregistered, {0}, as a tutor!", 1),
+    TUTOR_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The tutor with the ID, {0}, does not exist!", 1),
     TUTOR_ASSIGNED_TO(MsgResponse.SUCCESS, "You have assigned the tutor, {0}, to {1} on {2} at {3)!", 4),
     TUTOR_REQUEST_MADE(MsgResponse.SUCCESS, "You have requested a tutor at {0} on {1} for the following reason: {2}!", 3),
     TUTOR_REQUEST_DELETED(MsgResponse.SUCCESS, "The tutor request has been deleted!", 0),

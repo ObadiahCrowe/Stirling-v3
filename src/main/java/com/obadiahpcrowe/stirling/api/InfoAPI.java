@@ -57,16 +57,21 @@ public class InfoAPI implements APIController {
     @CallableAPI(fields = "")
     @RequestMapping(value = "/stirling/v3/status", method = RequestMethod.GET)
     public String getStatus() {
-        return "Stirling's API is live!";
+        return gson.toJson("Stirling's API is live!");
     }
 
     @CallableAPI(fields = "")
-    @RequestMapping(value = "/stirling/v3/school", method = RequestMethod.GET)
-    public String getSchool() {
-        RegisteredSchool registeredSchool = SchoolManager.getInstance().getSchool();
-        String out = "Name: " + registeredSchool.getFriendlyName() + "<br/>Default Locale: " +
-          registeredSchool.getDefaultLocale() + "<br/>Supports SACE: " + registeredSchool.isSupportsSace() +
-          "<br/>Supports IB: " + registeredSchool.isSupportsIb();
-        return out;
+    @RequestMapping(value = "/stirling/v3/isRegistered", method = RequestMethod.GET)
+    public boolean isRegistered() {
+        if (SchoolManager.getInstance().getSchool() == RegisteredSchool.UNREGISTERED) {
+            return false;
+        }
+        return true;
+    }
+
+    @CallableAPI(fields = "")
+    @RequestMapping(value = "/stirling/v3/schoolName", method = RequestMethod.GET)
+    public String getSchoolName() {
+        return gson.toJson(SchoolManager.getInstance().getSchool().getFriendlyName());
     }
 }

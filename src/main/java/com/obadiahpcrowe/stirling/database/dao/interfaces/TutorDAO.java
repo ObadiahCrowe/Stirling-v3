@@ -2,6 +2,8 @@ package com.obadiahpcrowe.stirling.database.dao.interfaces;
 
 import com.obadiahpcrowe.stirling.pod.tutors.enums.TutorSpeciality;
 import com.obadiahpcrowe.stirling.pod.tutors.obj.StirlingTutor;
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.dao.DAO;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +15,7 @@ import java.util.UUID;
  * Package: com.obadiahpcrowe.stirling.database.dao.interfaces
  * Copyright (c) Obadiah Crowe 2017
  */
-public interface TutorDAO {
+public interface TutorDAO extends DAO<StirlingTutor, ObjectId> {
 
     StirlingTutor getByUuid(UUID uuid);
 
