@@ -10,6 +10,7 @@ import com.obadiahpcrowe.stirling.database.dao.interfaces.TutorDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.pod.tutors.enums.TutorSpeciality;
 import com.obadiahpcrowe.stirling.pod.tutors.obj.StirlingTutor;
+import com.obadiahpcrowe.stirling.pod.tutors.obj.TutorRequest;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -53,6 +54,17 @@ public class TutorManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_UNREGISTERED, new AccountManager().getAccount(tutorUuid).getLocale(), tutor.getDisplayName()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, tutorUuid.toString()));
+    }
+
+    public String createTutorRequest(StirlingAccount account, UUID tutorUuid, String desc, String date, String time,
+                                     List<TutorSpeciality> specialities) {
+        StirlingTutor tutor = getTutor(tutorUuid);
+
+        tutorDAO.delete(tutor);
+        tutor.getTutorRequests().put(account.getAccountName(), new TutorRequest(account, desc, date, time, specialities));
+        tutorDAO.save(tutor);
+
+        return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_REQUEST_MADE, account.getLocale(), time, date, desc));
     }
 
     public StirlingTutor getTutor(UUID uuid) {

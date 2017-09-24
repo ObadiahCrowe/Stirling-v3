@@ -30,7 +30,7 @@ public class TutorRequest {
 
     public TutorRequest() {}
 
-    public TutorRequest(StirlingAccount account, String desc, List<TutorSpeciality> subjects) {
+    public TutorRequest(StirlingAccount account, String desc, String date, String time, List<TutorSpeciality> subjects) {
         this.uuid = account.getUuid();
         this.desc = desc;
         this.subjects = subjects;

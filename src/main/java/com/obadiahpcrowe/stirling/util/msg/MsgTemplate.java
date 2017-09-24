@@ -62,7 +62,7 @@ public enum MsgTemplate {
     INCORRECT_PASSWORD(MsgResponse.USER_ERROR, "Your password is incorrect!", 0),
 
     FIELD_TOO_LONG(MsgResponse.USER_ERROR, "The {0} length is too long! The maximum length is: {1}!", 2),
-    FIELD_TOO_SHORT(MsgResponse.USER_ERROR, "The {0} length is too short! The minimum length is: {0}!", 2),
+    FIELD_TOO_SHORT(MsgResponse.USER_ERROR, "The {0} length is too short! The minimum length is: {1}!", 2),
 
     INCOMPATIBLE_VALUE(MsgResponse.USER_ERROR, "The value, {0}, is incompatible with {1}!", 2),
 
