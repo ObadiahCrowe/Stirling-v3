@@ -1,7 +1,7 @@
 package com.obadiahpcrowe.stirling;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.api.*;
+import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
@@ -60,6 +60,11 @@ public class Stirling {
           new SurveyAPI()
         );
 
+        // Only for development builds.
+        if (getInstance().getVersion().getType() == VersionType.DEVELOPMENT_BUILD) {
+            APIManager.getInstance().registerCall(DebugAPI.class, true);
+        }
+
         utilLog.log("Loading modules..");
         ModuleManager.getInstance().registerModules();
 
@@ -72,10 +77,8 @@ public class Stirling {
         utilLog.log("Registering module API calls..");
         ModuleManager.getInstance().registerAPICalls();
 
-        System.out.println(new AccountManager().createAccount("ObadiahTest2", "obadiahpcrowe@gmail.com", "1234567"));
-
         utilLog.log("Starting REST API service..");
-        //SpringApplication.run(Stirling.class, args);
+        SpringApplication.run(Stirling.class, args);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

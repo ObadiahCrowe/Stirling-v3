@@ -1,4 +1,4 @@
-package com.obadiahpcrowe.stirling.pod.tutors.enums;
+package com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.enums;
 
 import lombok.Getter;
 
@@ -6,7 +6,7 @@ import lombok.Getter;
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 21/9/17 at 5:41 PM
  * Project: Stirling
- * Package: com.obadiahpcrowe.stirling.pod.tutors.enums
+ * Package: com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.enums
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter

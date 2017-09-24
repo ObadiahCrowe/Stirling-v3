@@ -1,8 +1,8 @@
-package com.obadiahpcrowe.stirling.pod.tutors.obj;
+package com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.obj;
 
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.calendar.obj.CalendarEntry;
-import com.obadiahpcrowe.stirling.pod.tutors.enums.TutorSpeciality;
+import com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.enums.TutorSpeciality;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -16,12 +16,12 @@ import java.util.*;
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 21/9/17 at 5:40 PM
  * Project: Stirling
- * Package: com.obadiahpcrowe.stirling.pod.tutors.obj
+ * Package: com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.obj
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
 @Setter
-@Entity("tutors")
+@Entity("tutorsINACTIVE")
 public class StirlingTutor {
 
     @Id

@@ -73,7 +73,7 @@ public enum MsgTemplate {
     SUBMITTING_FILE(MsgResponse.SUCCESS, "Submitting {0}..", 1),
 
     CANNOT_SET_FIELD_TO_FIELD(MsgResponse.USER_ERROR, "Cannot apply the value, {0}, to the field, {1}!", 2),
-    SET_FIELD_TO_FIELD(MsgResponse.SUCCESS, "Set the value, {0}, to the field, {1}!", 2),
+    SET_FIELD_TO_FIELD(MsgResponse.SUCCESS, "Set the field, {0}, to the value, {1}!", 2),
 
     PASSWORD_INCORRECT(MsgResponse.USER_ERROR, "The password for {0} is incorrect!", 1),
 

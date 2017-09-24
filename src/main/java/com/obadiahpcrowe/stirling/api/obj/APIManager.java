@@ -51,7 +51,7 @@ public class APIManager {
         return output.get(uuid);
     }
 
-    private void registerCall(Class clazz, boolean registered) {
+    public void registerCall(Class clazz, boolean registered) {
         for (Method method : clazz.getDeclaredMethods()) {
             if ((method.getAnnotation(RequestMapping.class) != null) && (method.getAnnotation(CallableAPI.class) != null)) {
                 List<String> paramNames = new ArrayList<>();

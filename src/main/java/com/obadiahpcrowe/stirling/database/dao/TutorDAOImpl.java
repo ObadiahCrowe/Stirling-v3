@@ -1,8 +1,8 @@
 package com.obadiahpcrowe.stirling.database.dao;
 
 import com.obadiahpcrowe.stirling.database.dao.interfaces.TutorDAO;
-import com.obadiahpcrowe.stirling.pod.tutors.enums.TutorSpeciality;
-import com.obadiahpcrowe.stirling.pod.tutors.obj.StirlingTutor;
+import com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.enums.TutorSpeciality;
+import com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.obj.StirlingTutor;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;

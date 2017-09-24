@@ -1,4 +1,4 @@
-package com.obadiahpcrowe.stirling.pod.tutors;
+package com.obadiahpcrowe.stirling.pod.tutorsINACTIVE;
 
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
@@ -8,9 +8,9 @@ import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.TutorDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.TutorDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
-import com.obadiahpcrowe.stirling.pod.tutors.enums.TutorSpeciality;
-import com.obadiahpcrowe.stirling.pod.tutors.obj.StirlingTutor;
-import com.obadiahpcrowe.stirling.pod.tutors.obj.TutorRequest;
+import com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.enums.TutorSpeciality;
+import com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.obj.StirlingTutor;
+import com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.obj.TutorRequest;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -21,7 +21,7 @@ import java.util.UUID;
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 21/9/17 at 5:39 PM
  * Project: Stirling
- * Package: com.obadiahpcrowe.stirling.pod.tutors
+ * Package: com.obadiahpcrowe.stirling.pod.tutorsINACTIVE
  * Copyright (c) Obadiah Crowe 2017
  */
 public class TutorManager {

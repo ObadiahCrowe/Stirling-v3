@@ -5,6 +5,7 @@ import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import lombok.Getter;
+import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mongodb.morphia.annotations.Entity;
@@ -36,6 +37,7 @@ public class StirlingAccount {
 
     private UUID uuid;
     private StirlingLocale locale;
+
     private AccountType accountType;
 
     private String password;
