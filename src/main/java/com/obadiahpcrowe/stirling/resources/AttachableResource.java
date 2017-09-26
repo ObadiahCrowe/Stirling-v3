@@ -2,9 +2,11 @@ package com.obadiahpcrowe.stirling.resources;
 
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.cloud.CloudManager;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 import lombok.Getter;
 
 import java.io.File;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -16,16 +18,33 @@ import java.io.File;
 @Getter
 public class AttachableResource {
 
-    private String owner;
+    private UUID owner;
     private String filePath;
 
-    public AttachableResource(String owner, String filePath) {
-        this.owner = owner;
+    public AttachableResource() {}
+
+    public AttachableResource(UUID uuid, String filePath) {
+        this.owner = uuid;
         this.filePath = filePath;
     }
 
     public File getFile() {
-        return new File(CloudManager.getInstance().getCloudFolder(
-          new AccountManager().getAccount(owner).getUuid()) + File.separator + filePath);
+        if (filePath.equalsIgnoreCase("avatar.png")) {
+            return getAvatar();
+        }
+
+        if (filePath.equalsIgnoreCase("banner.jpg")) {
+            return getBanner();
+        }
+
+        return new File(CloudManager.getInstance().getCloudFolder(owner) + File.separator + filePath);
+    }
+
+    private File getAvatar() {
+        return new File(UtilFile.getInstance().getUserFolder(owner) + File.separator + "Images" + File.separator + "avatar.png");
+    }
+
+    private File getBanner() {
+        return new File(UtilFile.getInstance().getUserFolder(owner) + File.separator + "Images" + File.separator + "banner.jpg");
     }
 }

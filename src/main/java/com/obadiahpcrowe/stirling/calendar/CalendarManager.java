@@ -111,6 +111,7 @@ public class CalendarManager {
         });
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENT_FIELD_EDITED, StirlingLocale.ENGLISH, "description", eventUuid.toString()));
     }
+    /*
 
     public String editStartDate(UUID owner, UUID eventUuid, String startDate) {
         StirlingCalendar calendar = getCalendar(owner);
@@ -158,7 +159,7 @@ public class CalendarManager {
             }
         });
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENT_FIELD_EDITED, StirlingLocale.ENGLISH, "end time", eventUuid.toString()));
-    }
+    }*/
 
     public String editLocation(UUID owner, UUID eventUuid, String location) {
         StirlingCalendar calendar = getCalendar(owner);

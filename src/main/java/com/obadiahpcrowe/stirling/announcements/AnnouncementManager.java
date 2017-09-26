@@ -51,7 +51,7 @@ public class AnnouncementManager {
         List<AttachableResource> resourcesList = new ArrayList<>();
         StringTokenizer fileTokenizer = new StringTokenizer(resources, ",");
         while (tokenizer.hasMoreElements()) {
-            resourcesList.add(new AttachableResource(account.getAccountName(), fileTokenizer.nextElement().toString()));
+            resourcesList.add(new AttachableResource(account.getUuid(), fileTokenizer.nextElement().toString()));
         }
 
         List<String> tagsList = new ArrayList<>();
@@ -61,7 +61,7 @@ public class AnnouncementManager {
         }
 
         announcementDAO.save(new StirlingAnnouncement(account, title, shortDesc, type,
-          new AttachableResource(account.getAccountName(), bannerImage), content, resourcesList, audience, tagsList));
+          new AttachableResource(account.getUuid(), bannerImage), content, resourcesList, audience, tagsList));
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_CREATED, account.getLocale(), title));
     }

@@ -8,11 +8,17 @@ import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
+import org.apache.commons.io.IOUtils;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -127,5 +133,28 @@ public class AccountAPI implements APIController {
     public String updateAvatar() {
         // TODO: 11/9/17 this
         return "";
+    }
+
+    // get avatar
+
+    @CallableAPI(fields = { "accountName", "password" })
+    @RequestMapping(value = "/stirling/v3/accounts/get/banner", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getBanner(@RequestParam("accountName") String accountName,
+                            @RequestParam("password") String password) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return null;
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return null;
+        }
+
+        try {
+            InputStream inputStream = new FileInputStream(account.getBannerImage().getFile());
+            return IOUtils.toByteArray(inputStream);
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

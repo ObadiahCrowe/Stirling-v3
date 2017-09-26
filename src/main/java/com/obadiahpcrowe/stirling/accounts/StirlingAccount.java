@@ -4,6 +4,8 @@ import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -49,8 +51,8 @@ public class StirlingAccount {
     @Reference
     private List<StirlingClass> stirlingClasses;
 
-    private File avatarImage;
-    private File bannerImage;
+    private AttachableResource avatarImage;
+    private AttachableResource bannerImage;
 
     public StirlingAccount() {}
 
@@ -67,7 +69,7 @@ public class StirlingAccount {
         this.salt = salt;
         this.calendar = null;
         this.stirlingClasses = new ArrayList<>();
-        this.avatarImage = null;
-        this.bannerImage = null;
+        this.bannerImage = new AttachableResource(this.uuid, "banner.jpg");
+        this.avatarImage = new AttachableResource(this.uuid, "avatar.png");
     }
 }

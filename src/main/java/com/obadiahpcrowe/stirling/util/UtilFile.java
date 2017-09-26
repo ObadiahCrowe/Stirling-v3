@@ -89,7 +89,7 @@ public class UtilFile {
     }
 
     public void createUserFiles(UUID uuid) {
-        File userFolder = new File(home + File.separator + "UserData" + File.separator + uuid.toString());
+        File userFolder = getUserFolder(uuid);
         if (!userFolder.exists()) {
             userFolder.mkdir();
         }
@@ -110,6 +110,10 @@ public class UtilFile {
 
         copyDefaultAvatar(uuid.toString());
         copyDefaultBanner(uuid.toString());
+    }
+
+    public File getUserFolder(UUID uuid) {
+        return new File(home + File.separator + "UserData" + File.separator + uuid.toString());
     }
 
     public void deleteUserFiles(UUID uuid) {
