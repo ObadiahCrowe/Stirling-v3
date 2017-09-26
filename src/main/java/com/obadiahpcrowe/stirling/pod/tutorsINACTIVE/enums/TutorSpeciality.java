@@ -26,6 +26,7 @@ public enum TutorSpeciality {
     HISTORY("History"),
     RESEARCH_PROJECT("Research Project"),
     PROGRAMMING("Programming"),
+    NUTRITION("Nutrition"),
     DESIGN_TECH("Design and Technology");
 
     private String friendlyName;

@@ -5,6 +5,8 @@ import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ClassesDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ClassesDAO;
 
+import java.util.UUID;
+
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 21/9/17 at 11:55 AM
@@ -31,8 +33,8 @@ public class ClassManager {
         return "";
     }
 
-    public StirlingClass getStirlingClass() {
-        return null;
+    public StirlingClass getStirlingClass(UUID classUuid) {
+        return classesDAO.getByUuid(classUuid);
     }
 
     public boolean classExists() {

@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.calendar.obj;
 
+import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -24,10 +25,8 @@ public class CalendarEntry {
     private UUID uuid;
     private String title;
     private String desc;
-    private String startDate;
-    private String endDate;
-    private String startTime;
-    private String endTime;
+    private StirlingDate startDateTime;
+    private StirlingDate endDateTime;
     private String location;
 
     public CalendarEntry() {}
@@ -37,10 +36,8 @@ public class CalendarEntry {
         this.uuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startDateTime = new StirlingDate(startDate, startTime);
+        this.endDateTime = new StirlingDate(endDate, endTime);
         this.location = location;
     }
 }

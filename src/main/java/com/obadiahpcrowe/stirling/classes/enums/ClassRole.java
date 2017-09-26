@@ -4,20 +4,23 @@ import lombok.Getter;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
- * Creation Date / Time: 5/9/17 at 11:13 PM
+ * Creation Date / Time: 26/9/17 at 3:22 PM
  * Project: Stirling
  * Package: com.obadiahpcrowe.stirling.classes.enums
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-public enum PostableType {
+public enum ClassRole {
 
-    CLASS_POST("Class Post"),
-    HOMEWORK("Homework");
+    STUDENT("Student", false),
+    STUDENT_TEACHER("Student Teacher", false),
+    TEACHER("Teacher", true);
 
     private String friendlyName;
+    private boolean canAdminister;
 
-    PostableType(String friendlyName) {
+    ClassRole(String friendlyName, boolean canAdminister) {
         this.friendlyName = friendlyName;
+        this.canAdminister = canAdminister;
     }
 }

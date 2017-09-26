@@ -13,7 +13,6 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -28,6 +27,10 @@ public class Stirling {
 
     private static Stirling instance;
     private @Getter StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
+
+    // TODO: 24/9/17 Attendance and Progress markers (Maybe SACE integration)
+    // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2)
+    // TODO: 26/9/17 Build a date system for easier shit
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
@@ -78,7 +81,7 @@ public class Stirling {
         ModuleManager.getInstance().registerAPICalls();
 
         utilLog.log("Starting REST API service..");
-        SpringApplication.run(Stirling.class, args);
+        //SpringApplication.run(Stirling.class, args);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

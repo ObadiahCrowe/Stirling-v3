@@ -4,6 +4,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
+import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.UtilTime;
 import lombok.Getter;
 import org.bson.types.ObjectId;
@@ -34,10 +35,8 @@ public class StirlingAnnouncement {
     private AttachableResource bannerImage;
     private String content;
     private UUID uuid;
-    private String postTime;
-    private String postDate;
-    private String editTime;
-    private String editDate;
+    private StirlingDate postDateTime;
+    private StirlingDate editDateTime;
     private List<AttachableResource> resources;
     private List<AccountType> targetAudience;
     private List<String> tags;
@@ -47,6 +46,7 @@ public class StirlingAnnouncement {
     public StirlingAnnouncement(StirlingAccount account, String title, String shortDesc, AnnouncementType announcementType,
                                 AttachableResource bannerImage, String content, List<AttachableResource> resources,
                                 List<AccountType> targetAudience, List<String> tags) {
+        StirlingDate date = new StirlingDate(UtilTime.getInstance().getFriendlyDate(), UtilTime.getInstance().getFriendlyTime());
         this.title = title;
         this.shortDesc = shortDesc;
         this.poster = account.getAccountName();
@@ -54,10 +54,8 @@ public class StirlingAnnouncement {
         this.bannerImage = bannerImage;
         this.content = content;
         this.uuid = UUID.randomUUID();
-        this.postTime = UtilTime.getInstance().getFriendlyTime();
-        this.postDate = UtilTime.getInstance().getFriendlyDate();
-        this.editTime = UtilTime.getInstance().getFriendlyTime();
-        this.editDate = UtilTime.getInstance().getFriendlyDate();
+        this.postDateTime = date;
+        this.editDateTime = date;
         this.resources = resources;
         this.targetAudience = targetAudience;
         this.tags = tags;
