@@ -1,9 +1,7 @@
 package com.obadiahpcrowe.stirling.classes;
 
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
-import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
-import com.obadiahpcrowe.stirling.classes.obj.StirlingCatchup;
-import com.obadiahpcrowe.stirling.classes.obj.StirlingLesson;
+import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
 import org.bson.types.ObjectId;
