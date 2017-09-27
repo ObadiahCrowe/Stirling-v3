@@ -66,7 +66,7 @@ public enum MsgTemplate {
 
     INCOMPATIBLE_VALUE(MsgResponse.USER_ERROR, "The value, {0}, is incompatible with {1}!", 2),
 
-    UNEXPECTED_ERROR(MsgResponse.STIRLING_ERROR, "An unexpected error occurred while {0}!", 1),
+    UNEXPECTED_ERROR(MsgResponse.STIRLING_ERROR, "An unexpected error occurred while {0}! Try again later.", 1),
 
     DOWNLOADING_FILE(MsgResponse.SUCCESS, "Downloading {0}..", 1),
     UPLOADING_FILE(MsgResponse.SUCCESS, "Uploading {0}..", 1),
@@ -115,7 +115,9 @@ public enum MsgTemplate {
     SURVEY_DELETED(MsgResponse.SUCCESS, "You have deleted the survey, {0}!", 1),
     SURVEY_SUBMITTED(MsgResponse.SUCCESS, "You have submitted your responses to the survey: {0}!", 1),
     SURVEY_ALREADY_SUBMITTED(MsgResponse.USER_ERROR, "You have already submitted a response to this survey!", 0),
-    SURVEY_UPDATED(MsgResponse.SUCCESS, "The survey, {0}, has had the field, {1}, updated!", 2);
+    SURVEY_UPDATED(MsgResponse.SUCCESS, "The survey, {0}, has had the field, {1}, updated!", 2),
+
+    INVALID_TYPE_FORMAT(MsgResponse.USER_ERROR, "{0} is invalid! The required format is {1}!", 2);
 
     private MsgResponse response;
     private String message;

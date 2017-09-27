@@ -7,6 +7,7 @@ import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.CalendarDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.CalendarDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -111,55 +112,30 @@ public class CalendarManager {
         });
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENT_FIELD_EDITED, StirlingLocale.ENGLISH, "description", eventUuid.toString()));
     }
-    /*
 
-    public String editStartDate(UUID owner, UUID eventUuid, String startDate) {
+    public String editEndDateTime(UUID owner, UUID eventUuid, StirlingDate endDateTime) {
         StirlingCalendar calendar = getCalendar(owner);
         calendar.getCalendarEntries().forEach(event -> {
             if (event.getUuid().equals(eventUuid)) {
                 calendar.getCalendarEntries().remove(event);
-                event.setStartDate(startDate);
-                calendar.getCalendarEntries().add(event);
-            }
-        });
-        return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENT_FIELD_EDITED, StirlingLocale.ENGLISH, "start date", eventUuid.toString()));
-    }
-
-    public String editEndDate(UUID owner, UUID eventUuid, String endDate) {
-        StirlingCalendar calendar = getCalendar(owner);
-        calendar.getCalendarEntries().forEach(event -> {
-            if (event.getUuid().equals(eventUuid)) {
-                calendar.getCalendarEntries().remove(event);
-                event.setEndDate(endDate);
+                event.setEndDateTime(endDateTime);
                 calendar.getCalendarEntries().add(event);
             }
         });
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENT_FIELD_EDITED, StirlingLocale.ENGLISH, "end date", eventUuid.toString()));
     }
 
-    public String editStartTime(UUID owner, UUID eventUuid, String startTime) {
+    public String editStartDateTime(UUID owner, UUID eventUuid, StirlingDate startDateTime) {
         StirlingCalendar calendar = getCalendar(owner);
         calendar.getCalendarEntries().forEach(event -> {
             if (event.getUuid().equals(eventUuid)) {
                 calendar.getCalendarEntries().remove(event);
-                event.setStartTime(startTime);
+                event.setStartDateTime(startDateTime);
                 calendar.getCalendarEntries().add(event);
             }
         });
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENT_FIELD_EDITED, StirlingLocale.ENGLISH, "start time", eventUuid.toString()));
     }
-
-    public String editEndTime(UUID owner, UUID eventUuid, String endTime) {
-        StirlingCalendar calendar = getCalendar(owner);
-        calendar.getCalendarEntries().forEach(event -> {
-            if (event.getUuid().equals(eventUuid)) {
-                calendar.getCalendarEntries().remove(event);
-                event.setEndTime(endTime);
-                calendar.getCalendarEntries().add(event);
-            }
-        });
-        return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENT_FIELD_EDITED, StirlingLocale.ENGLISH, "end time", eventUuid.toString()));
-    }*/
 
     public String editLocation(UUID owner, UUID eventUuid, String location) {
         StirlingCalendar calendar = getCalendar(owner);

@@ -30,8 +30,7 @@ public class Stirling {
     private static Stirling instance;
     private @Getter StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
-    // TODO: 24/9/17 Attendance and Progress markers (Maybe SACE integration)
-    // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2)
+    // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2) (Maybe SACE integration)
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
@@ -63,6 +62,8 @@ public class Stirling {
           new SignInAPI(),
           new SurveyAPI()
         );
+
+        System.out.println(new AccountManager().deleteAccount("ObadiahCrowe2", "@nMV6dHRQmKac"));
 
         // Only for development builds.
         if (getInstance().getVersion().getType() == VersionType.DEVELOPMENT_BUILD) {

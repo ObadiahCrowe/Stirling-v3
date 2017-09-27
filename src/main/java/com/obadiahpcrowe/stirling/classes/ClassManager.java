@@ -1,9 +1,13 @@
 package com.obadiahpcrowe.stirling.classes;
 
 import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ClassesDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ClassesDAO;
+import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
+import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
 import java.util.UUID;
 
@@ -25,8 +29,11 @@ public class ClassManager {
         this.classesDAO = new ClassesDAOImpl(StirlingClass.class, morphiaService.getDatastore());
     }
 
-    public String createClass() {
-        return "";
+    public String createClass(StirlingAccount account, String name, String desc, String room) {
+        if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
+
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create classes", "TEACHER"));
     }
 
     public String deleteClass() {
