@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.classes;
 
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
@@ -8,9 +9,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -28,9 +27,9 @@ public class StirlingClass {
 
     // General
     private UUID uuid;
-    private String room;
     private String name;
     private String desc;
+    private String room;
 
     // Members and times
     private Map<UUID, ClassRole> members;
@@ -47,7 +46,28 @@ public class StirlingClass {
     // Results
     private Map<UUID, List<StirlingAssignment>> studentAssignments;
     private Map<UUID, List<StirlingResult>> studentResults; // TODO: 26/9/17 Generate report and shit from these results.
+    private Map<UUID, List<ProgressMarker>> progressMarkers;
 
     public StirlingClass() {}
 
+    public StirlingClass(StirlingAccount account, String name, String desc, String room) {
+        this.uuid = UUID.randomUUID();
+        this.name = name;
+        this.desc = desc;
+        this.room = room;
+
+        this.members = new HashMap<UUID, ClassRole>() {{ put(account.getUuid(), ClassRole.TEACHER); }};
+        this.students = new ArrayList<>();
+        this.teachers = Arrays.asList(account.getUuid());
+        this.lessons = new ArrayList<>();
+
+        this.catchups = new ArrayList<>();
+        this.classNotes = new ArrayList<>();
+        this.homework = new ArrayList<>();
+        this.resources = new ArrayList<>();
+
+        this.studentAssignments = new HashMap<>();
+        this.studentResults = new HashMap<>();
+        this.progressMarkers = new HashMap<>();
+    }
 }

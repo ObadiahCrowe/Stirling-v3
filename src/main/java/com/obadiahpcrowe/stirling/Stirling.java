@@ -32,7 +32,6 @@ public class Stirling {
 
     // TODO: 24/9/17 Attendance and Progress markers (Maybe SACE integration)
     // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2)
-    // TODO: 26/9/17 Build a date system for easier shit
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
