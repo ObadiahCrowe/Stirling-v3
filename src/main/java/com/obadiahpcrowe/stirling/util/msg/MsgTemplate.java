@@ -35,6 +35,7 @@ public enum MsgTemplate {
     CALENDAR_EVENT_EDITED(MsgResponse.SUCCESS, "The event, {0}, has been edited!", 1),
 
     CLOUD_STORAGE_FULL(MsgResponse.USER_ERROR, "Your cloud storage is full!", 0),
+    CLOUD_FILE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The file, {0}, does not exist!", 1),
 
     NOTE_CREATED(MsgResponse.SUCCESS, "The note, {0}, has been created!", 1),
     NOTE_DELETED(MsgResponse.SUCCESS, "The note, {0}, has been deleted!", 1),
@@ -73,6 +74,15 @@ public enum MsgTemplate {
     DOWNLOADING_FILE(MsgResponse.SUCCESS, "Downloading {0}..", 1),
     UPLOADING_FILE(MsgResponse.SUCCESS, "Uploading {0}..", 1),
     SUBMITTING_FILE(MsgResponse.SUCCESS, "Submitting {0}..", 1),
+    CANNOT_RENAME_FILE_EXISTS(MsgResponse.USER_ERROR, "Cannot rename: {0}, as the name: {1} is already taken. Either delete {1}, or rename {0} to something different!", 2),
+    FILE_RENAMED(MsgResponse.SUCCESS, "The file, {0}, has been renamed to: {1}!", 2),
+    FILE_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The file, {0}, already exists!", 1),
+    FILE_DELETED(MsgResponse.SUCCESS, "The file, {0}, has been deleted!", 1),
+    FILE_MOVED(MsgResponse.SUCCESS, "The file, {0}, has been moved!", 1),
+
+    FOLDER_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The folder, {0}, already exists!", 1),
+    FOLDER_CREATED(MsgResponse.SUCCESS, "The folder, {0}, has been created!", 1),
+    FOLDER_DELETED(MsgResponse.SUCCESS, "The folder, {0}, has been deleted!", 1),
 
     CANNOT_SET_FIELD_TO_FIELD(MsgResponse.USER_ERROR, "Cannot apply the value, {0}, to the field, {1}!", 2),
     SET_FIELD_TO_FIELD(MsgResponse.SUCCESS, "Set the field, {0}, to the value, {1}!", 2),
