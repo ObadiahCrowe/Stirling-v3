@@ -8,9 +8,13 @@ import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.AnnouncementDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.AnnouncementDAO;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -31,7 +35,7 @@ public class AnnouncementManager {
         this.announcementDAO = new AnnouncementDAOImpl(StirlingAnnouncement.class, morphiaService.getDatastore());
     }
 
-    public String postAnnouncement(StirlingAccount account, AnnouncementType type, String bannerImage, String title,
+    public String postAnnouncement(StirlingAccount account, UUID uuid, AnnouncementType type, AttachableResource bannerImage, String title,
                                    String shortDesc, String content, String resources, String targetAudience, String tags) {
         if (!type.getAccountTypes().contains(account.getAccountType())) {
             StringBuilder valid = new StringBuilder();
@@ -60,8 +64,10 @@ public class AnnouncementManager {
             tagsList.add(tagTokenizer.nextElement().toString());
         }
 
-        announcementDAO.save(new StirlingAnnouncement(account, title, shortDesc, type,
-          new AttachableResource(account.getUuid(), bannerImage), content, resourcesList, audience, tagsList));
+        StirlingAnnouncement announcement = new StirlingAnnouncement(account, uuid, title, shortDesc, type, bannerImage,
+          content, resourcesList, audience, tagsList);
+
+        announcementDAO.save(announcement);
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_CREATED, account.getLocale(), title));
     }

@@ -104,7 +104,13 @@ public class AccountAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        accountManager.updateField(account, "locale", StirlingLocale.valueOf(locale).toString());
+        try {
+            locale = StirlingLocale.valueOf(locale).toString();
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), locale, "locale"));
+        }
+
+        accountManager.updateField(account, "locale", locale);
         return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, accountManager.getAccount(accountName).getLocale(),
           "locale", account.getAccountName()));
     }

@@ -55,15 +55,12 @@ public class Stirling {
           new CloudAPI(),
           new FeedbackAPI(),
           new InfoAPI(),
-          new ModuleAPI(),
           new NotesAPI(),
           new SaceAPI(),
           new SessionAPI(),
           new SignInAPI(),
           new SurveyAPI()
         );
-
-        System.out.println(new AccountManager().deleteAccount("ObadiahCrowe2", "@nMV6dHRQmKac"));
 
         // Only for development builds.
         if (getInstance().getVersion().getType() == VersionType.DEVELOPMENT_BUILD) {

@@ -65,6 +65,7 @@ public enum MsgTemplate {
     FIELD_TOO_SHORT(MsgResponse.USER_ERROR, "The {0} length is too short! The minimum length is: {1}!", 2),
 
     INCOMPATIBLE_VALUE(MsgResponse.USER_ERROR, "The value, {0}, is incompatible with {1}!", 2),
+    UNKNOWN_FIELD(MsgResponse.USER_ERROR, "The field, {0}, is invalid!", 1),
 
     UNEXPECTED_ERROR(MsgResponse.STIRLING_ERROR, "An unexpected error occurred while {0}! Try again later.", 1),
 

@@ -47,4 +47,9 @@ public class AttachableResource {
     private File getBanner() {
         return new File(UtilFile.getInstance().getUserFolder(owner) + File.separator + "Images" + File.separator + "banner.jpg");
     }
+
+    private File getAnnouncementBanner() {
+        return new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
+          File.separator + owner + File.separator + "banner.jpg");
+    }
 }

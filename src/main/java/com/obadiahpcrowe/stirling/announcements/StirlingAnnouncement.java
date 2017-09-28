@@ -43,7 +43,7 @@ public class StirlingAnnouncement {
 
     public StirlingAnnouncement() {}
 
-    public StirlingAnnouncement(StirlingAccount account, String title, String shortDesc, AnnouncementType announcementType,
+    public StirlingAnnouncement(StirlingAccount account, UUID uuid, String title, String shortDesc, AnnouncementType announcementType,
                                 AttachableResource bannerImage, String content, List<AttachableResource> resources,
                                 List<AccountType> targetAudience, List<String> tags) {
         StirlingDate date = new StirlingDate(UtilTime.getInstance().getFriendlyDate(), UtilTime.getInstance().getFriendlyTime());
@@ -53,7 +53,7 @@ public class StirlingAnnouncement {
         this.type = announcementType;
         this.bannerImage = bannerImage;
         this.content = content;
-        this.uuid = UUID.randomUUID();
+        this.uuid = uuid;
         this.postDateTime = date;
         this.editDateTime = date;
         this.resources = resources;

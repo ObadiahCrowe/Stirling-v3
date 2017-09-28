@@ -24,7 +24,9 @@ public enum AnnouncementType {
     SUB_SCHOOL("Sub-School", AccountType.SUB_SCHOOL_LEADER),
     YEAR_LEVEL("Year Level", AccountType.YEAR_LEVEL_LEADER),
     PRINCIPAL("Principal Notice", AccountType.DEPUTY_PRINCIPAL, AccountType.PRINCIPAL),
-    BLOG("Blog", AccountType.SERVICES);
+    BLOG("Blog", AccountType.SERVICES),
+    IMPORTANT("Important", AccountType.DEPUTY_PRINCIPAL, AccountType.PRINCIPAL, AccountType.DEVELOPER),
+    STIRLING("Stirling", AccountType.DEVELOPER);
 
     private String friendlyName;
     private List<AccountType> accountTypes;
