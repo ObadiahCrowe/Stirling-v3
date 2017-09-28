@@ -150,6 +150,7 @@ public class AnnouncementAPI implements APIController {
     @RequestMapping(value = "/stirling/v3/announcements/edit", method = RequestMethod.GET)
     public String editAnnouncement(@RequestParam("accountName") String accountName,
                                    @RequestParam("password") String password,
+                                   @RequestParam("uuid") String rawUuid,
                                    @RequestParam("field") String field,
                                    @RequestParam("value") String value) {
         StirlingAccount account = accountManager.getAccount(accountName);
@@ -183,6 +184,6 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.UNKNOWN_FIELD, account.getLocale(), finalField));
         }
 
-        return "yay";
+        return manager.updateField(UUID.fromString(rawUuid), field, value);
     }
 }

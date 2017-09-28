@@ -7,10 +7,12 @@ import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.AnnouncementDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.AnnouncementDAO;
+import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
+import org.bson.types.ObjectId;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -94,8 +96,23 @@ public class AnnouncementManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_DELETED, account.getLocale(), announcement.getTitle()));
     }
 
+    public String updateField(UUID uuid, String field, Object value) {
+        if (announcementExists(uuid)) {
+            announcementDAO.updateField(uuid, field, value);
+            return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_EDITED, StirlingLocale.ENGLISH, uuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, uuid.toString()));
+    }
+
     public StirlingAnnouncement getAnnouncement(UUID uuid) {
         return announcementDAO.getByUuid(uuid);
+    }
+
+    public boolean announcementExists(UUID uuid) {
+        if (getAnnouncement(uuid) == null) {
+            return false;
+        }
+        return true;
     }
 
     public List<StirlingAnnouncement> getAnnouncements(StirlingAccount account) {

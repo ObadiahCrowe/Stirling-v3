@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 import java.util.UUID;
@@ -54,5 +55,13 @@ public class AnnouncementDAOImpl extends BasicDAO<StirlingAnnouncement, ObjectId
           .field("tags").equal(tags);
 
         return query.asList();
+    }
+
+    @Override
+    public void updateField(UUID uuid, String field, Object value) {
+        Query<StirlingAnnouncement> query = createQuery().field("uuid").equal(uuid);
+        UpdateOperations<StirlingAnnouncement> updateOps = createUpdateOperations().set(field, value);
+
+        update(query, updateOps);
     }
 }

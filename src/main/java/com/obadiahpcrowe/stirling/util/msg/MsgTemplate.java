@@ -21,6 +21,7 @@ public enum MsgTemplate {
     ANNOUNCEMENT_CREATED(MsgResponse.SUCCESS, "The announcement, {0}, has been posted!", 1),
     ANNOUNCEMENT_DELETED(MsgResponse.SUCCESS, "The announcement, {0}, has been deleted!", 1),
     ANNOUNCEMENT_EDITED(MsgResponse.SUCCESS, "The announcement, {0}, has been edited!", 1),
+    ANNOUNCEMENT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The announcement, {0}, does not exist!", 1),
 
     CALENDAR_ALREADY_EXISTS(MsgResponse.USER_ERROR, "Your calendar already exists!", 0),
     CALENDAR_TITLE_CHANGED(MsgResponse.SUCCESS, "You have changed this calendar's title to: {0}!", 1),

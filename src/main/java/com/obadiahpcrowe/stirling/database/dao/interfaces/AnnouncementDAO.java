@@ -24,4 +24,6 @@ public interface AnnouncementDAO extends DAO<StirlingAnnouncement, ObjectId> {
     List<StirlingAnnouncement> getByAudience(List<AccountType> targetAudience);
 
     List<StirlingAnnouncement> getByTags(List<String> tags);
+
+    void updateField(UUID uuid, String field, Object value);
 }
