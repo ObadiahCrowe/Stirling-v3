@@ -84,8 +84,6 @@ public class Stirling {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
-            utilLog.log("Saving config..");
-            UtilConfig.getInstance().saveConfig();
 
             utilLog.log("Unloading modules..");
             ModuleManager.getInstance().unregisterModules();

@@ -1,6 +1,5 @@
 package com.obadiahpcrowe.stirling.util;
 
-import com.obadiahpcrowe.stirling.schools.enums.RegisteredSchool;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
 
@@ -15,15 +14,15 @@ import lombok.Getter;
 public class StirlingConfig {
 
     private VersionType releaseChannel;
-    private RegisteredSchool registeredSchool;
+    private String schoolName;
     private boolean allowUnsignedModules;
     private boolean enableStirlingMarketplace;
     private boolean enableSchoolMarketplace;
 
-    public StirlingConfig(VersionType releaseChannel, RegisteredSchool registeredSchool, boolean allowUnsignedModules,
+    public StirlingConfig(VersionType releaseChannel, String schoolName, boolean allowUnsignedModules,
                           boolean enableStirlingMarketplace, boolean enableSchoolMarketplace) {
         this.releaseChannel = releaseChannel;
-        this.registeredSchool = registeredSchool;
+        this.schoolName = schoolName;
         this.allowUnsignedModules = allowUnsignedModules;
         this.enableStirlingMarketplace = enableStirlingMarketplace;
         this.enableSchoolMarketplace = enableSchoolMarketplace;

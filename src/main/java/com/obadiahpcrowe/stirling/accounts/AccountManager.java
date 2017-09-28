@@ -77,6 +77,7 @@ public class AccountManager {
             accountDAO.delete(account);
 
             UtilFile.getInstance().deleteUserFiles(uuid);
+            new CalendarManager().deleteCalendar(uuid);
 
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DELETED, account.getLocale(), uuid.toString()));
         } else {

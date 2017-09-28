@@ -8,7 +8,6 @@ import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.schools.SchoolManager;
-import com.obadiahpcrowe.stirling.schools.enums.RegisteredSchool;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,15 +62,15 @@ public class InfoAPI implements APIController {
     @CallableAPI(fields = "")
     @RequestMapping(value = "/stirling/v3/isRegistered", method = RequestMethod.GET)
     public boolean isRegistered() {
-        if (SchoolManager.getInstance().getSchool() == RegisteredSchool.UNREGISTERED) {
+        if (SchoolManager.getInstance().getSchool() == null) {
             return false;
         }
         return true;
     }
 
     @CallableAPI(fields = "")
-    @RequestMapping(value = "/stirling/v3/schoolName", method = RequestMethod.GET)
+    @RequestMapping(value = "/stirling/v3/school", method = RequestMethod.GET)
     public String getSchoolName() {
-        return gson.toJson(SchoolManager.getInstance().getSchool().getFriendlyName());
+        return gson.toJson(SchoolManager.getInstance().getSchool());
     }
 }

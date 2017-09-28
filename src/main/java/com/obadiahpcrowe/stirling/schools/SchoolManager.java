@@ -1,9 +1,13 @@
 package com.obadiahpcrowe.stirling.schools;
 
-import com.obadiahpcrowe.stirling.schools.enums.RegisteredSchool;
+import com.obadiahpcrowe.stirling.schools.interfaces.RegisteredSchool;
+import com.obadiahpcrowe.stirling.schools.types.GIHS;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -17,14 +21,27 @@ public class SchoolManager {
 
     private static SchoolManager instance;
     private RegisteredSchool school = null;
+    private List<RegisteredSchool> schools;
 
     public void init() {
-        school = UtilConfig.getInstance().getConfig().getRegisteredSchool();
-        if (school == RegisteredSchool.UNREGISTERED) {
+        schools = Arrays.asList(
+          new GIHS()
+        );
+
+        String schoolName = UtilConfig.getInstance().getConfig().getSchoolName();
+        if (!schoolName.equalsIgnoreCase("UNREGISTERED")) {
+            schools.forEach(s -> {
+                if (s.getName().equalsIgnoreCase(schoolName)) {
+                    school = s;
+                }
+            });
+        }
+
+        if (school == null) {
             UtilLog.getInstance().log("This version of Stirling is unregistered, please apply your specific school " +
               "settings. If this version of Stirling was not licensed to your school, cease using it immediately.");
         } else {
-            UtilLog.getInstance().log("You have set your school to: " + school.getFriendlyName() + "! Thank you for using Stirling.");
+            UtilLog.getInstance().log("You have set your school to: " + school.getName() + "! Thank you for using Stirling.");
         }
     }
 
