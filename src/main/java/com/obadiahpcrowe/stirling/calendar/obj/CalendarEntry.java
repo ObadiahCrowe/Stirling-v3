@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.calendar.obj;
 
+import com.obadiahpcrowe.stirling.modules.importables.ImportableObject;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
-public class CalendarEntry {
+public class CalendarEntry implements ImportableObject {
 
     @Id
     private ObjectId id;

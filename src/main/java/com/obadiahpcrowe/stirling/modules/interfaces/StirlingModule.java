@@ -2,6 +2,7 @@ package com.obadiahpcrowe.stirling.modules.interfaces;
 
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.modules.events.EventListener;
+import com.obadiahpcrowe.stirling.modules.importables.ImportHandler;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public interface StirlingModule {
     List<Class<? extends EventListener>> getListeners();
 
     List<Class<? extends APIController>> getAPICalls();
+
+    List<Class<? extends ImportHandler>> getImportHandlers();
 
     void load();
 

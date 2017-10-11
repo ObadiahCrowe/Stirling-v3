@@ -6,6 +6,7 @@ import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
+import com.obadiahpcrowe.stirling.modules.importables.ImportManager;
 import com.obadiahpcrowe.stirling.schools.SchoolManager;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
@@ -73,8 +74,11 @@ public class Stirling {
         utilLog.log("Registering module event handlers..");
         EventManager.getInstance().init();
 
-        utilLog.log("Register module handoffs..");
+        utilLog.log("Registering module handoffs..");
         HandoffManager.getInstance().init();
+
+        utilLog.log("Registering module import handlers..");
+        ImportManager.getInstance().init();
 
         utilLog.log("Registering module API calls..");
         ModuleManager.getInstance().registerAPICalls();
