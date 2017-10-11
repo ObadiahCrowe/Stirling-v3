@@ -36,7 +36,7 @@ public class ImportManager {
     }
 
     /***
-     * Calls an importable
+     * Calls an importable - What is this bullshit? Who knows? I wrote this 30m ago and I can't even remember. Oh well, let's hope it works in the morning.
      * @return Returns the imported data as GSON. Stirling should be expecting the returned data format.
      */
     public String callImportable(Method method, Object... params) {
