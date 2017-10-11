@@ -1,8 +1,13 @@
 package com.obadiahpcrowe.stirling.modules.importables;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
+import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
+import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -34,8 +39,17 @@ public class ImportManager {
      * Calls an importable
      * @return Returns the imported data as GSON. Stirling should be expecting the returned data format.
      */
-    public String callImportable(Method method) {
-        return "";
+    public String callImportable(Method method, Object... params) {
+        Gson gson = new Gson();
+        try {
+            method.setAccessible(true);
+            String json = gson.toJson(method.invoke(method.getClass().newInstance(), params));
+
+            return json;
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, StirlingLocale.ENGLISH, "importing data"));
     }
 
     public List<Method> getImportablesBySource(String sourceName) {
