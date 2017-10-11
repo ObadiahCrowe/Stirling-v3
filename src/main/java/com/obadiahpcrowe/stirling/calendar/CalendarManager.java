@@ -23,6 +23,7 @@ import java.util.UUID;
  */
 public class CalendarManager {
 
+    private static CalendarManager instance;
     private MorphiaService morphiaService;
     private CalendarDAO calendarDAO;
     private Gson gson;
@@ -171,5 +172,12 @@ public class CalendarManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DESC_CHANGED, StirlingLocale.ENGLISH, desc));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, owner.toString()));
+    }
+
+    public static CalendarManager getInstance() {
+        if (instance == null) {
+            instance = new CalendarManager();
+        }
+        return instance;
     }
 }

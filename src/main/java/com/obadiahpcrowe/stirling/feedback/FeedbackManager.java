@@ -24,6 +24,7 @@ import java.util.UUID;
 public class FeedbackManager {
 
     private static FeedbackManager instance;
+
     private MorphiaService morphiaService;
     private FeedbackDAO feedbackDAO;
     private Gson gson = new Gson();

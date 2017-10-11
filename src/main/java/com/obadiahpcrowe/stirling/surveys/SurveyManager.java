@@ -23,6 +23,8 @@ import java.util.UUID;
  */
 public class SurveyManager {
 
+    private static SurveyManager instance;
+
     private MorphiaService morphiaService;
     private SurveyDAO surveyDAO;
     private Gson gson;
@@ -89,5 +91,11 @@ public class SurveyManager {
             return false;
         }
         return true;
+    }
+
+    public static SurveyManager getInstance() {
+        if (instance == null)
+            instance = new SurveyManager();
+        return instance;
     }
 }

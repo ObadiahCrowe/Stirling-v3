@@ -25,6 +25,8 @@ import java.util.UUID;
  */
 public class AccountManager {
 
+    private static AccountManager instance;
+
     private MorphiaService morphiaService;
     private AccountDAO accountDAO;
     private Gson gson = new Gson();
@@ -119,5 +121,11 @@ public class AccountManager {
             }
         }
         return false;
+    }
+
+    public static AccountManager getInstance() {
+        if (instance == null)
+            instance = new AccountManager();
+        return instance;
     }
 }

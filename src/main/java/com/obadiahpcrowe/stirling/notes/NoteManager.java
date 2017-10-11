@@ -22,6 +22,8 @@ import java.util.UUID;
  */
 public class NoteManager {
 
+    private static NoteManager instance;
+
     private MorphiaService morphiaService;
     private NoteDAO noteDAO;
     private Gson gson = new Gson();
@@ -91,5 +93,11 @@ public class NoteManager {
         noteDAO.save(note);
 
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
+    }
+
+    public static NoteManager getInstance() {
+        if (instance == null)
+            instance = new NoteManager();
+        return instance;
     }
 }

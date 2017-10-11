@@ -24,6 +24,8 @@ import java.util.List;
  */
 public class SaceManager {
 
+    private static SaceManager instance;
+
     private MorphiaService morphiaService;
     private SaceDAO saceDAO;
     private Gson gson = new Gson();
@@ -91,5 +93,11 @@ public class SaceManager {
             return user.getSaceId();
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.SACE_CREDS_NOT_FOUND, account.getLocale()));
+    }
+
+    public static SaceManager getInstance() {
+        if (instance == null)
+            instance = new SaceManager();
+        return instance;
     }
 }

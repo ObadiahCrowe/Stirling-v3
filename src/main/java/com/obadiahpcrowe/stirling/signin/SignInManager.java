@@ -26,6 +26,8 @@ import java.util.HashMap;
  */
 public class SignInManager {
 
+    private static SignInManager instance;
+
     private MorphiaService morphiaService;
     private SignInDAO signInDAO;
     private Gson gson = new Gson();
@@ -88,5 +90,11 @@ public class SignInManager {
     public boolean isSignedIn(StirlingAccount account) {
         PresentUser presentUser = getPresentUser(account);
         return presentUser.isPresent();
+    }
+
+    public static SignInManager getInstance() {
+        if (instance == null)
+            instance = new SignInManager();
+        return instance;
     }
 }

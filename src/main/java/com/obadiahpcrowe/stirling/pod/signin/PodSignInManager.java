@@ -22,6 +22,8 @@ import java.io.IOException;
  */
 public class PodSignInManager {
 
+    private static PodSignInManager instance;
+
     private MorphiaService morphiaService;
     private PodSignInDAO podSignInDAO;
     private Gson gson = new Gson();
@@ -76,5 +78,11 @@ public class PodSignInManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.POD_SIGN_IN, account.getLocale(), reason.getFriendlyName()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_ID_NOT_FOUND, account.getLocale(), account.getDisplayName()));
+    }
+
+    public static PodSignInManager getInstance() {
+        if (instance == null)
+            instance = new PodSignInManager();
+        return instance;
     }
 }

@@ -20,6 +20,8 @@ import java.util.UUID;
  */
 public class ClassManager {
 
+    private static ClassManager instance;
+
     private MorphiaService morphiaService;
     private ClassesDAO classesDAO;
     private Gson gson = new Gson();
@@ -110,5 +112,11 @@ public class ClassManager {
 
     public String removeStudent() {
         return "";
+    }
+
+    public static ClassManager getInstance() {
+        if (instance == null)
+            instance = new ClassManager();
+        return instance;
     }
 }

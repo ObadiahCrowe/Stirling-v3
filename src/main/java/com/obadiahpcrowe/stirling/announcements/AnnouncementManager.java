@@ -28,6 +28,8 @@ import java.util.*;
  */
 public class AnnouncementManager {
 
+    private static AnnouncementManager instance;
+
     private MorphiaService morphiaService;
     private AnnouncementDAO announcementDAO;
     private Gson gson = new Gson();
@@ -117,5 +119,11 @@ public class AnnouncementManager {
 
     public List<StirlingAnnouncement> getAnnouncements(StirlingAccount account) {
         return announcementDAO.getByAudience(Arrays.asList(account.getAccountType()));
+    }
+
+    public static AnnouncementManager getInstance() {
+        if (instance == null)
+            instance = new AnnouncementManager();
+        return instance;
     }
 }

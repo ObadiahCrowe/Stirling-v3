@@ -21,6 +21,8 @@ import java.io.IOException;
  */
 public class LaptopManager {
 
+    private static LaptopManager instance;
+
     private MorphiaService morphiaService;
     private LaptopDAO laptopDAO;
     private Gson gson = new Gson();
@@ -70,5 +72,11 @@ public class LaptopManager {
 
     private LaptopUser getLaptopUser(StirlingAccount account) {
         return laptopDAO.getByUuid(account.getUuid());
+    }
+
+    public static LaptopManager getInstance() {
+        if (instance == null)
+            instance = new LaptopManager();
+        return instance;
     }
 }
