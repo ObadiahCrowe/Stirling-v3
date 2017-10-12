@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
@@ -47,5 +48,17 @@ public class DebugAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
         }
         return gson.toJson("This API is only available on development builds.");
+    }
+
+    @CallableAPI(fields = "")
+    @RequestMapping(value = "/stirling/v3/dundee/reloadModules", method = RequestMethod.GET)
+    public void reloadModules() {
+        ModuleManager.getInstance().reloadAllModules();
+    }
+
+    @CallableAPI(fields = "moduleName")
+    @RequestMapping(value = "/stirling/v3/dundee/reloadModule", method = RequestMethod.GET)
+    public void reloadModule(@RequestParam("moduleName") String moduleName) {
+        ModuleManager.getInstance().reloadModule(moduleName);
     }
 }

@@ -47,6 +47,21 @@ public class ModuleManager {
         });
     }
 
+    public void reloadModule(String moduleName) {
+        modules.forEach(module -> {
+            if (module.getName().equals(moduleName)) {
+                module.unload();
+                registerModules();
+            }
+        });
+    }
+
+    public void reloadAllModules() {
+        modules.forEach(module -> {
+            reloadModule(module.getName());
+        });
+    }
+
     public void loadModule(File file) {
         try {
             URL manifestURL = new URL("jar:file:" + file.getAbsolutePath() + "!/META-INF/MANIFEST.MF");
@@ -59,9 +74,11 @@ public class ModuleManager {
             StirlingModule module = (StirlingModule) loader.loadClass(manifest.getMainAttributes()
               .getValue("Main-Class")).newInstance();
 
-            modules.add(module);
-            module.load();
-            utilLog.log("Loaded module: " + module.getName());
+            if (!modules.contains(module)) {
+                modules.add(module);
+                module.load();
+                utilLog.log("Loaded module: " + module.getName());
+            }
         } catch (IOException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
