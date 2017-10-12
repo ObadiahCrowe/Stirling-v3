@@ -22,7 +22,11 @@ public class StirlingLesson extends CalendarEntry {
     private StirlingPostable classNote;
     private StirlingPostable homework;
 
-    public StirlingLesson(String name, String desc, String room, StirlingDate dateTime) {
+    public StirlingLesson(String name, String desc, String room, StirlingDate dateTime, Map<UUID, AttendanceStatus> studentAttendance,
+                          StirlingPostable classNote, StirlingPostable homework) {
         super(name, desc, dateTime.getDate(), dateTime.getDate(), dateTime.getTime(), dateTime.getTime(), room);
+        this.studentAttendance = studentAttendance;
+        this.classNote = classNote;
+        this.homework = homework;
     }
 }

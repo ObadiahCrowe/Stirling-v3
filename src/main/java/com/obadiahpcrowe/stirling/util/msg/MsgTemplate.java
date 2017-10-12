@@ -52,6 +52,12 @@ public enum MsgTemplate {
 
     POD_SIGN_IN(MsgResponse.SUCCESS, "You have signed into the pod for {0}!", 1),
 
+    CLASS_CREATED(MsgResponse.SUCCESS, "You have created the class, {0}!", 1),
+    CLASS_DELETED(MsgResponse.SUCCESS, "You have deleted the class, {0}!", 1),
+    CLASS_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The class, {0}, already exists!", 1),
+    CLASS_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The class, with the id: {0}, does not exist!", 1),
+    CLASS_NOT_OWNER(MsgResponse.USER_ERROR, "You are not an owner of this class!", 0),
+
     CONTACT_ADDED(MsgResponse.SUCCESS, "You have added, {0}, as a contact!", 1),
     CONTACT_REMOVED(MsgResponse.SUCCESS, "You have removed, {0}, as a contact!", 1),
     CONTACT_REQUESTED(MsgResponse.SUCCESS, "You have requested {0} to add you as a contact!", 1),

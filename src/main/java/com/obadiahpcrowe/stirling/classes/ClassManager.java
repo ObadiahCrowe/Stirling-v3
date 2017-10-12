@@ -6,10 +6,13 @@ import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ClassesDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ClassesDAO;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
+import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,9 +42,9 @@ public class ClassManager {
                 UtilFile.getInstance().createClassFolder(clazz.getUuid());
 
                 classesDAO.save(clazz);
-                return gson.toJson(new StirlingMsg());
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_CREATED, account.getLocale(), name));
             }
-            return gson.toJson(new StirlingMsg());
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ALREADY_EXISTS, account.getLocale(), name));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create classes", "TEACHER"));
     }
@@ -50,13 +53,13 @@ public class ClassManager {
         if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
-                if (clazz.getTeachers().contains(account.getUuid())) {
+                if (clazz.getOwners().contains(account.getAccountName())) {
                     classesDAO.delete(clazz);
-                    return gson.toJson(new StirlingMsg());
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DELETED, account.getLocale(), clazz.getName()));
                 }
-                return gson.toJson(new StirlingMsg());
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_NOT_OWNER, account.getLocale()));
             }
-            return gson.toJson(new StirlingMsg());
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete classes", "TEACHER"));
     }
@@ -97,48 +100,49 @@ public class ClassManager {
         return "";
     }
 
-    @Deprecated // TODO: 12/10/17 Fill this out in a later release
-    public String setOutline() {
+    public String addSection(StirlingAccount account, UUID classUuid, String title, String desc) {
         return "";
     }
 
-    public String addSection() {
+    public String removeSection(StirlingAccount account, UUID classUuid, UUID sectionUuid) {
         return "";
     }
 
-    public String removeSection() {
+    public String addPostable(StirlingAccount account, UUID classUuid, UUID sectionUuid, String title,
+                              String content, List<AttachableResource> resources) {
         return "";
     }
 
-    public String addPostable() {
+    public String removePostable(StirlingAccount account, UUID classUuid, UUID postableUuid) {
         return "";
     }
 
-    public String removePostable() {
+    public String addCatchupModule(StirlingAccount account, UUID classUuid, UUID lessonUuid, String title,
+                                   String content, List<AttachableResource> resources) {
         return "";
     }
 
-    public String addCatchupModule() {
+    public String removeCatchupModule(StirlingAccount account, UUID classUuid, UUID lessonUuid) {
         return "";
     }
 
-    public String removeCatchupModule() {
+    public String addAssessmentPiece(StirlingAccount account, UUID classUuid, String title, String desc, StirlingDate dueDate) {
         return "";
     }
 
-    public String addAssessmentPiece() {
+    public String removeAssessmentForStudent(StirlingAccount account, UUID classUuid, UUID studentUuid, UUID assignmentUuid) {
         return "";
     }
 
-    public String removeAssessmentPiece() {
+    public String removeAssignmentForAll(StirlingAccount account, UUID classUuid, UUID assignmentUuid) {
         return "";
     }
 
-    public String addStudent() {
+    public String addStudent(StirlingAccount account, UUID classUuid, UUID studentUuid) {
         return "";
     }
 
-    public String removeStudent() {
+    public String removeStudent(StirlingAccount account, UUID classUuid, UUID studentUuid) {
         return "";
     }
 

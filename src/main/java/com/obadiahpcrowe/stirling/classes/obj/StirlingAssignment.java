@@ -4,6 +4,8 @@ import com.obadiahpcrowe.stirling.classes.interfaces.SectionChild;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 
+import java.util.UUID;
+
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 26/9/17 at 9:23 PM
@@ -14,6 +16,7 @@ import lombok.Getter;
 @Getter
 public class StirlingAssignment implements SectionChild {
 
+    private UUID uuid;
     private String title;
     private String desc;
     private StirlingResult result;
@@ -25,6 +28,7 @@ public class StirlingAssignment implements SectionChild {
     public StirlingAssignment() {}
 
     public StirlingAssignment(String title, String desc, StirlingResult result, StirlingDate dueDateTime, String comments) {
+        this.uuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;
         this.result = result;
