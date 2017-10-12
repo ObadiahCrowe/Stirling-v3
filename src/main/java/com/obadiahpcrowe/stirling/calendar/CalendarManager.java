@@ -69,7 +69,7 @@ public class CalendarManager {
               entry.getStartDateTime().getTime(), entry.getEndDateTime().getTime(), entry.getLocation());
         });
 
-        return ""; // TODO: 12/10/17 this
+        return gson.toJson(new StirlingMsg(MsgTemplate.CALENDAR_EVENTS_IMPORTED, StirlingLocale.ENGLISH, "GIHS calendar"));
     }
 
     public StirlingCalendar getCalendar(UUID owner) {

@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.classes.obj;
 
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
+import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class StirlingCatchup {
     private UUID lessonUuid;
     private String title;
     private String content;
+    private StirlingDate postDateTime;
     private List<AttachableResource> resources;
 
     public StirlingCatchup() {}
@@ -27,6 +29,7 @@ public class StirlingCatchup {
         this.lessonUuid = lessonUuid;
         this.title = title;
         this.content = content;
+        this.postDateTime = StirlingDate.getNow();
         this.resources = resources;
     }
 }

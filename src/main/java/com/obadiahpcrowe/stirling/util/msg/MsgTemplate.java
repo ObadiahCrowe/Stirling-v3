@@ -36,6 +36,7 @@ public enum MsgTemplate {
     CALENDAR_DELETED(MsgResponse.SUCCESS, "{0}'s calendar has been deleted!", 1),
     CALENDAR_CREATED(MsgResponse.SUCCESS, "{0}'s calendar has been created!", 1),
     CALENDAR_EVENT_EDITED(MsgResponse.SUCCESS, "The event, {0}, has been edited!", 1),
+    CALENDAR_EVENTS_IMPORTED(MsgResponse.SUCCESS, "The events from, {0}, have been imported into your calendar!", 1),
 
     CLOUD_STORAGE_FULL(MsgResponse.USER_ERROR, "Your cloud storage is full!", 0),
     CLOUD_FILE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The file, {0}, does not exist!", 1),

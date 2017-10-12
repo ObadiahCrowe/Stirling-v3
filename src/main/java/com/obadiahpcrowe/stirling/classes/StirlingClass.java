@@ -51,6 +51,7 @@ public class StirlingClass {
     private Map<UUID, List<StirlingResult>> studentResults; // TODO: 26/9/17 Generate report and shit from these results.
     private Map<UUID, List<ProgressMarker>> progressMarkers;
 
+    @Deprecated
     public StirlingClass() {}
 
     public StirlingClass(StirlingAccount account, String name, String desc, String room) {

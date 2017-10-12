@@ -23,8 +23,8 @@ public class StirlingResource extends AttachableResource implements SectionChild
     @Deprecated
     public StirlingResource() {}
 
-    public StirlingResource(UUID owner, String title) {
-        super(owner, title);
+    public StirlingResource(UUID owner, String fileName, String title) {
+        super(owner, fileName);
         this.title = title;
         this.postDateTime = StirlingDate.getNow();
     }
