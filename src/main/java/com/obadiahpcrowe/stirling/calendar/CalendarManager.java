@@ -69,7 +69,7 @@ public class CalendarManager {
               entry.getStartDateTime().getTime(), entry.getEndDateTime().getTime(), entry.getLocation());
         });
 
-        return "";
+        return ""; // TODO: 12/10/17 this
     }
 
     public StirlingCalendar getCalendar(UUID owner) {

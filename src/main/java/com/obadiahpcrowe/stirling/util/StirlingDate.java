@@ -19,4 +19,8 @@ public class StirlingDate {
         this.date = date;
         this.time = time;
     }
+
+    public static StirlingDate getNow() {
+        return new StirlingDate(UtilTime.getInstance().getFriendlyDate(), UtilTime.getInstance().getFriendlyTime());
+    }
 }

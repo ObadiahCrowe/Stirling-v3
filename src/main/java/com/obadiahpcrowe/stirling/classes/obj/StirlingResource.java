@@ -5,29 +5,27 @@ import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 
-import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
- * Creation Date / Time: 26/9/17 at 4:52 PM
- * Project: Stirling
+ * Creation Date / Time: 12/10/17 at 2:29 PM
+ * Project: Stirling-v3
  * Package: com.obadiahpcrowe.stirling.classes.obj
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-public class StirlingPostable implements SectionChild {
+public class StirlingResource extends AttachableResource implements SectionChild {
 
     private String title;
-    private String content;
     private StirlingDate postDateTime;
-    private List<AttachableResource> resources;
 
-    public StirlingPostable() {}
+    @Deprecated
+    public StirlingResource() {}
 
-    public StirlingPostable(String title, String content, List<AttachableResource> resources) {
+    public StirlingResource(UUID owner, String title) {
+        super(owner, title);
         this.title = title;
-        this.content = content;
         this.postDateTime = StirlingDate.getNow();
-        this.resources = resources;
     }
 }

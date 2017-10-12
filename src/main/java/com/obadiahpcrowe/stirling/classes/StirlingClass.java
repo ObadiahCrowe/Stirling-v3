@@ -1,5 +1,7 @@
 package com.obadiahpcrowe.stirling.classes;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.obj.*;
@@ -38,6 +40,7 @@ public class StirlingClass {
     private List<StirlingLesson> lessons;
 
     // Resources and such
+    private List<StirlingSection> sections;
     private List<StirlingCatchup> catchups; //date, catchup info
     private List<StirlingPostable> classNotes;
     private List<StirlingPostable> homework;
@@ -57,17 +60,18 @@ public class StirlingClass {
         this.room = room;
 
         this.members = new HashMap<UUID, ClassRole>() {{ put(account.getUuid(), ClassRole.TEACHER); }};
-        this.students = new ArrayList<>();
+        this.students = Lists.newArrayList();
         this.teachers = Arrays.asList(account.getUuid());
-        this.lessons = new ArrayList<>();
+        this.lessons = Lists.newArrayList();
 
-        this.catchups = new ArrayList<>();
-        this.classNotes = new ArrayList<>();
-        this.homework = new ArrayList<>();
-        this.resources = new ArrayList<>();
+        this.sections = Lists.newArrayList();
+        this.catchups = Lists.newArrayList();
+        this.classNotes = Lists.newArrayList();
+        this.homework = Lists.newArrayList();
+        this.resources = Lists.newArrayList();
 
-        this.studentAssignments = new HashMap<>();
-        this.studentResults = new HashMap<>();
-        this.progressMarkers = new HashMap<>();
+        this.studentAssignments = Maps.newHashMap();
+        this.studentResults = Maps.newHashMap();
+        this.progressMarkers = Maps.newHashMap();
     }
 }

@@ -31,45 +31,66 @@ public class ClassManager {
         this.classesDAO = new ClassesDAOImpl(StirlingClass.class, morphiaService.getDatastore());
     }
 
+    /*
     public String createClass(StirlingAccount account, String name, String desc, String room) {
         if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
-
+            if (!classExists(name)) {
+                //
+            }
+            return gson.toJson(new StirlingMsg());
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create classes", "TEACHER"));
     }
 
-    public String deleteClass() {
-        return "";
-    }
+    public String deleteClass(StirlingAccount account, UUID classUuid) {
+        if (classExists(classUuid)) {
+            StirlingClass clazz = getByUuid(classUuid);
+            if (clazz.getTeachers().contains(account.getUuid())) {
+                classesDAO.delete(clazz);
+                return gson.toJson(new StirlingMsg());
+            }
+            return gson.toJson(new StirlingMsg());
+        }
+        return gson.toJson(new StirlingMsg());
+    }*/
 
-    public StirlingClass getStirlingClass(UUID classUuid) {
+    public StirlingClass getByUuid(UUID classUuid) {
         return classesDAO.getByUuid(classUuid);
     }
 
-    public boolean classExists() {
-        return false;
+    public StirlingClass getByName(String className) {
+        return classesDAO.getByName(className);
     }
 
-    public String addTeachers() {
+    public boolean classExists(UUID classUuid) {
+        return getByUuid(classUuid) != null;
+    }
+
+    public boolean classExists(String className) {
+        return getByName(className) != null;
+    }
+
+    public String addTeachers(StirlingAccount account, UUID classUuid, UUID... teacherUuids) {
         return "";
     }
 
-    public String removeTeachers() {
+    public String removeTeachers(StirlingAccount account, UUID classUuid, UUID... teacherUuids) {
         return "";
     }
 
-    public String setRoom() {
+    public String setRoom(StirlingAccount account, UUID classUuid, String roomName) {
         return "";
     }
 
-    public String setName() {
+    public String setName(StirlingAccount account, UUID classUuid, String className) {
         return "";
     }
 
-    public String setDesc() {
+    public String setDesc(StirlingAccount account, UUID classUuid, String desc) {
         return "";
     }
 
+    @Deprecated // TODO: 12/10/17 Fill this out in a later release
     public String setOutline() {
         return "";
     }

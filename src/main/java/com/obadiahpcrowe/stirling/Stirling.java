@@ -31,7 +31,6 @@ public class Stirling {
     private @Getter StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
     // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2) (Maybe SACE integration)
-    // TODO: 11/10/17 Fix retarded calendar shit
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();

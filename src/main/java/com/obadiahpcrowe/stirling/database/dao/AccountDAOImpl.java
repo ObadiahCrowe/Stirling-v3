@@ -70,9 +70,6 @@ public class AccountDAOImpl extends BasicDAO<StirlingAccount, ObjectId> implemen
     public boolean emailAddressExists(String emailAddress) {
         Query<StirlingAccount> query = createQuery().field("emailAddress").equal(emailAddress);
 
-        if (query == null) {
-            return false;
-        }
-        return true;
+        return query.get() != null;
     }
 }
