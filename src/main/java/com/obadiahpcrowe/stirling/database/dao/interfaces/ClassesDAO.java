@@ -24,4 +24,6 @@ public interface ClassesDAO extends DAO<StirlingClass, ObjectId> {
     List<StirlingClass> getByEnrollment(StirlingAccount account);
 
     StirlingClass getByName(String name);
+
+    void updateField(StirlingClass clazz, String field, Object value);
 }

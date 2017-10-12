@@ -57,6 +57,11 @@ public enum MsgTemplate {
     CLASS_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The class, {0}, already exists!", 1),
     CLASS_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The class, with the id: {0}, does not exist!", 1),
     CLASS_NOT_OWNER(MsgResponse.USER_ERROR, "You are not an owner of this class!", 0),
+    CLASS_TEACHERS_ADDED(MsgResponse.SUCCESS, "You have added teachers to the class: {0}!", 1),
+    CLASS_TEACHERS_REMOVED(MsgResponse.SUCCESS, "You have removed teachers from the class: {0}!", 1),
+    CLASS_ROOM_CHANGED(MsgResponse.SUCCESS, "You have changed {0}'s room to: {1}!", 2),
+    CLASS_NAME_CHANGED(MsgResponse.SUCCESS, "You have changed {0}'s name to: {1}!", 2),
+    CLASS_DESC_CHANGED(MsgResponse.SUCCESS, "You have changed {0}'s description to: {1}!", 2),
 
     CONTACT_ADDED(MsgResponse.SUCCESS, "You have added, {0}, as a contact!", 1),
     CONTACT_REMOVED(MsgResponse.SUCCESS, "You have removed, {0}, as a contact!", 1),

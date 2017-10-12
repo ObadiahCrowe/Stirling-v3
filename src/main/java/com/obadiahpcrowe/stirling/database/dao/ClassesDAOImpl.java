@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 import java.util.UUID;
@@ -54,5 +55,13 @@ public class ClassesDAOImpl extends BasicDAO<StirlingClass, ObjectId> implements
           .field("name").equal(name);
 
         return query.get();
+    }
+
+    @Override
+    public void updateField(StirlingClass clazz, String field, Object value) {
+        Query<StirlingClass> query = createQuery().field("uuid").equal(clazz.getUuid());
+        UpdateOperations<StirlingClass> updateOps = createUpdateOperations().set(field, value);
+
+        update(query, updateOps);
     }
 }

@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.classes;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
@@ -61,7 +62,7 @@ public class ClassManager {
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
-        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete classes", "TEACHER"));
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public StirlingClass getByUuid(UUID classUuid) {
@@ -81,23 +82,76 @@ public class ClassManager {
     }
 
     public String addTeachers(StirlingAccount account, UUID classUuid, UUID... teacherUuids) {
-        return "";
+        if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                List<UUID> teachers = Lists.newArrayList(teacherUuids);
+                teachers.addAll(clazz.getTeachers());
+
+                classesDAO.updateField(clazz, "teachers", teachers);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_TEACHERS_ADDED, account.getLocale(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public String removeTeachers(StirlingAccount account, UUID classUuid, UUID... teacherUuids) {
-        return "";
+        if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                List<UUID> finalTeachers = Lists.newArrayList(clazz.getTeachers());
+                List<UUID> teachers = Lists.newArrayList(teacherUuids);
+                clazz.getTeachers().forEach(teacher -> {
+                    if (teachers.contains(teacher)) {
+                        finalTeachers.remove(teacher);
+                    }
+                });
+
+                classesDAO.updateField(clazz, "teachers", finalTeachers);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_TEACHERS_REMOVED, account.getLocale(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public String setRoom(StirlingAccount account, UUID classUuid, String roomName) {
-        return "";
+        if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+                classesDAO.updateField(clazz, "room", roomName);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ROOM_CHANGED, account.getLocale(), clazz.getName(), roomName));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public String setName(StirlingAccount account, UUID classUuid, String className) {
-        return "";
+        if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+                classesDAO.updateField(clazz, "name", className);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_NAME_CHANGED, account.getLocale(), clazz.getName(), className));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public String setDesc(StirlingAccount account, UUID classUuid, String desc) {
-        return "";
+        if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+                classesDAO.updateField(clazz, "desc", desc);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DESC_CHANGED, account.getLocale(), clazz.getName(), desc));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public String addSection(StirlingAccount account, UUID classUuid, String title, String desc) {
@@ -138,11 +192,11 @@ public class ClassManager {
         return "";
     }
 
-    public String addStudent(StirlingAccount account, UUID classUuid, UUID studentUuid) {
+    public String addStudents(StirlingAccount account, UUID classUuid, UUID... studentUuid) {
         return "";
     }
 
-    public String removeStudent(StirlingAccount account, UUID classUuid, UUID studentUuid) {
+    public String removeStudents(StirlingAccount account, UUID classUuid, UUID... studentUuid) {
         return "";
     }
 
