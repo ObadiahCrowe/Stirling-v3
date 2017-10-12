@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.util;
 
+import com.google.common.collect.Lists;
 import com.obadiahpcrowe.stirling.Stirling;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -95,22 +96,46 @@ public class UtilFile {
             userFolder.mkdir();
         }
 
-        File[] folders = new File[] {
+        List<File> folders = Lists.newArrayList(
           new File("Images"),
           new File("Classes"),
           new File("Cloud"),
-          new File("Videos"),
-        };
+          new File("Videos")
+        );
 
-        for (File file : folders) {
+        folders.forEach(file -> {
             File dirFile = new File(userFolder + File.separator + file);
             if (!dirFile.exists()) {
                 dirFile.mkdir();
             }
-        }
+        });
 
         copyDefaultAvatar(uuid.toString());
         copyDefaultBanner(uuid.toString());
+    }
+
+    public void createClassFolder(UUID classUuid) {
+        File classFolder = new File(home + File.separator + "Classes" + File.separator + classUuid.toString());
+
+        if (!classFolder.exists()) {
+            classFolder.mkdir();
+        }
+
+        List<File> folders = Lists.newArrayList(
+          new File("Assignments"),
+          new File("Resources")
+        );
+
+        folders.forEach(file -> {
+            File dirFile = new File(classFolder + File.separator + file);
+            if (!dirFile.exists()) {
+                dirFile.mkdir();
+            }
+        });
+    }
+
+    public void deleteClassFolder(UUID classUuid) {
+        deleteDirectory(new File(home + File.separator + "Classes" + File.separator + classUuid.toString()));
     }
 
     public File getUserFolder(UUID uuid) {

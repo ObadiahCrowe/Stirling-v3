@@ -6,6 +6,7 @@ import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ClassesDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ClassesDAO;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -31,11 +32,14 @@ public class ClassManager {
         this.classesDAO = new ClassesDAOImpl(StirlingClass.class, morphiaService.getDatastore());
     }
 
-    /*
     public String createClass(StirlingAccount account, String name, String desc, String room) {
         if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
             if (!classExists(name)) {
-                //
+                StirlingClass clazz = new StirlingClass(account, name, desc, room);
+                UtilFile.getInstance().createClassFolder(clazz.getUuid());
+
+                classesDAO.save(clazz);
+                return gson.toJson(new StirlingMsg());
             }
             return gson.toJson(new StirlingMsg());
         }
@@ -43,16 +47,19 @@ public class ClassManager {
     }
 
     public String deleteClass(StirlingAccount account, UUID classUuid) {
-        if (classExists(classUuid)) {
-            StirlingClass clazz = getByUuid(classUuid);
-            if (clazz.getTeachers().contains(account.getUuid())) {
-                classesDAO.delete(clazz);
+        if (account.getAccountType().getAccessLevel() >= AccountType.TEACHER.getAccessLevel()) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+                if (clazz.getTeachers().contains(account.getUuid())) {
+                    classesDAO.delete(clazz);
+                    return gson.toJson(new StirlingMsg());
+                }
                 return gson.toJson(new StirlingMsg());
             }
             return gson.toJson(new StirlingMsg());
         }
-        return gson.toJson(new StirlingMsg());
-    }*/
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete classes", "TEACHER"));
+    }
 
     public StirlingClass getByUuid(UUID classUuid) {
         return classesDAO.getByUuid(classUuid);

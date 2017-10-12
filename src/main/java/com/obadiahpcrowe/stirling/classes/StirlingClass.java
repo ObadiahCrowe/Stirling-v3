@@ -24,11 +24,21 @@ import java.util.*;
 @Entity("classes")
 public class StirlingClass {
 
+    /*
+    The main problem with adoption right now is that Stirling is only truely effective when everyone is using it, v2 and below didn't have this problem.
+    So now it's decently annoying to regulate who is in what class
+    And how I determine each class and such
+    So as far as permissions go, it's gonna be interesting
+    What I'm thinking is assigning each daymap class and id, then when a user adds their daymap credentials, Stirling finds the Id and the associated Stirling class and adds it to the user
+    I'm quite tired right now, so if anyone could verify that logic, that would be great
+     */
+
     @Id
     private ObjectId objectId;
 
     // General
     private UUID uuid;
+    private List<String> owners;
     private String name;
     private String desc;
     private String room;
@@ -56,13 +66,39 @@ public class StirlingClass {
 
     public StirlingClass(StirlingAccount account, String name, String desc, String room) {
         this.uuid = UUID.randomUUID();
+        this.owners = Lists.newArrayList(account.getAccountName());
         this.name = name;
         this.desc = desc;
         this.room = room;
 
         this.members = new HashMap<UUID, ClassRole>() {{ put(account.getUuid(), ClassRole.TEACHER); }};
         this.students = Lists.newArrayList();
-        this.teachers = Arrays.asList(account.getUuid());
+        this.teachers = Lists.newArrayList(account.getUuid());
+        this.lessons = Lists.newArrayList();
+
+        this.sections = Lists.newArrayList();
+        this.catchups = Lists.newArrayList();
+        this.classNotes = Lists.newArrayList();
+        this.homework = Lists.newArrayList();
+        this.resources = Lists.newArrayList();
+
+        this.studentAssignments = Maps.newHashMap();
+        this.studentResults = Maps.newHashMap();
+        this.progressMarkers = Maps.newHashMap();
+    }
+
+    // TODO: 12/10/17 How to get this shit to work vvv
+    // I scrape daymap shit, save against the id, generate a class with the id linked somehow. Every other user that calls the same Id gets the same Stirling class
+    public StirlingClass(String ownerId, String name, String desc, String room) {
+        this.uuid = UUID.randomUUID();
+        this.owners = Lists.newArrayList(ownerId);
+        this.name = name;
+        this.desc = desc;
+        this.room = room;
+
+        this.members = Maps.newHashMap();
+        this.students = Lists.newArrayList();
+        this.teachers = Lists.newArrayList();
         this.lessons = Lists.newArrayList();
 
         this.sections = Lists.newArrayList();
