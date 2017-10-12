@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.database.dao.interfaces.AccountDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.events.types.AccountCreatedEvent;
+import com.obadiahpcrowe.stirling.schools.SchoolManager;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
@@ -38,24 +39,33 @@ public class AccountManager {
 
     public String createAccount(String accountName, String emailAddress, String password) {
         if (!accountExists(accountName)) {
-            if (password.length() < 8) {
-                return gson.toJson(new StirlingMsg(MsgTemplate.FIELD_TOO_SHORT, StirlingLocale.ENGLISH, "password", "8"));
+            if (!emailExists(emailAddress)) {
+                String ext = SchoolManager.getInstance().getSchool().getEmailExtension();
+                if (!emailAddress.endsWith(ext)) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.EMAIL_ADDRESS_INVALID_EXT, StirlingLocale.ENGLISH, emailAddress, ext));
+                }
+
+                if (password.length() < 8) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.FIELD_TOO_SHORT, StirlingLocale.ENGLISH, "password", "8"));
+                }
+
+                if (password.length() > 36) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.FIELD_TOO_LONG, StirlingLocale.ENGLISH, "password", "36"));
+                }
+
+                StirlingAccount account = new StirlingAccount(accountName, emailAddress, password);
+                accountDAO.save(account);
+
+                CalendarManager.getInstance().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
+
+                UtilFile.getInstance().createUserFiles(account.getUuid());
+
+                StirlingMsg msg = new StirlingMsg(MsgTemplate.ACCOUNT_CREATED, StirlingLocale.ENGLISH, accountName);
+                EventManager.getInstance().fireEvent(new AccountCreatedEvent(msg, accountName, account.getUuid()));
+                return gson.toJson(msg);
+            } else {
+                return gson.toJson(new StirlingMsg(MsgTemplate.EMAIL_ADDRESS_IN_USE, StirlingLocale.ENGLISH, emailAddress));
             }
-
-            if (password.length() > 36) {
-                return gson.toJson(new StirlingMsg(MsgTemplate.FIELD_TOO_LONG, StirlingLocale.ENGLISH, "password", "36"));
-            }
-
-            StirlingAccount account = new StirlingAccount(accountName, emailAddress, password);
-            accountDAO.save(account);
-
-            CalendarManager.getInstance().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
-
-            UtilFile.getInstance().createUserFiles(account.getUuid());
-
-            StirlingMsg msg = new StirlingMsg(MsgTemplate.ACCOUNT_CREATED, StirlingLocale.ENGLISH, accountName);
-            EventManager.getInstance().fireEvent(new AccountCreatedEvent(msg, accountName, account.getUuid()));
-            return gson.toJson(msg);
         } else {
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_EXISTS, StirlingLocale.ENGLISH, accountName));
         }
@@ -89,6 +99,10 @@ public class AccountManager {
 
     public void updateField(StirlingAccount account, String field, Object value) {
         accountDAO.updateField(account, field, value);
+    }
+
+    private boolean emailExists(String emailAddress) {
+        return accountDAO.emailAddressExists(emailAddress);
     }
 
     public boolean accountExists(String accountName) {

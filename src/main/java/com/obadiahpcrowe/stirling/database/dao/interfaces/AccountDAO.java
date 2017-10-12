@@ -27,4 +27,6 @@ public interface AccountDAO extends DAO<StirlingAccount, ObjectId> {
     List<StirlingAccount> getByLocale(StirlingLocale locale);
 
     void updateField(StirlingAccount account, String field, Object value);
+
+    boolean emailAddressExists(String emailAddress);
 }

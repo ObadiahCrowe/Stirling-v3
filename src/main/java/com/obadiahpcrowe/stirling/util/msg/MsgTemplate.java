@@ -18,6 +18,9 @@ public enum MsgTemplate {
     ACCOUNT_DELETED(MsgResponse.SUCCESS, "Account, {0}, has been deleted!", 1),
     ACCOUNT_FIELD_EDITED(MsgResponse.SUCCESS, "The field, {0}, was edited for {1}!", 2),
 
+    EMAIL_ADDRESS_IN_USE(MsgResponse.USER_ERROR, "The email address, {0}, is in use by another user!", 1),
+    EMAIL_ADDRESS_INVALID_EXT(MsgResponse.USER_ERROR, "The email address, {0}, does not end in {1}!", 1),
+
     ANNOUNCEMENT_CREATED(MsgResponse.SUCCESS, "The announcement, {0}, has been posted!", 1),
     ANNOUNCEMENT_DELETED(MsgResponse.SUCCESS, "The announcement, {0}, has been deleted!", 1),
     ANNOUNCEMENT_EDITED(MsgResponse.SUCCESS, "The announcement, {0}, has been edited!", 1),
