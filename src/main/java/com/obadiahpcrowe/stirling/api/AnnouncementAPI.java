@@ -43,8 +43,8 @@ import java.util.concurrent.ExecutionException;
 public class AnnouncementAPI implements APIController {
 
     private Gson gson = new Gson();
-    private AnnouncementManager manager = new AnnouncementManager();
-    private AccountManager accountManager = new AccountManager();
+    private AnnouncementManager manager = AnnouncementManager.getInstance();
+    private AccountManager accountManager = AccountManager.getInstance();
 
     @CallableAPI(fields = { "accountName", "password", "type", "image", "title", "desc", "content", "resourceNames", "targetAudiences", "tags" })
     @RequestMapping(value = "/stirling/v3/announcements/create", method = RequestMethod.GET)

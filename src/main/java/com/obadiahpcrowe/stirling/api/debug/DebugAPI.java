@@ -33,7 +33,7 @@ public class DebugAPI implements APIController {
     public String setAccType(@RequestParam("accountName") String accountName,
                              @RequestParam("accountType") String accountType) {
         if (Stirling.getInstance().getVersion().getType() == VersionType.DEVELOPMENT_BUILD) {
-            AccountManager manager = new AccountManager();
+            AccountManager manager = AccountManager.getInstance();
             if (manager.accountExists(accountName)) {
                 StirlingAccount account = manager.getAccount(accountName);
                 try {

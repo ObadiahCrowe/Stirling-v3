@@ -49,7 +49,7 @@ public class AccountManager {
             StirlingAccount account = new StirlingAccount(accountName, emailAddress, password);
             accountDAO.save(account);
 
-            new CalendarManager().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
+            CalendarManager.getInstance().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
 
             UtilFile.getInstance().createUserFiles(account.getUuid());
 
@@ -79,7 +79,7 @@ public class AccountManager {
             accountDAO.delete(account);
 
             UtilFile.getInstance().deleteUserFiles(uuid);
-            new CalendarManager().deleteCalendar(uuid);
+            CalendarManager.getInstance().deleteCalendar(uuid);
 
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DELETED, account.getLocale(), uuid.toString()));
         } else {

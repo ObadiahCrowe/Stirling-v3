@@ -38,7 +38,7 @@ public class StirlingTutor {
     public StirlingTutor() {}
 
     public StirlingTutor(UUID uuid, List<TutorSpeciality> tutorSpecialities) {
-        this.displayName = new AccountManager().getAccount(uuid).getDisplayName();
+        this.displayName = AccountManager.getInstance().getAccount(uuid).getDisplayName();
         this.uuid = uuid;
         this.specialities = tutorSpecialities;
         this.tutorAssignments = new ArrayList<>();

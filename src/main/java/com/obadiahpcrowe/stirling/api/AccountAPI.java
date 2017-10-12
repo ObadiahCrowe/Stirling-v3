@@ -35,7 +35,7 @@ import java.io.InputStream;
 public class AccountAPI implements APIController {
 
     private Gson gson = new Gson();
-    private AccountManager accountManager = new AccountManager();
+    private AccountManager accountManager = AccountManager.getInstance();
 
     @CallableAPI(fields = { "accountName", "emailAddress", "password" })
     @RequestMapping(value = "/stirling/v3/accounts/create", method = RequestMethod.GET)

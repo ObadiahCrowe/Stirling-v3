@@ -51,7 +51,8 @@ public class TutorManager {
         if (tutorExists(tutorUuid)) {
             StirlingTutor tutor = getTutor(tutorUuid);
             tutorDAO.delete(tutor);
-            return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_UNREGISTERED, new AccountManager().getAccount(tutorUuid).getLocale(), tutor.getDisplayName()));
+            return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_UNREGISTERED, AccountManager.getInstance()
+              .getAccount(tutorUuid).getLocale(), tutor.getDisplayName()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.TUTOR_DOES_NOT_EXIST, StirlingLocale.ENGLISH, tutorUuid.toString()));
     }

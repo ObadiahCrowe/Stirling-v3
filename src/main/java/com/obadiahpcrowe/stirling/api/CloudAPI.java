@@ -31,7 +31,7 @@ import java.nio.file.Files;
 @RestController
 public class CloudAPI implements APIController {
 
-    private AccountManager accountManager = new AccountManager();
+    private AccountManager accountManager = AccountManager.getInstance();
     private Gson gson = new Gson();
 
     @CallableAPI(fields = { "accountName", "password", "file" })

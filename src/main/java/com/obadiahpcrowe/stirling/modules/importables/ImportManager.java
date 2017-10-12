@@ -43,9 +43,7 @@ public class ImportManager {
         Gson gson = new Gson();
         try {
             method.setAccessible(true);
-            String json = gson.toJson(method.invoke(method.getClass().newInstance(), params));
-
-            return json;
+            return gson.toJson(method.invoke(method.getClass().newInstance(), params));
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
         }
