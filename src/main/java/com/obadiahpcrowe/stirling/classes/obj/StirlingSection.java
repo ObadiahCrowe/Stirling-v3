@@ -1,7 +1,6 @@
 package com.obadiahpcrowe.stirling.classes.obj;
 
 import com.google.common.collect.Lists;
-import com.obadiahpcrowe.stirling.classes.interfaces.SectionChild;
 import lombok.Getter;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class StirlingSection {
     private UUID sectionUuid;
     private String title;
     private String desc;
-    private List<Class<? extends SectionChild>> children;
+    private List<Object> children;
 
     @Deprecated
     public StirlingSection() {}
@@ -34,7 +33,7 @@ public class StirlingSection {
         this.children = Lists.newArrayList();
     }
 
-    public StirlingSection(UUID classUuid, String title, String desc, List<Class<? extends SectionChild>> children) {
+    public StirlingSection(UUID classUuid, String title, String desc, List<Object> children) {
         this.classUuid = classUuid;
         this.sectionUuid = UUID.randomUUID();
         this.title = title;

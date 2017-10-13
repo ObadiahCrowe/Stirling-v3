@@ -1,6 +1,8 @@
 package com.obadiahpcrowe.stirling.util;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -14,6 +16,12 @@ public class UtilTime {
     private static UtilTime instance;
     private DateTime now = DateTime.now();
     private DateTime dt = new DateTime();
+
+    public String getDayOfWeek(String date) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTime dateTime = formatter.parseDateTime(date);
+        return dateTime.dayOfWeek().getAsText();
+    }
 
     public String getLogTime() {
         return now.getDayOfMonth() + "/" + now.getMonthOfYear() + "/" + now.getYear() + " at " + now.getHourOfDay() + ":" +

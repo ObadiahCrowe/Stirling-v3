@@ -19,6 +19,8 @@ public interface ClassesDAO extends DAO<StirlingClass, ObjectId> {
 
     StirlingClass getByUuid(UUID uuid);
 
+    StirlingClass getByOwner(String owner);
+
     List<StirlingClass> getByTeacher(String teacherName);
 
     List<StirlingClass> getByEnrollment(StirlingAccount account);

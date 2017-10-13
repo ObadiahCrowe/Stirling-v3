@@ -1,4 +1,4 @@
-package com.obadiahpcrowe.stirling.classes;
+package com.obadiahpcrowe.stirling.classes.importing;
 
 /**
  * Created by: Obadiah Crowe (St1rling)

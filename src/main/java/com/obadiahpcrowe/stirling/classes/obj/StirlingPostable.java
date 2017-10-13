@@ -1,11 +1,11 @@
 package com.obadiahpcrowe.stirling.classes.obj;
 
-import com.obadiahpcrowe.stirling.classes.interfaces.SectionChild;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -15,8 +15,9 @@ import java.util.List;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-public class StirlingPostable implements SectionChild {
+public class StirlingPostable {
 
+    private UUID uuid;
     private String title;
     private String content;
     private StirlingDate postDateTime;
@@ -25,6 +26,7 @@ public class StirlingPostable implements SectionChild {
     public StirlingPostable() {}
 
     public StirlingPostable(String title, String content, List<AttachableResource> resources) {
+        this.uuid = UUID.randomUUID();
         this.title = title;
         this.content = content;
         this.postDateTime = StirlingDate.getNow();

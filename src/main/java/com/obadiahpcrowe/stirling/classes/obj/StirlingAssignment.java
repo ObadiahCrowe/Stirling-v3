@@ -1,6 +1,5 @@
 package com.obadiahpcrowe.stirling.classes.obj;
 
-import com.obadiahpcrowe.stirling.classes.interfaces.SectionChild;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 
@@ -14,7 +13,7 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-public class StirlingAssignment implements SectionChild {
+public class StirlingAssignment {
 
     private UUID uuid;
     private String title;
@@ -22,18 +21,16 @@ public class StirlingAssignment implements SectionChild {
     private StirlingResult result;
     private StirlingDate assignedDateTime;
     private StirlingDate dueDateTime;
-    private String comments;
 
     @Deprecated
     public StirlingAssignment() {}
 
-    public StirlingAssignment(String title, String desc, StirlingResult result, StirlingDate dueDateTime, String comments) {
+    public StirlingAssignment(String title, String desc, StirlingResult result, StirlingDate dueDateTime) {
         this.uuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;
         this.result = result;
         this.assignedDateTime = StirlingDate.getNow();
         this.dueDateTime = dueDateTime;
-        this.comments = comments;
     }
 }

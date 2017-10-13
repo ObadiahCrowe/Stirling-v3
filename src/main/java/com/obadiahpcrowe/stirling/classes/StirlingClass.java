@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
+import com.obadiahpcrowe.stirling.classes.importing.ImportHolder;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
@@ -11,7 +12,10 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -42,6 +46,10 @@ public class StirlingClass {
     private String name;
     private String desc;
     private String room;
+
+    // For imports
+    private Map<UUID, List<ImportHolder>> studentImportHolders;
+    private List<ImportHolder> globalHolders;
 
     // Members and times
     private Map<UUID, ClassRole> members;
@@ -87,6 +95,7 @@ public class StirlingClass {
         this.progressMarkers = Maps.newHashMap();
     }
 
+    // TODO: 13/10/17 THIS IS THE MOTHERFUCKING DAYMAP IMPORT FUNCTION. USE THIS YOU BLIND FUCK.
     // TODO: 12/10/17 How to get this shit to work vvv
     // I scrape daymap shit, save against the id, generate a class with the id linked somehow. Every other user that calls the same Id gets the same Stirling class
     public StirlingClass(String ownerId, String name, String desc, String room) {
@@ -95,6 +104,9 @@ public class StirlingClass {
         this.name = name;
         this.desc = desc;
         this.room = room;
+
+        this.studentImportHolders = Maps.newHashMap();
+        this.globalHolders = Lists.newArrayList();
 
         this.members = Maps.newHashMap();
         this.students = Lists.newArrayList();

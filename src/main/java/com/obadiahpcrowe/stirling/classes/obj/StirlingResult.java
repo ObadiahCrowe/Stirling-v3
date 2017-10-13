@@ -16,13 +16,15 @@ public class StirlingResult {
     private int maxMarks;
     private String grade;
     private double weighting;
+    private String comments;
 
     public StirlingResult() {}
 
-    public StirlingResult(int receivedMarks, int maxMarks, String grade, double weighting) {
+    public StirlingResult(int receivedMarks, int maxMarks, String grade, double weighting, String comments) {
         this.receivedMarks = receivedMarks;
         this.maxMarks = maxMarks;
         this.grade = grade;
         this.weighting = weighting;
+        this.comments = comments;
     }
 }

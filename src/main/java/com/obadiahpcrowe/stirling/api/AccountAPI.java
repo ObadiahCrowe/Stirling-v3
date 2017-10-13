@@ -3,13 +3,13 @@ package com.obadiahpcrowe.stirling.api;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.MediaType;
@@ -282,5 +282,21 @@ public class AccountAPI implements APIController {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    @CallableAPI(fields = {"accountName", "password"})
+    @RequestMapping(value = "/stirling/v3/accounts/get/accountType", method = RequestMethod.GET)
+    public AccountType getAccountType(@RequestParam("accountName") String accountName,
+                                      @RequestParam("password") String password) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return null;
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return null;
+        }
+
+        return account.getAccountType();
     }
 }

@@ -1,6 +1,5 @@
 package com.obadiahpcrowe.stirling.classes.obj;
 
-import com.obadiahpcrowe.stirling.classes.interfaces.SectionChild;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-public class StirlingResource extends AttachableResource implements SectionChild {
+public class StirlingResource extends AttachableResource {
 
     private String title;
     private StirlingDate postDateTime;

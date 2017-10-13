@@ -34,6 +34,14 @@ public class ClassesDAOImpl extends BasicDAO<StirlingClass, ObjectId> implements
     }
 
     @Override
+    public StirlingClass getByOwner(String owner) {
+        Query<StirlingClass> query = createQuery()
+          .field("owner").equal(owner);
+
+        return query.get();
+    }
+
+    @Override
     public List<StirlingClass> getByTeacher(String teacherName) {
         Query<StirlingClass> query = createQuery()
           .field("teachers").contains(teacherName);
