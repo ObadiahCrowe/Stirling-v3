@@ -1,4 +1,4 @@
-package com.obadiahpcrowe.stirling.classes.enums;
+package com.obadiahpcrowe.stirling.classes.importing;
 
 import lombok.Getter;
 

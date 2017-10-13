@@ -14,7 +14,6 @@ import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -56,7 +55,8 @@ public class AccountManager {
                 StirlingAccount account = new StirlingAccount(accountName, emailAddress, password);
                 accountDAO.save(account);
 
-                CalendarManager.getInstance().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
+                // Disabled until I unfuck it.
+                //CalendarManager.getInstance().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
 
                 UtilFile.getInstance().createUserFiles(account.getUuid());
 

@@ -9,6 +9,8 @@ import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
+import com.obadiahpcrowe.stirling.classes.importing.ImportCredential;
+import com.obadiahpcrowe.stirling.classes.importing.ImportSource;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ClassesDAOImpl;
@@ -547,6 +549,18 @@ public class ClassManager {
     }
 
     public String removeProgressMarker(StirlingAccount account, UUID classUuid, UUID studentUuid, UUID markerUuid) {
+        return "";
+    }
+
+    public String convertDaymapClass(String courseId, String name, String room) {
+        return "";
+    }
+
+    public String addImportCredential(StirlingAccount account, ImportSource source, ImportCredential credential) {
+        return "";
+    }
+
+    public String importExternalCourse(StirlingAccount account, UUID classUuid, ImportSource source, String id) {
         return "";
     }
 
