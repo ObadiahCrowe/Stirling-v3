@@ -6,7 +6,6 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.importing.ImportHolder;
 import com.obadiahpcrowe.stirling.classes.obj.*;
-import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -62,7 +61,7 @@ public class StirlingClass {
     private List<StirlingCatchup> catchups; //date, catchup info
     private List<StirlingPostable> classNotes;
     private List<StirlingPostable> homework;
-    private List<AttachableResource> resources;
+    private List<StirlingResource> resources;
 
     // Results
     private Map<UUID, List<StirlingAssignment>> studentAssignments;

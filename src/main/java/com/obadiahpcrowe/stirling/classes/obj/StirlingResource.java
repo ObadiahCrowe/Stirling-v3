@@ -27,4 +27,10 @@ public class StirlingResource extends AttachableResource {
         this.title = title;
         this.postDateTime = StirlingDate.getNow();
     }
+
+    public StirlingResource(AttachableResource resource, String title) {
+        super(resource.getOwner(), resource.getFilePath(), resource.getArType());
+        this.title = title;
+        this.postDateTime = StirlingDate.getNow();
+    }
 }

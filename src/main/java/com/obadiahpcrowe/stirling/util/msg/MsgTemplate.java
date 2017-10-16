@@ -87,6 +87,10 @@ public enum MsgTemplate {
     CLASS_RESOURCE_ADDED(MsgResponse.SUCCESS, "You have added the resource, {0}, to {1}!", 2),
     CLASS_RESOURCE_DELETED(MsgResponse.SUCCESS, "You have deleted the resource, {0}!", 1),
     CLASS_RESOURCE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "This resource does not exist!", 0),
+    CLASS_ASSIGNMENT_MARKED(MsgResponse.SUCCESS, "You have marked an assignment for {0}!", 1),
+    CLASS_PROGRESS_MARKER_ADDED(MsgResponse.SUCCESS, "You have created a progress marker for {0}!", 1),
+    CLASS_PROGRESS_MARKER_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "This progress marker does not exist!", 0),
+    CLASS_PROGRESS_MARKED_REMOVED(MsgResponse.SUCCESS, "You have removed a progress marker from {0}!", 1),
 
     STUDENT_NOT_IN_CLASS(MsgResponse.USER_ERROR, "You are not a member of this class!", 0),
 
