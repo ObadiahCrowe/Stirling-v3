@@ -15,6 +15,8 @@ import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.ImportSource;
 import com.obadiahpcrowe.stirling.classes.obj.*;
+import com.obadiahpcrowe.stirling.classes.terms.TermLength;
+import com.obadiahpcrowe.stirling.classes.terms.TermManager;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ClassesDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ClassesDAO;
@@ -30,6 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -53,17 +58,10 @@ public class ClassManager {
     private ClassesDAO classesDAO;
     private Gson gson;
 
-    private List<TermLength> termLengths;
-
     public ClassManager() {
         this.morphiaService = new MorphiaService();
         this.classesDAO = new ClassesDAOImpl(StirlingClass.class, morphiaService.getDatastore());
         this.gson = new Gson();
-        this.initTerms();
-    }
-
-    private void initTerms() {
-        this.termLengths = Lists.newArrayList();
     }
 
     public String createClass(StirlingAccount account, String name, String desc, String room, LessonTimeSlot timeSlot) {
@@ -72,9 +70,10 @@ public class ClassManager {
                 StirlingClass clazz = new StirlingClass(account, name, desc, room);
                 UtilFile.getInstance().createClassFolder(clazz.getUuid());
                 CalendarManager.getInstance().createCalendar(clazz.getUuid(), name, desc, Lists.newArrayList());
+                classesDAO.save(clazz);
+
                 generateCalendarLessons(clazz.getUuid(), timeSlot, ClassLength.SEMESTER);
 
-                classesDAO.save(clazz);
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_CREATED, account.getLocale(), name));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ALREADY_EXISTS, account.getLocale(), name));
@@ -896,12 +895,79 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "set attendance", "TEACHER"));
     }
 
-    private String generateCalendarLessons(UUID classUuid, LessonTimeSlot lessonTimeslot, ClassLength classLength) {
-        // TODO: 13/10/17 Very important
-        return "";
+    public String generateCalendarLessons(UUID classUuid, LessonTimeSlot lessonTimeSlot, ClassLength classLength) {
+        if (classExists(classUuid)) {
+            TermManager manager = TermManager.getInstance();
+
+            List<TermLength> lengths = manager.getSaTerms(); // TODO: 16/10/17 In future, check the config option
+            int currentTerm = manager.getCurrentTerm(lengths);
+
+            switch (currentTerm) {
+                case 1:
+                    generatePerTerm(lengths, 1, classUuid, lessonTimeSlot);
+                    if (classLength.equals(ClassLength.SEMESTER)) {
+                        generatePerTerm(lengths, 2, classUuid, lessonTimeSlot);
+                    }
+                    break;
+                case 2:
+                    generatePerTerm(lengths, 2, classUuid, lessonTimeSlot);
+                    break;
+                case 3:
+                    generatePerTerm(lengths, 3, classUuid, lessonTimeSlot);
+                    if (classLength.equals(ClassLength.SEMESTER)) {
+                        generatePerTerm(lengths, 4, classUuid, lessonTimeSlot);
+                    }
+                    break;
+                case 4:
+                    generatePerTerm(lengths, 4, classUuid, lessonTimeSlot);
+                    break;
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_LESSONS_GENERATED, StirlingLocale.ENGLISH, classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, StirlingLocale.ENGLISH, classUuid.toString()));
+    }
+
+    private void generatePerTerm(List<TermLength> lengths, int currentTerm, UUID classUuid, LessonTimeSlot lessonTimeSlot) {
+        StirlingClass clazz = getByUuid(classUuid);
+
+        // Arrays start at 0
+        LocalDate start = lengths.get(currentTerm - 1).getStartDate();
+        LocalDate end = lengths.get(currentTerm - 1).getEndDate();
+
+        List<StirlingLesson> lessons = Lists.newArrayList();
+        try {
+            lessons.addAll(clazz.getLessons());
+        } catch (NullPointerException e) {
+            UtilLog.getInstance().log(e.getMessage());
+        }
+
+        for (SlotData data : lessonTimeSlot.getWeeklyOccurances()) {
+            LocalDate day = start.with(TemporalAdjusters.nextOrSame(DayOfWeek.valueOf(data.getDayOfWeek().toUpperCase())));
+            while (day.isBefore(end)) {
+                String date = day.getDayOfMonth() + "/" + day.getMonthValue() + "/" + day.getYear();
+                CompletableFuture<Boolean> generate = new CompletableFuture<>();
+
+                lessons.forEach(lesson -> {
+                    if (lesson.getStartDateTime().getDate().equalsIgnoreCase(date)) {
+                        generate.complete(false);
+                    }
+                });
+
+                if (generate.getNow(true)) {
+                    lessons.add(new StirlingLesson(clazz.getName() + " Lesson",
+                      "Lesson on " + date, clazz.getRoom(), date, data.getStartTime(), data.getEndTime(),
+                      Maps.newHashMap(), null, null));
+                }
+
+                day = day.plusWeeks(1);
+            }
+        }
+
+        classesDAO.updateField(clazz, "lessons", lessons);
     }
 
     public String convertDaymapClass(String courseId, String name, String room) {
+        // daymap times are the same as lessontimeslot, find first instance of class and compare against the enum, genreate from there.
         return "";
     }
 

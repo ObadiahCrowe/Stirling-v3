@@ -2,7 +2,6 @@ package com.obadiahpcrowe.stirling.classes.obj;
 
 import com.obadiahpcrowe.stirling.calendar.obj.CalendarEntry;
 import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
-import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,9 +23,13 @@ public class StirlingLesson extends CalendarEntry {
     private StirlingPostable classNote;
     private StirlingPostable homework;
 
-    public StirlingLesson(String name, String desc, String room, StirlingDate dateTime, Map<UUID, AttendanceStatus> studentAttendance,
-                          StirlingPostable classNote, StirlingPostable homework) {
-        super(name, desc, dateTime.getDate(), dateTime.getDate(), dateTime.getTime(), dateTime.getTime(), room);
+    @Deprecated
+    public StirlingLesson() {
+    }
+
+    public StirlingLesson(String name, String desc, String room, String date, String startTime, String endTime,
+                          Map<UUID, AttendanceStatus> studentAttendance, StirlingPostable classNote, StirlingPostable homework) {
+        super(name, desc, date, date, startTime, endTime, room);
         this.studentAttendance = studentAttendance;
         this.classNote = classNote;
         this.homework = homework;

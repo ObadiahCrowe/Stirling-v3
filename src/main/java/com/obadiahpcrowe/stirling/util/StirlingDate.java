@@ -15,6 +15,10 @@ public class StirlingDate {
     private String date;
     private String time;
 
+    @Deprecated
+    public StirlingDate() {
+    }
+
     public StirlingDate(String date, String time) {
         this.date = date;
         this.time = time;

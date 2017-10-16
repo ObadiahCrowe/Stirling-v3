@@ -93,6 +93,7 @@ public enum MsgTemplate {
     CLASS_PROGRESS_MARKED_REMOVED(MsgResponse.SUCCESS, "You have removed a progress marker from {0}!", 1),
     CLASS_LESSON_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The lesson with the id: {0}, does not exist!", 1),
     CLASS_ATTENDANCE_SET(MsgResponse.SUCCESS, "You have set {0}'s attendance to {1}!", 2),
+    CLASS_LESSONS_GENERATED(MsgResponse.SUCCESS, "Lessons have been generated for {0}!", 1),
 
     STUDENT_NOT_IN_CLASS(MsgResponse.USER_ERROR, "You are not a member of this class!", 0),
 
