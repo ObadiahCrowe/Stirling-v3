@@ -1,6 +1,5 @@
 package com.obadiahpcrowe.stirling.resources;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.cloud.CloudManager;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import lombok.Getter;
@@ -20,15 +19,31 @@ public class AttachableResource {
 
     private UUID owner;
     private String filePath;
+    private ARType arType;
 
     public AttachableResource() {}
 
     public AttachableResource(UUID uuid, String filePath) {
         this.owner = uuid;
         this.filePath = filePath;
+        this.arType = ARType.NORMAL;
+    }
+
+    public AttachableResource(UUID uuid, String filePath, ARType arType) {
+        this.owner = uuid;
+        this.filePath = filePath;
+        this.arType = arType;
     }
 
     public File getFile() {
+        if (arType == ARType.ANNOUNCEMENT) {
+            return getAnnouncementBanner();
+        }
+
+        if (arType == ARType.CLASS) {
+            return getClassResource();
+        }
+
         if (filePath.equalsIgnoreCase("avatar.png")) {
             return getAvatar();
         }
@@ -51,5 +66,10 @@ public class AttachableResource {
     private File getAnnouncementBanner() {
         return new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
           File.separator + owner + File.separator + "banner.jpg");
+    }
+
+    private File getClassResource() {
+        return new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Classes" + File.separator +
+          owner.toString() + File.separator + "Resources" + File.separator + filePath);
     }
 }

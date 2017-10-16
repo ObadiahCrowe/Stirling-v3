@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
+import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.ImportSource;
@@ -16,13 +17,17 @@ import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ClassesDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ClassesDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -508,34 +513,204 @@ public class ClassManager {
 
     public String createHomeworkTask(StirlingAccount account, UUID classUuid, String title, String content,
                                      List<AttachableResource> resources) {
-        return "";
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                StirlingPostable hwTask = new StirlingPostable(title, content, resources);
+
+                List<StirlingPostable> homework = Lists.newArrayList(clazz.getHomework());
+                homework.add(hwTask);
+
+                classesDAO.updateField(clazz, "homework", homework);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_HOMEWORK_ADDED, account.getLocale(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create homework tasks", "TEACHER"));
     }
 
     public String deleteHomeworkTask(StirlingAccount account, UUID classUuid, UUID homeworkUuid) {
-        return "";
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                List<StirlingPostable> homework = Lists.newArrayList(clazz.getHomework());
+                homework.forEach(hw -> {
+                    if (hw.getUuid().equals(homeworkUuid)) {
+                        homework.remove(hw);
+                    }
+                });
+
+                if (homework.size() == clazz.getHomework().size()) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_HOMEWORK_DOES_NOT_EXIST, account.getLocale()));
+                }
+
+                classesDAO.updateField(clazz, "homework", homework);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_HOMEWORK_REMOVED, account.getLocale(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete homework tasks", "TEACHER"));
     }
 
     public String createClassNote(StirlingAccount account, UUID classUuid, String title, String content,
                                   List<AttachableResource> resources) {
-        return "";
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                StirlingPostable note = new StirlingPostable(title, content, resources);
+
+                List<StirlingPostable> notes = Lists.newArrayList(clazz.getClassNotes());
+                notes.add(note);
+
+                classesDAO.updateField(clazz, "classNotes", notes);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_NOTE_ADDED, account.getLocale(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create class notes", "TEACHER"));
     }
 
-    public String deleteClassNote(StirlingAccount account, UUID classUuid, UUID homeworkUuid) {
-        return "";
+    public String deleteClassNote(StirlingAccount account, UUID classUuid, UUID noteUuid) {
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                List<StirlingPostable> notes = Lists.newArrayList(clazz.getClassNotes());
+                notes.forEach(note -> {
+                    if (note.getUuid().equals(noteUuid)) {
+                        notes.remove(note);
+                    }
+                });
+
+                if (notes.size() == clazz.getClassNotes().size()) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_NOTE_DOES_NOT_EXIST, account.getLocale()));
+                }
+
+                classesDAO.updateField(clazz, "classNotes", notes);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_NOTE_REMOVED, account.getLocale(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete class notes", "TEACHER"));
     }
 
     public String createResource(StirlingAccount account, UUID classUuid, String title, String content,
-                                 List<AttachableResource> resources) {
-        return "";
+                                 MultipartFile multipartFile) {
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+                AttachableResource resource = new AttachableResource(classUuid, multipartFile.getOriginalFilename(), ARType.CLASS);
+                File file = new File(resource.getFile().getPath());
+
+                try {
+                    multipartFile.transferTo(file);
+                } catch (IOException e) {
+                    UtilLog.getInstance().log(e.getMessage());
+                    return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "creating the resource"));
+                }
+
+                List<AttachableResource> resources = Lists.newArrayList(clazz.getResources());
+                resources.add(resource);
+
+                classesDAO.updateField(clazz, "resources", resources);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_RESOURCE_ADDED, account.getLocale(), file.getName(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create resources", "TEACHER"));
     }
 
-    public String deleteResource(StirlingAccount account, UUID classUuid, UUID homeworkUuid) {
-        return "";
+    public String deleteResource(StirlingAccount account, UUID classUuid, String filePath) {
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                List<AttachableResource> resources = Lists.newArrayList(clazz.getResources());
+                resources.forEach(resource -> {
+                    if (resource.getFilePath().equalsIgnoreCase(filePath)) {
+                        resources.remove(resource);
+                    }
+                });
+
+                if (resources.size() == clazz.getResources().size()) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_RESOURCE_DOES_NOT_EXIST, account.getLocale()));
+                }
+
+                classesDAO.updateField(clazz, "resources", resources);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_RESOURCE_DELETED, account.getLocale(), filePath));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete resources", "TEACHER"));
+    }
+
+    public String getResource(StirlingAccount account, UUID classUuid, String filePath) {
+        if (classExists(classUuid)) {
+            StirlingClass clazz = getByUuid(classUuid);
+
+            if (!clazz.getStudents().contains(account.getUuid())) {
+                return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
+            }
+
+            CompletableFuture<AttachableResource> future = new CompletableFuture<>();
+
+            clazz.getResources().forEach(resource -> {
+                if (resource.getFilePath().equalsIgnoreCase(filePath)) {
+                    future.complete(resource);
+                }
+            });
+
+            try {
+                return gson.toJson(future.get());
+            } catch (InterruptedException | ExecutionException e) {
+                UtilLog.getInstance().log(e.getMessage());
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_RESOURCE_DOES_NOT_EXIST, account.getLocale()));
+            }
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public String uploadAssignment(StirlingAccount account, UUID classUuid, UUID assignmentUuid,
                                    List<AttachableResource> resources) {
-        return "";
+        if (account.getAccountType() == AccountType.STUDENT) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                if (!clazz.getStudents().contains(account.getUuid())) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
+                }
+
+                Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());
+                List<StirlingAssignment> userAssignments = assignments.get(account.getUuid());
+                CompletableFuture<StirlingAssignment> assignment = new CompletableFuture<>();
+
+                userAssignments.forEach(stirlingAssignment -> {
+                    if (stirlingAssignment.getUuid().equals(assignmentUuid)) {
+                        assignment.complete(stirlingAssignment);
+                        userAssignments.remove(assignment);
+                    }
+                });
+
+                try {
+                    StirlingAssignment a = assignment.get();
+                    a.getSubmittedFiles().addAll(resources);
+
+                    userAssignments.add(a);
+
+                    assignments.replace(account.getUuid(), userAssignments);
+                    classesDAO.updateField(clazz, "studentAssignments", assignments);
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_SUBMITTED, account.getLocale(), assignment.get().getTitle()));
+                } catch (InterruptedException | ExecutionException e) {
+                    UtilLog.getInstance().log(e.getMessage());
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_DOES_NOT_EXIST, account.getLocale(), assignmentUuid.toString()));
+                }
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "upload an assignment", "STUDENT"));
     }
 
     public String markAssignment(StirlingAccount account, UUID classUuid, UUID assignmentUuid, UUID studentUuid,
@@ -561,6 +736,10 @@ public class ClassManager {
     }
 
     public String importExternalCourse(StirlingAccount account, UUID classUuid, ImportSource source, String id) {
+        return "";
+    }
+
+    public String setStudentAttendance(StirlingAccount account, UUID classUuid, UUID lessonUuid, UUID studentUuid, AttendanceStatus status) {
         return "";
     }
 
