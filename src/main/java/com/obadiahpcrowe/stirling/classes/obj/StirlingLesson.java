@@ -4,6 +4,7 @@ import com.obadiahpcrowe.stirling.calendar.obj.CalendarEntry;
 import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
+@Setter
 public class StirlingLesson extends CalendarEntry {
 
     private Map<UUID, AttendanceStatus> studentAttendance;

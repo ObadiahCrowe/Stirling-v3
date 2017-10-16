@@ -9,6 +9,7 @@ import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
+import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.ImportCredential;
@@ -50,11 +51,19 @@ public class ClassManager {
 
     private MorphiaService morphiaService;
     private ClassesDAO classesDAO;
-    private Gson gson = new Gson();
+    private Gson gson;
+
+    private List<TermLength> termLengths;
 
     public ClassManager() {
         this.morphiaService = new MorphiaService();
         this.classesDAO = new ClassesDAOImpl(StirlingClass.class, morphiaService.getDatastore());
+        this.gson = new Gson();
+        this.initTerms();
+    }
+
+    private void initTerms() {
+        this.termLengths = Lists.newArrayList();
     }
 
     public String createClass(StirlingAccount account, String name, String desc, String room, LessonTimeSlot timeSlot) {
@@ -63,7 +72,7 @@ public class ClassManager {
                 StirlingClass clazz = new StirlingClass(account, name, desc, room);
                 UtilFile.getInstance().createClassFolder(clazz.getUuid());
                 CalendarManager.getInstance().createCalendar(clazz.getUuid(), name, desc, Lists.newArrayList());
-                generateCalendarLessons(clazz.getUuid(), timeSlot);
+                generateCalendarLessons(clazz.getUuid(), timeSlot, ClassLength.SEMESTER);
 
                 classesDAO.save(clazz);
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_CREATED, account.getLocale(), name));
@@ -851,13 +860,43 @@ public class ClassManager {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
 
-                //
+                List<StirlingLesson> lessons = Lists.newArrayList(clazz.getLessons());
+                CompletableFuture<StirlingLesson> lessonFuture = new CompletableFuture<>();
+
+                lessons.forEach(l -> {
+                    if (l.getUuid().equals(lessonUuid)) {
+                        lessonFuture.complete(l);
+                        lessons.remove(l);
+                    }
+                });
+
+                try {
+                    StirlingLesson lesson = lessonFuture.get();
+                    Map<UUID, AttendanceStatus> attendanceStatuses = Maps.newHashMap(lesson.getStudentAttendance());
+
+                    if (!attendanceStatuses.containsKey(studentUuid)) {
+                        attendanceStatuses.put(studentUuid, status);
+                    } else {
+                        attendanceStatuses.replace(studentUuid, status);
+                    }
+
+                    lesson.setStudentAttendance(attendanceStatuses);
+                    lessons.add(lesson);
+                } catch (InterruptedException | ExecutionException e) {
+                    UtilLog.getInstance().log(e.getMessage());
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_LESSON_DOES_NOT_EXIST, account.getLocale(), lessonUuid.toString()));
+                }
+
+                classesDAO.updateField(clazz, "lessons", lessons);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ATTENDANCE_SET, account.getLocale(),
+                  AccountManager.getInstance().getAccount(studentUuid).getDisplayName(), status.getFriendlyName()));
             }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
-        return "";
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "set attendance", "TEACHER"));
     }
 
-    private String generateCalendarLessons(UUID classUuid, LessonTimeSlot lessonTimeslot) {
+    private String generateCalendarLessons(UUID classUuid, LessonTimeSlot lessonTimeslot, ClassLength classLength) {
         // TODO: 13/10/17 Very important
         return "";
     }
