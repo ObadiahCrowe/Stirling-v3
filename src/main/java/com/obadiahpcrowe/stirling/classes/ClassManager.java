@@ -13,6 +13,8 @@ import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
+import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.classes.terms.TermLength;
 import com.obadiahpcrowe.stirling.classes.terms.TermManager;
@@ -1034,6 +1036,10 @@ public class ClassManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "update lessons", "TEACHER"));
+    }
+
+    public String updateStudentHolders(StirlingAccount account, Map<ImportSource, List<ImportableClass>> classes) {
+        return "";
     }
 
     public String convertDaymapClass(StirlingAccount account, String courseId, String name, String room) {

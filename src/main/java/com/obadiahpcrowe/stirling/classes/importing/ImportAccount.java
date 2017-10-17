@@ -25,7 +25,7 @@ public class ImportAccount {
     private UUID accountUuid;
     private Map<ImportSource, ImportCredential> credentials;
     private Map<ImportSource, List<ImportableClass>> courseHolders;
-    private Map<ImportSource, ? extends ImportableClass> importableClasses;
+    private Map<ImportSource, List<? extends ImportableClass>> importableClasses;
 
     @Deprecated
     public ImportAccount() {

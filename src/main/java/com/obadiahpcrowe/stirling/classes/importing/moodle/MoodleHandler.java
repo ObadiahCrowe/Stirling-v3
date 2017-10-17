@@ -2,6 +2,9 @@ package com.obadiahpcrowe.stirling.classes.importing.moodle;
 
 import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
 import com.obadiahpcrowe.stirling.classes.importing.interfaces.GenericHandler;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
+
+import java.util.List;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -21,7 +24,7 @@ public class MoodleHandler implements GenericHandler {
     }
 
     @Override
-    public String getAllCourses(ImportAccount account) {
+    public List<ImportableClass> getAllCourses(ImportAccount account) {
         return null;
     }
 

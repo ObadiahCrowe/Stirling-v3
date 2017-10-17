@@ -1,6 +1,9 @@
 package com.obadiahpcrowe.stirling.classes.importing.interfaces;
 
 import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
+
+import java.util.List;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -11,7 +14,7 @@ import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
  */
 public interface GenericHandler {
 
-    String getAllCourses(ImportAccount account);
+    List<ImportableClass> getAllCourses(ImportAccount account);
 
     void addCourseToUser(ImportAccount account, Object data);
 
