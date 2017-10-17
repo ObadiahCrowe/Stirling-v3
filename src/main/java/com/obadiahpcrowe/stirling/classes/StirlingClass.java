@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
-import com.obadiahpcrowe.stirling.classes.importing.ImportHolder;
+import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import lombok.Getter;
 import org.bson.types.ObjectId;
@@ -47,8 +47,8 @@ public class StirlingClass {
     private String room;
 
     // For imports
-    private Map<UUID, List<ImportHolder>> studentImportHolders;
-    private List<ImportHolder> globalHolders;
+    private Map<UUID, List<ImportManager>> studentImportHolders;
+    private List<ImportManager> globalHolders;
 
     // Members and times
     private Map<UUID, ClassRole> members;

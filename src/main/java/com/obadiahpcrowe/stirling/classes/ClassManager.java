@@ -12,8 +12,7 @@ import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
 import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
-import com.obadiahpcrowe.stirling.classes.importing.ImportCredential;
-import com.obadiahpcrowe.stirling.classes.importing.ImportSource;
+import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.classes.terms.TermLength;
 import com.obadiahpcrowe.stirling.classes.terms.TermManager;
@@ -966,16 +965,67 @@ public class ClassManager {
         classesDAO.updateField(clazz, "lessons", lessons);
     }
 
+    public String editLessonField(StirlingAccount account, UUID classUuid, UUID lessonUuid, LessonField field, Object value) {
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            if (classExists(classUuid)) {
+                StirlingClass clazz = getByUuid(classUuid);
+
+                List<StirlingLesson> lessons = Lists.newArrayList();
+                try {
+                    lessons.addAll(clazz.getLessons());
+                } catch (NullPointerException e) {
+                    UtilLog.getInstance().log(e.getMessage());
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_LESSON_DOES_NOT_EXIST, account.getLocale(), lessonUuid.toString()));
+                }
+
+                CompletableFuture<StirlingLesson> future = new CompletableFuture<>();
+                lessons.forEach(l -> {
+                    if (l.getUuid().equals(lessonUuid)) {
+                        future.complete(l);
+                        lessons.remove(l);
+                    }
+                });
+
+                if (clazz.getLessons().size() == lessons.size()) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_LESSON_DOES_NOT_EXIST, account.getLocale(), lessonUuid.toString()));
+                }
+
+                try {
+                    StirlingLesson lesson = future.get();
+
+                    switch (field) {
+                        case TITLE:
+                            lesson.setTitle((String) value);
+                            break;
+                        case DESC:
+                            lesson.setDesc((String) value);
+                            break;
+                        case ROOM:
+                            lesson.setLocation((String) value);
+                            break;
+                        case HOMEWORK:
+                            lesson.setHomework((StirlingPostable) value);
+                            break;
+                        case CLASSNOTE:
+                            lesson.setClassNote((StirlingPostable) value);
+                            break;
+                    }
+
+                    lessons.add(lesson);
+                } catch (InterruptedException | ExecutionException e) {
+                    UtilLog.getInstance().log(e.getMessage());
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_LESSON_DOES_NOT_EXIST, account.getLocale(), lessonUuid.toString()));
+                }
+
+                classesDAO.updateField(clazz, "lessons", lessons);
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "update lessons", "TEACHER"));
+    }
+
     public String convertDaymapClass(String courseId, String name, String room) {
         // daymap times are the same as lessontimeslot, find first instance of class and compare against the enum, genreate from there.
-        return "";
-    }
-
-    public String addImportCredential(StirlingAccount account, ImportSource source, ImportCredential credential) {
-        return "";
-    }
-
-    public String importExternalCourse(StirlingAccount account, UUID classUuid, ImportSource source, String id) {
         return "";
     }
 
