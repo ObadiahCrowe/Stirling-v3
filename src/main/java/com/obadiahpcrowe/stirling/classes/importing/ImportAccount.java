@@ -1,8 +1,13 @@
 package com.obadiahpcrowe.stirling.classes.importing;
 
+import com.google.common.collect.Maps;
+import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import lombok.Getter;
 import org.mongodb.morphia.annotations.Entity;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,6 +24,8 @@ public class ImportAccount {
 
     private UUID accountUuid;
     private Map<ImportSource, ImportCredential> credentials;
+    private Map<ImportSource, List<ImportableClass>> courseHolders;
+    private Map<ImportSource, ? extends ImportableClass> importableClasses;
 
     @Deprecated
     public ImportAccount() {
@@ -27,5 +34,7 @@ public class ImportAccount {
     public ImportAccount(UUID accountUuid, Map<ImportSource, ImportCredential> credentials) {
         this.accountUuid = accountUuid;
         this.credentials = credentials;
+        this.courseHolders = Maps.newHashMap();
+        this.importableClasses = Maps.newHashMap();
     }
 }

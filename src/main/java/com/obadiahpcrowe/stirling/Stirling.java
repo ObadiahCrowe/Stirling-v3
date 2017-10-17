@@ -34,6 +34,15 @@ public class Stirling {
     private @Getter StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
     // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2) (Maybe SACE integration)
+    // TODO: 17/10/17 Add map null checks
+    // TODO: 17/10/17 Add user linkers to class through their import account. On init class, check user import account then readd.
+    // TODO: 17/10/17 Scrape every morning
+    // TODO: 17/10/17 Remove profanity from code
+    // TODO: 17/10/17 Make sure the ImportableClass shit doesn't fuck up
+    // TODO: 17/10/17 Import from daymap through the daymapId, then store the daymap shit against a user account and update it through a non-account method for all users.
+
+    // AFTER RELEASE
+    // TODO: 17/10/17 Generate report and predicted grades from Stirling results
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();

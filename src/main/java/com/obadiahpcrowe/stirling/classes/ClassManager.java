@@ -825,7 +825,11 @@ public class ClassManager {
                     return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
                 }
 
-                Map<UUID, List<ProgressMarker>> markerMap = Maps.newHashMap(clazz.getProgressMarkers());
+                Map<UUID, List<ProgressMarker>> markerMap = Maps.newHashMap();
+                try {
+                    markerMap.putAll(clazz.getProgressMarkers());
+                } catch (NullPointerException ignored) {
+                }
 
                 if (!markerMap.containsKey(studentUuid)) {
                     markerMap.put(studentUuid, Lists.newArrayList());
@@ -858,7 +862,11 @@ public class ClassManager {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
 
-                List<StirlingLesson> lessons = Lists.newArrayList(clazz.getLessons());
+                List<StirlingLesson> lessons = Lists.newArrayList();
+                try {
+                    lessons.addAll(clazz.getLessons());
+                } catch (NullPointerException ignored) {
+                }
                 CompletableFuture<StirlingLesson> lessonFuture = new CompletableFuture<>();
 
                 lessons.forEach(l -> {
@@ -870,7 +878,11 @@ public class ClassManager {
 
                 try {
                     StirlingLesson lesson = lessonFuture.get();
-                    Map<UUID, AttendanceStatus> attendanceStatuses = Maps.newHashMap(lesson.getStudentAttendance());
+                    Map<UUID, AttendanceStatus> attendanceStatuses = Maps.newHashMap();
+                    try {
+                        attendanceStatuses.putAll(lesson.getStudentAttendance());
+                    } catch (NullPointerException ignored) {
+                    }
 
                     if (!attendanceStatuses.containsKey(studentUuid)) {
                         attendanceStatuses.put(studentUuid, status);
@@ -1024,9 +1036,26 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "update lessons", "TEACHER"));
     }
 
-    public String convertDaymapClass(String courseId, String name, String room) {
+    public String convertDaymapClass(StirlingAccount account, String courseId, String name, String room) {
+        StirlingClass clazz = new StirlingClass(courseId, name, "", room);
         // daymap times are the same as lessontimeslot, find first instance of class and compare against the enum, genreate from there.
         return "";
+    }
+
+    public List<StirlingClass> getClassesFromDaymapAccount(StirlingAccount account) {
+        return null;
+    }
+
+    public String takeClassOwnership(StirlingAccount account, String ownerId) {
+        if (isAccountHighEnough(account, AccountType.TEACHER)) {
+            StirlingClass clazz = getByOwner(ownerId);
+            if (clazz != null) {
+                classesDAO.updateField(clazz, "owner", Lists.newArrayList(account.getAccountName()));
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_OWNERSHIP_TAKEN, account.getLocale(), clazz.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), ownerId));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "take class ownership", "TEACHER"));
     }
 
     public StirlingClass getByOwner(String owner) {

@@ -94,6 +94,12 @@ public enum MsgTemplate {
     CLASS_LESSON_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The lesson with the id: {0}, does not exist!", 1),
     CLASS_ATTENDANCE_SET(MsgResponse.SUCCESS, "You have set {0}'s attendance to {1}!", 2),
     CLASS_LESSONS_GENERATED(MsgResponse.SUCCESS, "Lessons have been generated for {0}!", 1),
+    CLASS_OWNERSHIP_TAKEN(MsgResponse.SUCCESS, "You have taken ownership of {0}!", 1),
+
+    IMPORT_ACCOUNT_CONTAINS_CRED(MsgResponse.USER_ERROR, "You already have credentials set for {0}!", 1),
+    IMPORT_ACCOUNT_CREDS_SET(MsgResponse.SUCCESS, "You have added credentials for {0}!", 1),
+    IMPORT_ACCOUNT_CREDS_REMOVED(MsgResponse.SUCCESS, "You have removed credentials for {0}!", 1),
+    IMPORT_ACCOUNT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "You have no credentials set!", 1),
 
     STUDENT_NOT_IN_CLASS(MsgResponse.USER_ERROR, "You are not a member of this class!", 0),
 

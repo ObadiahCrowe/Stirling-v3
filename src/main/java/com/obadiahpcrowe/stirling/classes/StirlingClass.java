@@ -4,7 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
-import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
+import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import lombok.Getter;
 import org.bson.types.ObjectId;
@@ -27,15 +28,6 @@ import java.util.UUID;
 @Entity("classes")
 public class StirlingClass {
 
-    /*
-    The main problem with adoption right now is that Stirling is only truely effective when everyone is using it, v2 and below didn't have this problem.
-    So now it's decently annoying to regulate who is in what class
-    And how I determine each class and such
-    So as far as permissions go, it's gonna be interesting
-    What I'm thinking is assigning each daymap class and id, then when a user adds their daymap credentials, Stirling finds the Id and the associated Stirling class and adds it to the user
-    I'm quite tired right now, so if anyone could verify that logic, that would be great
-     */
-
     @Id
     private ObjectId objectId;
 
@@ -47,13 +39,14 @@ public class StirlingClass {
     private String room;
 
     // For imports
-    private Map<UUID, List<ImportManager>> studentImportHolders;
-    private List<ImportManager> globalHolders;
+    private Map<UUID, Map<ImportSource, List<ImportableClass>>> studentImportHolders;
+    private List<? extends ImportableClass> globalHolders;
 
     // Members and times
     private Map<UUID, ClassRole> members;
     private List<UUID> students;
     private List<UUID> teachers;
+
     private List<StirlingLesson> lessons;
 
     // Resources and such
@@ -65,7 +58,7 @@ public class StirlingClass {
 
     // Results
     private Map<UUID, List<StirlingAssignment>> studentAssignments;
-    private Map<UUID, List<StirlingResult>> studentResults; // TODO: 26/9/17 Generate report and shit from these results.
+    private Map<UUID, List<StirlingResult>> studentResults; // TODO: 26/9/17 Generate report and stuff from these results.
     private Map<UUID, List<ProgressMarker>> progressMarkers;
 
     @Deprecated
@@ -94,9 +87,6 @@ public class StirlingClass {
         this.progressMarkers = Maps.newHashMap();
     }
 
-    // TODO: 13/10/17 THIS IS THE MOTHERFUCKING DAYMAP IMPORT FUNCTION. USE THIS YOU BLIND FUCK.
-    // TODO: 12/10/17 How to get this shit to work vvv
-    // I scrape daymap shit, save against the id, generate a class with the id linked somehow. Every other user that calls the same Id gets the same Stirling class
     public StirlingClass(String ownerId, String name, String desc, String room) {
         this.uuid = UUID.randomUUID();
         this.owners = Lists.newArrayList(ownerId);

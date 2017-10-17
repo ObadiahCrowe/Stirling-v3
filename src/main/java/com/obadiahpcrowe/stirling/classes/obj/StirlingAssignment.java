@@ -22,13 +22,18 @@ public class StirlingAssignment {
     private UUID uuid;
     private @Setter
     String title;
+
     private @Setter
     String desc;
+
     private @Setter
     StirlingResult result;
+
     private StirlingDate assignedDateTime;
+
     private @Setter
     StirlingDate dueDateTime;
+
     private List<AttachableResource> submittedFiles;
 
     @Deprecated
