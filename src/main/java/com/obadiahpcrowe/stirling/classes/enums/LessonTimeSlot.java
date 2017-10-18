@@ -5,6 +5,7 @@ import com.obadiahpcrowe.stirling.classes.obj.SlotData;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -72,5 +73,54 @@ public enum LessonTimeSlot {
     LessonTimeSlot(int slotNumber, SlotData... weeklyOccurances) {
         this.slotNumber = slotNumber;
         this.weeklyOccurances = Lists.newArrayList(weeklyOccurances);
+    }
+
+    public static LessonTimeSlot getFromString(String timeSlot, String day) {
+        String[] parts = timeSlot.split("to");
+        CompletableFuture<LessonTimeSlot> slot = new CompletableFuture<>();
+
+        String start = parts[0].replace("to", "").replace(" ", "");
+        String end = parts[1].replace("to", "").replace(" ", "");
+
+        if (start.contains("PM")) {
+            String startPart = start.replace("PM", "");
+            int hour = Integer.valueOf(startPart.split(":")[0]);
+            int minute = Integer.valueOf(startPart.split(":")[1]);
+
+            if (hour < 12) {
+                hour = hour + 12;
+            }
+
+            start = String.valueOf(hour) + ":" + String.valueOf(minute);
+        } else {
+            start = start.replace("AM", "");
+        }
+
+        if (end.contains("PM")) {
+            String endPart = end.replace("PM", "");
+            int hour = Integer.valueOf(endPart.split(":")[0]);
+            int minute = Integer.valueOf(endPart.split(":")[1]);
+
+            if (hour < 12) {
+                hour = hour + 12;
+            }
+
+            end = String.valueOf(hour) + ":" + String.valueOf(minute);
+        } else {
+            end = end.replace("AM", "");
+        }
+
+        final String fStart = start;
+        final String fEnd = end;
+
+        for (LessonTimeSlot s : LessonTimeSlot.values()) {
+            s.getWeeklyOccurances().forEach(data -> {
+                if (data.getStartTime().equalsIgnoreCase(fStart) && data.getEndTime().equalsIgnoreCase(fEnd) && data.getDayOfWeek().equalsIgnoreCase(day)) {
+                    slot.complete(s);
+                }
+            });
+        }
+
+        return slot.getNow(null);
     }
 }

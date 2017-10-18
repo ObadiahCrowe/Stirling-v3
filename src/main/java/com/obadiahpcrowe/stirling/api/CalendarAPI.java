@@ -5,7 +5,6 @@ import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  * Package: com.obadiahpcrowe.stirling.api
  * Copyright (c) Obadiah Crowe 2017
  */
-@RestController
 public class CalendarAPI implements APIController {
 
     @CallableAPI(fields = { "accountName", "password" })

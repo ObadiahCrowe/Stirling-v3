@@ -1,12 +1,8 @@
 package com.obadiahpcrowe.stirling;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.classes.ClassManager;
-import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -18,6 +14,7 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -62,14 +59,14 @@ public class Stirling {
         APIManager.getInstance().registerDefaultCalls(
           new AccountAPI(),
           new AnnouncementAPI(),
-          new CalendarAPI(),
+          //new CalendarAPI(),
           new ClassesAPI(),
           new CloudAPI(),
           new FeedbackAPI(),
           new InfoAPI(),
           new NotesAPI(),
           new SaceAPI(),
-          new SessionAPI(),
+          //new SessionAPI(),
           new SignInAPI(),
           new SurveyAPI()
         );
@@ -95,10 +92,7 @@ public class Stirling {
         ModuleManager.getInstance().registerAPICalls();
 
         utilLog.log("Starting REST API service..");
-        //SpringApplication.run(Stirling.class, args);
-
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        System.out.println(ClassManager.getInstance().createClass(account, "test2", "a test", "home", LessonTimeSlot.TIMESLOT_6));
+        SpringApplication.run(Stirling.class, args);
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

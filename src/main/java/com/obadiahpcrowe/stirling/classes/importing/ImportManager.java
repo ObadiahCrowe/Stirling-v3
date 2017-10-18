@@ -65,21 +65,31 @@ public class ImportManager {
 
     public String addImportCredential(StirlingAccount account, ImportSource source, ImportCredential credential) {
         Map<ImportSource, ImportCredential> credentialMap;
-        if (importAccExists(account.getUuid())) {
+        if (!importAccExists(account.getUuid())) {
             credentialMap = Maps.newHashMap();
             credentialMap.put(source, credential);
 
             importDAO.save(new ImportAccount(account.getUuid(), credentialMap));
-            return addImportCredential(account, source, credential);
+            performImport(account);
+            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
         }
 
         // Add account then import
         ImportAccount importAccount = getByUuid(account.getUuid());
-        if (importAccount.getCredentials().containsKey(source)) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CONTAINS_CRED, account.getLocale(), source.getFriendlyName()));
+        try {
+            if (importAccount.getCredentials().containsKey(source)) {
+                return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CONTAINS_CRED, account.getLocale(), source.getFriendlyName()));
+            }
+        } catch (NullPointerException ignored) {
         }
 
-        credentialMap = Maps.newHashMap(importAccount.getCredentials());
+        credentialMap = Maps.newHashMap();
+
+        try {
+            credentialMap.putAll(importAccount.getCredentials());
+        } catch (NullPointerException ignored) {
+        }
+
         credentialMap.put(source, credential);
 
         importDAO.updateField(importAccount, "credentials", credentialMap);
@@ -88,6 +98,7 @@ public class ImportManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
     }
 
+    // TODO: 17/10/17 Fix up this
     public void performImport(StirlingAccount account) {
         List<ImportableClass> daymapClasses = Lists.newArrayList();
         List<ImportableClass> moodleClasses = Lists.newArrayList();
@@ -100,6 +111,7 @@ public class ImportManager {
             daymapClasses.addAll(DaymapHandler.getInstance().getAllCourses(importAccount));
         });
         daymap.start();
+
 
         Thread moodle = new Thread(() -> {
             moodleClasses.addAll(MoodleHandler.getInstance().getAllCourses(importAccount));
@@ -265,6 +277,9 @@ public class ImportManager {
     }
 
     public boolean importAccExists(UUID uuid) {
-        return importDAO.getByUuid(uuid) != null;
+        if (getByUuid(uuid) == null) {
+            return false;
+        }
+        return true;
     }
 }

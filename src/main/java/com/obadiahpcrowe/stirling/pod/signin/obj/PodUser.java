@@ -31,6 +31,7 @@ public class PodUser {
     private PodLine line;
     private PodReason reason;
 
+    @Deprecated
     public PodUser() {}
 
     public PodUser(UUID uuid, int studentId, boolean signedIn) {

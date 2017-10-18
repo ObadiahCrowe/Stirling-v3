@@ -29,7 +29,7 @@ public class MoodleHandler implements GenericHandler {
     }
 
     @Override
-    public void addCourseToUser(ImportAccount account, Object data) {
+    public void addCourseToUser(ImportAccount account, List<? extends ImportableClass> classes) {
 
     }
 

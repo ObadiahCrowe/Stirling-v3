@@ -16,7 +16,7 @@ public interface GenericHandler {
 
     List<ImportableClass> getAllCourses(ImportAccount account);
 
-    void addCourseToUser(ImportAccount account, Object data);
+    void addCourseToUser(ImportAccount account, List<? extends ImportableClass> classes);
 
     String getCourseAsJson(ImportAccount account, String id);
 }

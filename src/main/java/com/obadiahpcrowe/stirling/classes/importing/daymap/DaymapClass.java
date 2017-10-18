@@ -1,7 +1,9 @@
 package com.obadiahpcrowe.stirling.classes.importing.daymap;
 
+import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingLesson;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
@@ -20,8 +22,10 @@ import java.util.List;
 @Setter
 public class DaymapClass extends ImportableClass {
 
+    private LessonTimeSlot slot;
     private String room;
     private String teacher;
+    private List<StirlingLesson> lessons;
     private List<StirlingPostable> classNotes;
     private List<StirlingPostable> homework;
     private List<AttachableResource> resources;
@@ -31,9 +35,22 @@ public class DaymapClass extends ImportableClass {
     public DaymapClass() {
     }
 
-    public DaymapClass(String id, String name, String room, String teacher, List<StirlingPostable> classNotes,
+    public DaymapClass(ImportableClass clazz, LessonTimeSlot slot, String room, String teacher, List<StirlingPostable> classNotes,
+                       List<StirlingPostable> homework, List<AttachableResource> resources, List<StirlingAssignment> assignments) {
+        super(clazz.getId(), clazz.getClassName());
+        this.slot = slot;
+        this.room = room;
+        this.teacher = teacher;
+        this.classNotes = classNotes;
+        this.homework = homework;
+        this.resources = resources;
+        this.assignments = assignments;
+    }
+
+    public DaymapClass(String id, String name, LessonTimeSlot slot, String room, String teacher, List<StirlingPostable> classNotes,
                        List<StirlingPostable> homework, List<AttachableResource> resources, List<StirlingAssignment> assignments) {
         super(id, name);
+        this.slot = slot;
         this.room = room;
         this.teacher = teacher;
         this.classNotes = classNotes;

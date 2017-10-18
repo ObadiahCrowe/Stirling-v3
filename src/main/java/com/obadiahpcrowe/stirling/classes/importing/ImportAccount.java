@@ -5,7 +5,9 @@ import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import lombok.Getter;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,9 @@ import java.util.UUID;
 @Getter
 @Entity("importers")
 public class ImportAccount {
+
+    @Id
+    private ObjectId id;
 
     private UUID accountUuid;
     private Map<ImportSource, ImportCredential> credentials;

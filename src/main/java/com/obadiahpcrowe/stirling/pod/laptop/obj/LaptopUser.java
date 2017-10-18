@@ -24,6 +24,7 @@ public class LaptopUser {
     private UUID uuid;
     private String laptopName;
 
+    @Deprecated
     public LaptopUser() {}
 
     public LaptopUser(UUID uuid, String laptopName) {
