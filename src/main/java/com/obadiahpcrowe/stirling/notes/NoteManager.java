@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.notes;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
@@ -65,9 +66,15 @@ public class NoteManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
     }
 
-    public String removeFiles(StirlingAccount account, UUID uuid, List<AttachableResource> resources) {
+    public String removeFiles(StirlingAccount account, UUID uuid, List<UUID> resourceUuids) {
         StirlingNote note = getNote(uuid);
-        note.getResources().removeAll(resources);
+        List<AttachableResource> resources = Lists.newArrayList();
+
+        try {
+            resources.addAll(note.getResources());
+        } catch (NullPointerException e) {
+        }
+
 
         noteDAO.delete(note);
         noteDAO.save(note);
@@ -93,6 +100,10 @@ public class NoteManager {
         noteDAO.save(note);
 
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
+    }
+
+    public void updateField(StirlingNote note, String field, Object value) {
+        noteDAO.updateField(note, field, value);
     }
 
     public static NoteManager getInstance() {

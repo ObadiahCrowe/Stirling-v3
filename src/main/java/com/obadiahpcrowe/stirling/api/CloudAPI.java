@@ -5,6 +5,7 @@ import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
+import com.obadiahpcrowe.stirling.cloud.CloudManager;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 
 /**
@@ -48,19 +52,7 @@ public class CloudAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        try {
-            File out = new File(UtilFile.getInstance().getUserFolder(account.getUuid()) + File.separator +
-              "Cloud" + File.separator + file.getOriginalFilename());
-
-            if (out.exists()) {
-                return gson.toJson(new StirlingMsg(MsgTemplate.FILE_ALREADY_EXISTS, account.getLocale(), file.getOriginalFilename()));
-            }
-
-            file.transferTo(out);
-            return gson.toJson(new StirlingMsg(MsgTemplate.UPLOADING_FILE, account.getLocale(), file.getOriginalFilename()));
-        } catch (IOException e) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "uploading the file"));
-        }
+        return CloudManager.getInstance().uploadFile(account, file);
     }
 
     @CallableAPI(fields = { "accountName", "password", "filePath" })

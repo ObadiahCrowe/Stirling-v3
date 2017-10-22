@@ -20,4 +20,6 @@ public interface NoteDAO extends DAO<StirlingNote, ObjectId> {
     StirlingNote getByUuid(UUID uuid);
 
     List<StirlingNote> getAll(StirlingAccount account);
+
+    void updateField(StirlingNote note, String field, Object value);
 }

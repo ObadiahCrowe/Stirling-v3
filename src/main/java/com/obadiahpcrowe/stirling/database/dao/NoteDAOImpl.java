@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,5 +39,13 @@ public class NoteDAOImpl extends BasicDAO<StirlingNote, ObjectId> implements Not
           .field("owner").equal(account.getAccountName());
 
         return note.asList();
+    }
+
+    @Override
+    public void updateField(StirlingNote note, String field, Object value) {
+        Query<StirlingNote> query = createQuery().field("uuid").equal(note.getUuid());
+        UpdateOperations<StirlingNote> updateOps = createUpdateOperations().set(field, value);
+
+        update(query, updateOps);
     }
 }
