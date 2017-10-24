@@ -158,5 +158,88 @@ public class NotesAPI implements APIController {
         return noteManager.attachFiles(account, uuid, res);
     }
 
-    @CallableAPI(fields = {"accountName", "password"})
+    @CallableAPI(fields = {"accountName", "password", "noteUuid", "resourceUuids"})
+    @RequestMapping(value = "/stirling/v3/notes/resources/remove", method = RequestMethod.GET)
+    public String removeResources(@RequestParam("accountName") String accountName,
+                                  @RequestParam("password") String password,
+                                  @RequestParam("noteUuid") String noteUuid,
+                                  @RequestParam("resourceUuids") String[] resourceUuids) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid = null;
+        try {
+            uuid = UUID.fromString(noteUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), noteUuid, "noteUuid"));
+        }
+
+        List<UUID> resUuids = Lists.newArrayList();
+
+        for (String s : resourceUuids) {
+            try {
+                resUuids.add(UUID.fromString(s));
+            } catch (IllegalArgumentException e) {
+                return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), noteUuid, "noteUuid"));
+            }
+        }
+
+        return noteManager.removeFiles(account, uuid, resUuids);
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "noteUuid", "title"})
+    @RequestMapping(value = "/stirling/v3/notes/edit/title", method = RequestMethod.GET)
+    public String editTitle(@RequestParam("accountName") String accountName,
+                            @RequestParam("password") String password,
+                            @RequestParam("noteUuid") String noteUuid,
+                            @RequestParam("title") String title) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid = null;
+        try {
+            uuid = UUID.fromString(noteUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), noteUuid, "noteUuid"));
+        }
+
+        return noteManager.editTitle(account, uuid, title);
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "noteUuid", "content"})
+    @RequestMapping(value = "/stirling/v3/notes/edit/content", method = RequestMethod.GET)
+    public String editContent(@RequestParam("accountName") String accountName,
+                              @RequestParam("password") String password,
+                              @RequestParam("noteUuid") String noteUuid,
+                              @RequestParam("content") String content) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid = null;
+        try {
+            uuid = UUID.fromString(noteUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), noteUuid, "noteUuid"));
+        }
+
+        return noteManager.editContent(account, uuid, content);
+    }
 }

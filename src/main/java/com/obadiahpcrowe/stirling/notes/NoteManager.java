@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.notes;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.cloud.CloudManager;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.NoteDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.NoteDAO;
@@ -92,6 +93,7 @@ public class NoteManager {
             resources.forEach(res -> {
                 if (res.getResUuid().equals(u)) {
                     resources.remove(res);
+                    CloudManager.getInstance().removeFile(res.getFilePath(), res.getOwner());
                 }
             });
         });
