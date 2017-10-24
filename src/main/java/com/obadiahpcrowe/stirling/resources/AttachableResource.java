@@ -18,6 +18,7 @@ import java.util.UUID;
 public class AttachableResource {
 
     private UUID owner;
+    private UUID resUuid;
     private String filePath;
     private ARType arType;
 
@@ -25,12 +26,14 @@ public class AttachableResource {
 
     public AttachableResource(UUID uuid, String filePath) {
         this.owner = uuid;
+        this.resUuid = UUID.randomUUID();
         this.filePath = filePath;
         this.arType = ARType.NORMAL;
     }
 
     public AttachableResource(UUID uuid, String filePath, ARType arType) {
         this.owner = uuid;
+        this.resUuid = UUID.randomUUID();
         this.filePath = filePath;
         this.arType = arType;
     }

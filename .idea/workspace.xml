@@ -3,12 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/CloudAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/CloudAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/cloud/CloudManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/cloud/CloudManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/NoteDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/NoteDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/interfaces/NoteDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/interfaces/NoteDAO.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -24,7 +21,7 @@
       <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="854">
+            <state relative-caret-position="0">
               <caret line="76" column="9" lean-forward="false" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="9" />
               <folding />
             </state>
@@ -86,7 +83,7 @@
       <file leaf-file-name="SaceAPI.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1134">
+            <state relative-caret-position="853">
               <caret line="93" column="54" lean-forward="false" selection-start-line="93" selection-start-column="54" selection-end-line="93" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -98,18 +95,21 @@
       <file leaf-file-name="NoteManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="812">
-              <caret line="74" column="43" lean-forward="false" selection-start-line="74" selection-start-column="43" selection-end-line="74" selection-end-column="43" />
-              <folding />
+            <state relative-caret-position="784">
+              <caret line="73" column="43" lean-forward="false" selection-start-line="73" selection-start-column="43" selection-end-line="73" selection-end-column="43" />
+              <folding>
+                <element signature="e#4774#4775#0" expanded="true" />
+                <element signature="e#4818#4819#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MsgTemplate.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
+      <file leaf-file-name="StirlingNote.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/obj/StirlingNote.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2100">
-              <caret line="150" column="8" lean-forward="false" selection-start-line="150" selection-start-column="4" selection-end-line="150" selection-end-column="8" />
+            <state relative-caret-position="182">
+              <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -175,7 +175,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilConfig.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/enums/TermLength.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/obj/TermLength.java" />
@@ -192,7 +191,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportCredential.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleClass.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/gclassroom/GoogleClass.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportableClass.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/interfaces/GenericPlatform.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/CourseHolder.java" />
@@ -225,6 +223,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/interfaces/NoteDAO.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/NoteDAOImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java" />
       </list>
     </option>
@@ -253,7 +253,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="22" />
     <option name="width" value="1680" />
     <option name="height" value="991" />
@@ -292,9 +292,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -353,7 +353,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
+              <item name="notes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Stirling-v3" type="b2602c69:ProjectViewProjectNode" />
@@ -362,14 +362,14 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-              <item name="dao" type="462c0819:PsiDirectoryNode" />
+              <item name="notes" type="462c0819:PsiDirectoryNode" />
+              <item name="obj" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -681,6 +681,8 @@
       <workItem from="1508645596435" duration="319000" />
       <workItem from="1508663552325" duration="14000" />
       <workItem from="1508664403275" duration="31000" />
+      <workItem from="1508848083254" duration="1187000" />
+      <workItem from="1508884971737" duration="1388000" />
     </task>
     <task id="LOCAL-00052" summary="More db stuff">
       <created>1505884133846</created>
@@ -1029,10 +1031,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="273089000" />
+    <option name="totallyTimeSpent" value="275664000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1680" height="991" extended-state="6" />
+    <frame x="0" y="22" width="1680" height="996" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1111,14 +1113,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/enums/ImportSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="12" column="12" lean-forward="false" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassImporter.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/obj/ImportCredential.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -1140,13 +1134,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/src.zip!/java/util/function/Consumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="48" column="9" lean-forward="false" selection-start-line="48" selection-start-column="9" selection-end-line="48" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/src.zip!/java/util/function/Consumer.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/ImportDAOImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="574">
@@ -1352,7 +1340,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="854">
+        <state relative-caret-position="0">
           <caret line="76" column="9" lean-forward="false" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="9" />
           <folding />
         </state>
@@ -1362,16 +1350,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="27" column="13" lean-forward="false" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1134">
-          <caret line="93" column="54" lean-forward="false" selection-start-line="93" selection-start-column="54" selection-end-line="93" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1405,21 +1383,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/idea.vmoptions">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="19" column="33" lean-forward="false" selection-start-line="19" selection-start-column="33" selection-end-line="19" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2100">
-          <caret line="150" column="8" lean-forward="false" selection-start-line="150" selection-start-column="4" selection-end-line="150" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/idea.vmoptions" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/interfaces/NoteDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -1468,11 +1432,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="35" column="41" lean-forward="false" selection-start-line="35" selection-start-column="41" selection-end-line="35" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="46" column="68" lean-forward="false" selection-start-line="46" selection-start-column="68" selection-end-line="46" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="853">
+          <caret line="93" column="54" lean-forward="false" selection-start-line="93" selection-start-column="54" selection-end-line="93" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/obj/StirlingNote.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="812">
-          <caret line="74" column="43" lean-forward="false" selection-start-line="74" selection-start-column="43" selection-end-line="74" selection-end-column="43" />
-          <folding />
+        <state relative-caret-position="784">
+          <caret line="73" column="43" lean-forward="false" selection-start-line="73" selection-start-column="43" selection-end-line="73" selection-end-column="43" />
+          <folding>
+            <element signature="e#4774#4775#0" expanded="true" />
+            <element signature="e#4818#4819#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -36,16 +36,17 @@ public class NoteManager {
 
     public String createNote(StirlingAccount account, String title, String content, List<AttachableResource> resources) {
         noteDAO.save(new StirlingNote(account, title, content, resources));
-
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_CREATED, account.getLocale(), title));
     }
 
     public String deleteNote(StirlingAccount account, UUID uuid) {
-        StirlingNote note = getNote(uuid);
-        String title = note.getTitle();
-        noteDAO.delete(note);
+        if (!noteExists(uuid)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
+        }
 
-        return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DELETED, account.getLocale(), title));
+        StirlingNote note = getNote(uuid);
+        noteDAO.delete(note);
+        return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DELETED, account.getLocale(), note.getTitle()));
     }
 
     public StirlingNote getNote(UUID uuid) {
@@ -57,16 +58,28 @@ public class NoteManager {
     }
 
     public String attachFiles(StirlingAccount account, UUID uuid, List<AttachableResource> resources) {
+        if (!noteExists(uuid)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
+        }
+
         StirlingNote note = getNote(uuid);
-        note.getResources().addAll(resources);
+        List<AttachableResource> res = Lists.newArrayList();
 
-        noteDAO.delete(note);
-        noteDAO.save(note);
+        try {
+            res.addAll(note.getResources());
+            res.addAll(resources);
+        } catch (NullPointerException e) {
+        }
 
+        updateField(note, "resources", res);
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
     }
 
     public String removeFiles(StirlingAccount account, UUID uuid, List<UUID> resourceUuids) {
+        if (!noteExists(uuid)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
+        }
+
         StirlingNote note = getNote(uuid);
         List<AttachableResource> resources = Lists.newArrayList();
 
@@ -75,35 +88,46 @@ public class NoteManager {
         } catch (NullPointerException e) {
         }
 
+        resourceUuids.forEach(u -> {
+            resources.forEach(res -> {
+                if (res.getResUuid().equals(u)) {
+                    resources.remove(res);
+                }
+            });
+        });
 
-        noteDAO.delete(note);
-        noteDAO.save(note);
-
+        updateField(note, "resources", resources);
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
     }
 
     public String editTitle(StirlingAccount account, UUID uuid, String title) {
+        if (!noteExists(uuid)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
+        }
+
         StirlingNote note = getNote(uuid);
-        note.setTitle(title);
 
-        noteDAO.delete(note);
-        noteDAO.save(note);
-
+        updateField(note, "title", title);
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
     }
 
     public String editContent(StirlingAccount account, UUID uuid, String content) {
+        if (!noteExists(uuid)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
+        }
+
         StirlingNote note = getNote(uuid);
-        note.setContent(content);
 
-        noteDAO.delete(note);
-        noteDAO.save(note);
-
+        updateField(note, "content", content);
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
     }
 
     public void updateField(StirlingNote note, String field, Object value) {
         noteDAO.updateField(note, field, value);
+    }
+
+    public boolean noteExists(UUID uuid) {
+        return getNote(uuid) == null;
     }
 
     public static NoteManager getInstance() {
