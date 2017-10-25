@@ -129,7 +129,7 @@ public class NoteManager {
     }
 
     public boolean noteExists(UUID uuid) {
-        return getNote(uuid) == null;
+        return getNote(uuid) != null;
     }
 
     public static NoteManager getInstance() {

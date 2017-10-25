@@ -184,6 +184,7 @@ public enum MsgTemplate {
     SURVEY_SUBMITTED(MsgResponse.SUCCESS, "You have submitted your responses to the survey: {0}!", 1),
     SURVEY_ALREADY_SUBMITTED(MsgResponse.USER_ERROR, "You have already submitted a response to this survey!", 0),
     SURVEY_UPDATED(MsgResponse.SUCCESS, "The survey, {0}, has had the field, {1}, updated!", 2),
+    SURVEY_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The survey with the id: {0}, does not exist!", 1),
 
     INVALID_TYPE_FORMAT(MsgResponse.USER_ERROR, "{0} is invalid! The required format is {1}!", 2);
 

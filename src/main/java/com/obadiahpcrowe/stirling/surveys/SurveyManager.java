@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.surveys;
 
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
@@ -12,6 +13,7 @@ import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -37,15 +39,15 @@ public class SurveyManager {
 
     public String createSurvey(StirlingAccount account, String title, String desc, List<AccountType> targetAudiences,
                                List<SurveyQuestion> questions) {
-        if (account.getAccountType().getAccessLevel() >= 9) {
+        if (account.getAccountType().getAccessLevel() >= 4) {
             surveyDAO.save(new StirlingSurvey(account, title, desc, targetAudiences, questions));
             return gson.toJson(new StirlingMsg(MsgTemplate.SURVEY_CREATED, account.getLocale(), title));
         }
-        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create surveys", AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create surveys", AccountType.PREFECT.getFriendlyName()));
     }
 
     public String deleteSurvey(StirlingAccount account, UUID surveyUuid) {
-        if (account.getAccountType().getAccessLevel() >= 9) {
+        if (account.getAccountType().getAccessLevel() >= 4) {
             StirlingSurvey survey = getSurvey(surveyUuid);
             if (survey.getOwner().equals(account.getAccountName())) {
                 surveyDAO.delete(getSurvey(surveyUuid));
@@ -53,32 +55,41 @@ public class SurveyManager {
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.NOT_OWNER, account.getLocale(), "this survey", "delete it"));
         }
-        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete surveys", AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete surveys", AccountType.PREFECT.getFriendlyName()));
     }
 
     public String editSurvey(StirlingAccount account, UUID surveyUuid, String field, Object value) {
-        if (account.getAccountType().getAccessLevel() >= 9) {
+        if (account.getAccountType().getAccessLevel() >= 4) {
             StirlingSurvey survey = getSurvey(surveyUuid);
             if (survey.getOwner().equals(account.getAccountName())) {
                 surveyDAO.updateField(survey, field, value);
                 return gson.toJson(new StirlingMsg(MsgTemplate.SURVEY_UPDATED, account.getLocale(), survey.getTitle(), field));
             }
-            return gson.toJson(new StirlingMsg(MsgTemplate.NOT_OWNER, account.getLocale(), "this survey", "delete it"));
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOT_OWNER, account.getLocale(), "this survey", "edit it"));
         }
-        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit surveys", AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit surveys", AccountType.PREFECT.getFriendlyName()));
     }
 
     public String sendCompletedResponse(StirlingAccount account, UUID surveyUuid, List<SurveyQuestion> questions) {
+        if (!surveyExists(surveyUuid)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.SURVEY_DOES_NOT_EXIST, account.getLocale(), surveyUuid.toString()));
+        }
+
         StirlingSurvey survey = getSurvey(surveyUuid);
 
-        if (!survey.getCompletedResponses().containsKey(account.getUuid())) {
-            survey.getCompletedResponses().put(account.getUuid(), questions);
+        Map<UUID, List<SurveyQuestion>> responses = Maps.newHashMap();
+        try {
+            responses.putAll(survey.getCompletedResponses());
+        } catch (NullPointerException e) {
+        }
 
-            surveyDAO.delete(getSurvey(surveyUuid));
-            surveyDAO.save(survey);
+        if (!responses.containsKey(account.getUuid())) {
+            responses.put(account.getUuid(), questions);
 
+            surveyDAO.updateField(survey, "completedResponses", responses);
             return gson.toJson(new StirlingMsg(MsgTemplate.SURVEY_SUBMITTED, account.getLocale(), survey.getTitle()));
         }
+
         return gson.toJson(new StirlingMsg(MsgTemplate.SURVEY_ALREADY_SUBMITTED, account.getLocale()));
     }
 
@@ -87,10 +98,7 @@ public class SurveyManager {
     }
 
     public boolean surveyExists(UUID uuid) {
-        if (getSurvey(uuid) == null) {
-            return false;
-        }
-        return true;
+        return getSurvey(uuid) != null;
     }
 
     public static SurveyManager getInstance() {
