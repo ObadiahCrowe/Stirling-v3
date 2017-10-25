@@ -88,8 +88,7 @@ public class SignInManager {
     }
 
     public boolean isSignedIn(StirlingAccount account) {
-        PresentUser presentUser = getPresentUser(account);
-        return presentUser.isPresent();
+        return getPresentUser(account).isPresent();
     }
 
     public static SignInManager getInstance() {
