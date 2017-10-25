@@ -62,15 +62,12 @@ public class InfoAPI implements APIController {
     @CallableAPI(fields = "")
     @RequestMapping(value = "/stirling/v3/isRegistered", method = RequestMethod.GET)
     public boolean isRegistered() {
-        if (SchoolManager.getInstance().getSchool() == null) {
-            return false;
-        }
-        return true;
+        return SchoolManager.getInstance().getSchool() != null;
     }
 
     @CallableAPI(fields = "")
     @RequestMapping(value = "/stirling/v3/school", method = RequestMethod.GET)
-    public String getSchoolName() {
+    public String getSchool() {
         return gson.toJson(SchoolManager.getInstance().getSchool());
     }
 }

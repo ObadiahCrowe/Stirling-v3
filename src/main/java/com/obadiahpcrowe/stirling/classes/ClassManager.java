@@ -82,7 +82,7 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "create classes", "TEACHER"));
     }
 
-    public StirlingCalendar getClassCalendar(StirlingAccount account, UUID classUuid) {
+    public StirlingCalendar getClassTimetable(StirlingAccount account, UUID classUuid) {
         if (classExists(classUuid)) {
             StirlingClass clazz = getByUuid(classUuid);
 

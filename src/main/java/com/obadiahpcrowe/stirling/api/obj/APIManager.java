@@ -1,6 +1,5 @@
 package com.obadiahpcrowe.stirling.api.obj;
 
-import com.obadiahpcrowe.stirling.schools.SchoolManager;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,12 +26,6 @@ public class APIManager {
         for (APIController api : apis) {
             registerCall(api.getClass(), true);
         }
-
-        try {
-            for (APIController api : SchoolManager.getInstance().getSchool().getExtraAPIs()) {
-                registerCall(api.getClass(), true);
-            }
-        } catch (NullPointerException ignored) { }
     }
 
     public void registerModuleAPI(Class clazz) {

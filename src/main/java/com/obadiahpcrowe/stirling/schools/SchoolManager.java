@@ -1,7 +1,8 @@
 package com.obadiahpcrowe.stirling.schools;
 
-import com.obadiahpcrowe.stirling.schools.interfaces.RegisteredSchool;
-import com.obadiahpcrowe.stirling.schools.types.GIHS;
+import com.obadiahpcrowe.stirling.api.gihs.PodAPI;
+import com.obadiahpcrowe.stirling.api.obj.APIManager;
+import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import lombok.Getter;
@@ -25,7 +26,8 @@ public class SchoolManager {
 
     public void init() {
         schools = Arrays.asList(
-          new GIHS()
+          new RegisteredSchool("Glenunga International High School", "@gihs.sa.edu.au",
+            StirlingLocale.ENGLISH, true, true)
         );
 
         String schoolName = UtilConfig.getInstance().getConfig().getSchoolName();
@@ -42,6 +44,12 @@ public class SchoolManager {
               "settings. If this version of Stirling was not licensed to your school, cease using it immediately.");
         } else {
             UtilLog.getInstance().log("You have set your school to: " + school.getName() + "! Thank you for using Stirling.");
+        }
+
+        switch (schoolName) {
+            case "Glenunga International High School":
+                APIManager.getInstance().registerDefaultCalls(new PodAPI());
+                break;
         }
     }
 
