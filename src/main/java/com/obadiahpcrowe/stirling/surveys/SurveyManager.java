@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.surveys;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
@@ -12,6 +13,7 @@ import com.obadiahpcrowe.stirling.surveys.obj.SurveyQuestion;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -91,6 +93,21 @@ public class SurveyManager {
         }
 
         return gson.toJson(new StirlingMsg(MsgTemplate.SURVEY_ALREADY_SUBMITTED, account.getLocale()));
+    }
+
+    public List<StirlingSurvey> getAllSurveys(StirlingAccount account) {
+        List<StirlingSurvey> byUnCompleted = surveyDAO.getByUnCompleted(account);
+        List<StirlingSurvey> byAccType = surveyDAO.getByAudience(Collections.singletonList(account.getAccountType()));
+
+        List<StirlingSurvey> surveys = Lists.newArrayList();
+
+        byAccType.forEach(type -> {
+            if (byUnCompleted.contains(type)) {
+                surveys.add(type);
+            }
+        });
+
+        return surveys;
     }
 
     public StirlingSurvey getSurvey(UUID uuid) {
