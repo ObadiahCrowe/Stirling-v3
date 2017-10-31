@@ -29,11 +29,12 @@ public class AccountManager {
 
     private MorphiaService morphiaService;
     private AccountDAO accountDAO;
-    private Gson gson = new Gson();
+    private Gson gson;
 
     public AccountManager() {
         this.morphiaService = new MorphiaService();
         this.accountDAO = new AccountDAOImpl(StirlingAccount.class, morphiaService.getDatastore());
+        this.gson = new Gson();
     }
 
     public String createAccount(String accountName, String emailAddress, String password) {

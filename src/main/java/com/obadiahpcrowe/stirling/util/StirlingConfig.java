@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.util;
 
+import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.enums.AusState;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
@@ -20,14 +21,16 @@ public class StirlingConfig {
     private boolean allowUnsignedModules;
     private boolean enableStirlingMarketplace;
     private boolean enableSchoolMarketplace;
+    private StirlingLocale defaultLocale;
 
     public StirlingConfig(VersionType releaseChannel, AusState ausState, String schoolName, boolean allowUnsignedModules,
-                          boolean enableStirlingMarketplace, boolean enableSchoolMarketplace) {
+                          boolean enableStirlingMarketplace, boolean enableSchoolMarketplace, StirlingLocale defaultLocale) {
         this.releaseChannel = releaseChannel;
         this.ausState = ausState;
         this.schoolName = schoolName;
         this.allowUnsignedModules = allowUnsignedModules;
         this.enableStirlingMarketplace = enableStirlingMarketplace;
         this.enableSchoolMarketplace = enableSchoolMarketplace;
+        this.defaultLocale = defaultLocale;
     }
 }

@@ -9,6 +9,7 @@ import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.rmi.CORBA.Util;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -47,7 +46,7 @@ public class AnnouncementAPI implements APIController {
     private AccountManager accountManager = AccountManager.getInstance();
 
     @CallableAPI(fields = { "accountName", "password", "type", "image", "title", "desc", "content", "resourceNames", "targetAudiences", "tags" })
-    @RequestMapping(value = "/stirling/v3/announcements/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/stirling/v3/announcements/create", method = RequestMethod.POST)
     public String createAnnouncement(@RequestParam("accountName") String accountName,
                                      @RequestParam("password") String password,
                                      @RequestParam("type") String type,
@@ -55,9 +54,9 @@ public class AnnouncementAPI implements APIController {
                                      @RequestParam("title") String title,
                                      @RequestParam("desc") String desc,
                                      @RequestParam("content") String content,
-                                     @RequestParam("resourceNames") String resourceNames,
+                                     @RequestParam(value = "resourceNames", required = false) String resourceNames,
                                      @RequestParam("targetAudiences") String targetAudiences,
-                                     @RequestParam("tags") String tags) {
+                                     @RequestParam(value = "tags", required = false) String tags) {
         StirlingAccount account = accountManager.getAccount(accountName);
         if (account == null) {
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
@@ -87,13 +86,12 @@ public class AnnouncementAPI implements APIController {
                 out.mkdir();
             }
 
-
             file.transferTo(banner);
         } catch (IOException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "creating the announcement"));
         }
 
-        return manager.postAnnouncement(account, uuid, announcementType, new AttachableResource(uuid, banner.getPath()),
+        return manager.postAnnouncement(account, uuid, announcementType, new AttachableResource(uuid, banner.getPath(), ARType.ANNOUNCEMENT),
           title, desc, content, resourceNames, targetAudiences, tags);
     }
 

@@ -8,15 +8,11 @@ import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.AnnouncementDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.AnnouncementDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
-import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
-import org.bson.types.ObjectId;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -30,13 +26,14 @@ public class AnnouncementManager {
 
     private static AnnouncementManager instance;
 
-    private MorphiaService morphiaService;
-    private AnnouncementDAO announcementDAO;
-    private Gson gson = new Gson();
+    private final MorphiaService morphiaService;
+    private final AnnouncementDAO announcementDAO;
+    private final Gson gson;
 
-    public AnnouncementManager() {
+    private AnnouncementManager() {
         this.morphiaService = new MorphiaService();
         this.announcementDAO = new AnnouncementDAOImpl(StirlingAnnouncement.class, morphiaService.getDatastore());
+        this.gson = new Gson();
     }
 
     public String postAnnouncement(StirlingAccount account, UUID uuid, AnnouncementType type, AttachableResource bannerImage, String title,
@@ -57,15 +54,19 @@ public class AnnouncementManager {
         }
 
         List<AttachableResource> resourcesList = new ArrayList<>();
-        StringTokenizer fileTokenizer = new StringTokenizer(resources, ",");
-        while (tokenizer.hasMoreElements()) {
-            resourcesList.add(new AttachableResource(account.getUuid(), fileTokenizer.nextElement().toString()));
+        if (resources != null) {
+            StringTokenizer fileTokenizer = new StringTokenizer(resources, ",");
+            while (tokenizer.hasMoreElements()) {
+                resourcesList.add(new AttachableResource(account.getUuid(), fileTokenizer.nextElement().toString(), ARType.ANNOUNCEMENT));
+            }
         }
 
         List<String> tagsList = new ArrayList<>();
-        StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
-        while (tokenizer.hasMoreElements()) {
-            tagsList.add(tagTokenizer.nextElement().toString());
+        if (tags != null) {
+            StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
+            while (tokenizer.hasMoreElements()) {
+                tagsList.add(tagTokenizer.nextElement().toString());
+            }
         }
 
         StirlingAnnouncement announcement = new StirlingAnnouncement(account, uuid, title, shortDesc, type, bannerImage,

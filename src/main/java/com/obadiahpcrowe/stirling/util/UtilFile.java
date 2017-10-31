@@ -164,7 +164,7 @@ public class UtilFile {
         }
     }
 
-    public void copyInternalFile(String fileName, File directory) throws IOException {
+    private void copyInternalFile(String fileName, File directory) throws IOException {
         InputStream inputStream = Stirling.class.getClassLoader().getResourceAsStream(fileName);
         OutputStream outputStream = new FileOutputStream(new File(directory + File.separator + fileName));
         IOUtils.copy(inputStream, outputStream);

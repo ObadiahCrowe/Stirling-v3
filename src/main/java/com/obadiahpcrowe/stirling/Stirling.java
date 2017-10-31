@@ -37,6 +37,7 @@ public class Stirling {
     // TODO: 17/10/17 Remove profanity from code
     // TODO: 17/10/17 Make sure the ImportableClass shit doesn't fuck up
     // TODO: 17/10/17 Import from daymap through the daymapId, then store the daymap shit against a user account and update it through a non-account method for all users.
+    // TODO: 27/10/17 Junit
 
     // AFTER RELEASE
     // TODO: 17/10/17 Generate report and predicted grades from Stirling results

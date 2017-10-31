@@ -39,7 +39,7 @@ public class CloudAPI implements APIController {
     private Gson gson = new Gson();
 
     @CallableAPI(fields = { "accountName", "password", "file" })
-    @RequestMapping(value = "/stirling/v3/cloud/upload", method = RequestMethod.GET)
+    @RequestMapping(value = "/stirling/v3/cloud/upload", method = RequestMethod.POST)
     public String uploadFile(@RequestParam("accountName") String accountName,
                              @RequestParam("password") String password,
                              @RequestParam("file") MultipartFile file) {

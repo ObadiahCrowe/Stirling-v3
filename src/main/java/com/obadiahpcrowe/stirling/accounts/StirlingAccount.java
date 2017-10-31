@@ -5,16 +5,14 @@ import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
-import com.obadiahpcrowe.stirling.util.UtilFile;
+import com.obadiahpcrowe.stirling.util.UtilConfig;
 import lombok.Getter;
-import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -63,7 +61,7 @@ public class StirlingAccount {
         this.accountName = accountName;
         this.emailAddress = emailAddress;
         this.uuid = UUID.randomUUID();
-        this.locale = StirlingLocale.ENGLISH;
+        this.locale = UtilConfig.getInstance().getConfig().getDefaultLocale();
         this.accountType = AccountType.STUDENT;
         this.password = BCrypt.hashpw(password, salt);
         this.salt = salt;

@@ -52,6 +52,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/org/junit/</url>
+            <id>junit-repo</id>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <dependency>

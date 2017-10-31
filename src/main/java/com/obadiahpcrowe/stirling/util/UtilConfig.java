@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.util;
 
 import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.enums.AusState;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 
@@ -40,7 +41,7 @@ public class UtilConfig {
                 configFile.createNewFile();
 
                 config = new StirlingConfig(VersionType.DEVELOPMENT_BUILD, AusState.SA, "UNREGISTERED", true,
-                  true, false);
+                  true, false, StirlingLocale.ENGLISH);
                 saveConfig();
             } catch (IOException e) {
                 e.printStackTrace();

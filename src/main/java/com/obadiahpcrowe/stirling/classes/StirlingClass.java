@@ -51,7 +51,7 @@ public class StirlingClass {
 
     // Resources and such
     private List<StirlingSection> sections;
-    private List<StirlingCatchup> catchups; //date, catchup info
+    private List<StirlingCatchup> catchups;
     private List<StirlingPostable> classNotes;
     private List<StirlingPostable> homework;
     private List<StirlingResource> resources;
