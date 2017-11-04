@@ -139,7 +139,7 @@ public class AccountAPI implements APIController {
     }
 
     @CallableAPI(fields = { "accountName", "password", "avatar" })
-    @RequestMapping(value = "/stirling/v3/accounts/update/avatar", method = RequestMethod.GET)
+    @RequestMapping(value = "/stirling/v3/accounts/update/avatar", method = RequestMethod.POST)
     public String updateAvatar(@RequestParam("accountName") String accountName,
                                @RequestParam("password") String password,
                                @RequestParam("avatar") MultipartFile file) {
@@ -167,7 +167,7 @@ public class AccountAPI implements APIController {
     }
 
     @CallableAPI(fields = { "accountName", "password", "banner" })
-    @RequestMapping(value = "/stirling/v3/accounts/update/banner", method = RequestMethod.GET)
+    @RequestMapping(value = "/stirling/v3/accounts/update/banner", method = RequestMethod.POST)
     public String updateBanner(@RequestParam("accountName") String accountName,
                                @RequestParam("password") String password,
                                @RequestParam("banner") MultipartFile file) {
