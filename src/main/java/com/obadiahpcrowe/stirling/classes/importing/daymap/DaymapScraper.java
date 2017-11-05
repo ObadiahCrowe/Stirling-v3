@@ -1,9 +1,6 @@
 package com.obadiahpcrowe.stirling.classes.importing.daymap;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.DefaultCredentialsProvider;
-import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
-import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.common.collect.Lists;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
@@ -19,10 +16,16 @@ import com.obadiahpcrowe.stirling.exceptions.FuckDaymapException;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -404,11 +407,12 @@ public class DaymapScraper {
                                     }
                                 } else if (type.equals("Resource")) {
                                     String onClick = element.getLastElementChild().getLastElementChild()
-                                      .getLastElementChild().getLastElementChild().getAttribute("onclick")
-                                      .replace("DMU.OpenAttachment(", "").replace(");", "");
+                                      .getLastElementChild().getLastElementChild().getAttribute("onclick");
 
                                     String name = element.getLastElementChild().getLastElementChild().getLastElementChild()
-                                      .getLastElementChild().getTextContent();
+                                      .getLastElementChild().getTextContent().trim().replace("/", "-")
+                                      .replace("\n", "").replace("\t", "")
+                                      .replace("\\u00a0", "");
 
                                     ClassManager classManager = ClassManager.getInstance();
                                     StirlingClass stirlingClass = classManager.getByOwner(clazz.getId());
@@ -416,7 +420,28 @@ public class DaymapScraper {
                                     resList.add(resource);
 
                                     Thread res = new Thread(() -> {
-                                        //
+                                        final WebClient dlClient = new StirlingWebClient(BrowserVersion.CHROME)
+                                          .getClient(provider, new NicelyResynchronizingAjaxController());
+
+                                        try {
+                                            HtmlPage dummyPage = dlClient.getPage("https://daymap.gihs.sa.edu.au/daymap/student/dayplan.aspx");
+                                            ScriptResult result = dummyPage.executeJavaScript(onClick);
+                                            InputStream in = result.getNewPage().getWebResponse().getContentAsStream();
+
+                                            File cFile = new File(UtilFile.getInstance().getStorageLoc() +
+                                              File.separator + "Classes" + File.separator + stirlingClass.getUuid() +
+                                              File.separator + "Resources" + File.separator + name);
+
+                                            if (!cFile.exists()) {
+                                                cFile.createNewFile();
+                                            }
+
+                                            FileOutputStream out = new FileOutputStream(cFile);
+                                            ReadableByteChannel rbc = Channels.newChannel(in);
+                                            out.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                                        } catch (IOException e1) {
+                                            e1.printStackTrace();
+                                        }
                                     });
                                     res.start();
                                 }
