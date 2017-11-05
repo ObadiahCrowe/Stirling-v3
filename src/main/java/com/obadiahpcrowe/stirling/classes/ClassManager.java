@@ -8,10 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
-import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
-import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
-import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
-import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
+import com.obadiahpcrowe.stirling.classes.enums.*;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
@@ -321,12 +318,13 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "remove catchup modules", "TEACHER"));
     }
 
-    public String createAssignment(StirlingAccount account, UUID classUuid, String title, String desc, StirlingDate dueDate, int maxMarks, double weighting) {
+    public String createAssignment(StirlingAccount account, UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
+                                   StirlingDate dueDate, int maxMarks, double weighting) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
 
-                StirlingAssignment assignment = new StirlingAssignment(title, desc,
+                StirlingAssignment assignment = new StirlingAssignment(title, desc, type, formative,
                   new StirlingResult(0, maxMarks, "", weighting, ""), dueDate);
 
                 Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());

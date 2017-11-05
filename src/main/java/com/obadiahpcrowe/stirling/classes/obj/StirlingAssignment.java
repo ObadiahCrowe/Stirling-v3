@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.classes.obj;
 
 import com.google.common.collect.Lists;
+import com.obadiahpcrowe.stirling.classes.enums.AssignmentType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
@@ -20,29 +21,39 @@ import java.util.UUID;
 public class StirlingAssignment {
 
     private UUID uuid;
-    private @Setter
-    String title;
 
-    private @Setter
-    String desc;
+    @Setter
+    private String title;
 
-    private @Setter
-    StirlingResult result;
+    @Setter
+    private String desc;
+
+    @Setter
+    private StirlingResult result;
+
+    @Setter
+    private boolean formative;
+
+    @Setter
+    private AssignmentType type;
 
     private StirlingDate assignedDateTime;
 
-    private @Setter
-    StirlingDate dueDateTime;
+    @Setter
+    private StirlingDate dueDateTime;
 
     private List<AttachableResource> submittedFiles;
 
     @Deprecated
     public StirlingAssignment() {}
 
-    public StirlingAssignment(String title, String desc, StirlingResult result, StirlingDate dueDateTime) {
+    public StirlingAssignment(String title, String desc, AssignmentType type, boolean formative, StirlingResult result,
+                              StirlingDate dueDateTime) {
         this.uuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;
+        this.type = type;
+        this.formative = formative;
         this.result = result;
         this.assignedDateTime = StirlingDate.getNow();
         this.dueDateTime = dueDateTime;

@@ -18,6 +18,7 @@ public class StirlingResult {
     private double weighting;
     private String comments;
 
+    @Deprecated
     public StirlingResult() {}
 
     public StirlingResult(int receivedMarks, int maxMarks, String grade, double weighting, String comments) {

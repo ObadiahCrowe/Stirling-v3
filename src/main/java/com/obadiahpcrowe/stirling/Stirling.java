@@ -1,13 +1,9 @@
 package com.obadiahpcrowe.stirling;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
-import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
-import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
@@ -85,12 +81,7 @@ public class Stirling {
             APIManager.getInstance().registerCall(DebugAPI.class, true);
         }
 
-        AccountManager.getInstance().createAccount("ObadiahCrowe", "obadiah.crowe@gihs.sa.edu.au", "@nMV6dHRQMKac");
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance().addImportCredential(account,
-          ImportSource.DAYMAP, new ImportCredential("obadiah.crowe", "N2ZekHJwVqDv".toCharArray()));
-
-        DaymapScraper.getInstance().getFullCourse("obadiah.crowe", "N2ZekHJwVqDv", new ImportableClass("12 EnglishFB", "3755"));
+        DaymapScraper.getInstance().getFullCourse("obadiah.crowe", "N2ZekHJwVqDv", new ImportableClass("12 PsychologyFA", "3823"));
         System.exit(0);
 
         utilLog.log("Loading modules..");
