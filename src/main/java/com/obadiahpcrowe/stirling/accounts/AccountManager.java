@@ -14,6 +14,7 @@ import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -136,6 +137,10 @@ public class AccountManager {
             }
         }
         return false;
+    }
+
+    public List<StirlingAccount> getAllAccounts() {
+        return accountDAO.getAllAccounts();
     }
 
     public static AccountManager getInstance() {

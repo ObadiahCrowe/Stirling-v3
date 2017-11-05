@@ -119,12 +119,19 @@ public class DaymapScraper {
         slot.start();
 
         Thread teacherThread = new Thread(() -> {
-            //
+            final WebClient client = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
+            CompletableFuture<String> future = new CompletableFuture<>();
+
+            try {
+                HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/dayplan.aspx");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
         teacherThread.start();
 
         try {
-            System.out.println("SLOT: " + timeSlot.get());
+            System.out.println("SLOT: " + timeSlot.get().getSlotNumber());
             System.out.println("ROOM: " + room.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

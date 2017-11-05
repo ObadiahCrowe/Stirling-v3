@@ -20,15 +20,26 @@ public class StirlingPostable {
     private UUID uuid;
     private String title;
     private String content;
+    private UUID sectionUuid;
     private StirlingDate postDateTime;
     private List<AttachableResource> resources;
 
+    @Deprecated
     public StirlingPostable() {}
 
     public StirlingPostable(String title, String content, List<AttachableResource> resources) {
         this.uuid = UUID.randomUUID();
         this.title = title;
         this.content = content;
+        this.postDateTime = StirlingDate.getNow();
+        this.resources = resources;
+    }
+
+    public StirlingPostable(UUID sectionUuid, String title, String content, List<AttachableResource> resources) {
+        this.uuid = UUID.randomUUID();
+        this.title = title;
+        this.content = content;
+        this.sectionUuid = sectionUuid;
         this.postDateTime = StirlingDate.getNow();
         this.resources = resources;
     }

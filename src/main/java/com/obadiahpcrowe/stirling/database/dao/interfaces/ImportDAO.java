@@ -5,6 +5,7 @@ import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.dao.DAO;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,6 +22,8 @@ public interface ImportDAO extends DAO<ImportAccount, ObjectId> {
     ImportAccount getByStirlingAcc(StirlingAccount account);
 
     ImportAccount getByUsername(String username);
+
+    List<ImportAccount> getAllImportAccounts();
 
     void updateField(ImportAccount account, String field, Object value);
 }

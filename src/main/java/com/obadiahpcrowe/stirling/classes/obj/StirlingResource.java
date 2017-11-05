@@ -17,6 +17,7 @@ import java.util.UUID;
 public class StirlingResource extends AttachableResource {
 
     private String title;
+    private UUID sectionUuid;
     private StirlingDate postDateTime;
 
     @Deprecated
@@ -31,6 +32,13 @@ public class StirlingResource extends AttachableResource {
     public StirlingResource(AttachableResource resource, String title) {
         super(resource.getOwner(), resource.getFilePath(), resource.getArType());
         this.title = title;
+        this.postDateTime = StirlingDate.getNow();
+    }
+
+    public StirlingResource(UUID sectionUuid, AttachableResource resource, String title) {
+        super(resource.getOwner(), resource.getFilePath(), resource.getArType());
+        this.title = title;
+        this.sectionUuid = sectionUuid;
         this.postDateTime = StirlingDate.getNow();
     }
 }

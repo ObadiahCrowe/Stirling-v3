@@ -10,6 +10,7 @@ import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -47,6 +48,13 @@ public class ImportDAOImpl extends BasicDAO<ImportAccount, ObjectId> implements 
           .field("accountUuid").equal(AccountManager.getInstance().getAccount(username).getUuid());
 
         return query.get();
+    }
+
+    @Override
+    public List<ImportAccount> getAllImportAccounts() {
+        Query<ImportAccount> query = createQuery();
+
+        return query.asList();
     }
 
     @Override

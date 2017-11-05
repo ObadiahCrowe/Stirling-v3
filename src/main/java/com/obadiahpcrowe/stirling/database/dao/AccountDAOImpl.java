@@ -59,6 +59,13 @@ public class AccountDAOImpl extends BasicDAO<StirlingAccount, ObjectId> implemen
     }
 
     @Override
+    public List<StirlingAccount> getAllAccounts() {
+        Query<StirlingAccount> query = createQuery();
+
+        return query.asList();
+    }
+
+    @Override
     public void updateField(StirlingAccount account, String field, Object value) {
         Query<StirlingAccount> query = createQuery().field("uuid").equal(account.getUuid());
         UpdateOperations<StirlingAccount> updateOps = createUpdateOperations().set(field, value);

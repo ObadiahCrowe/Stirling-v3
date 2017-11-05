@@ -1,8 +1,14 @@
 package com.obadiahpcrowe.stirling;
 
+import com.obadiahpcrowe.stirling.accounts.AccountManager;
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
+import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
+import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -28,7 +34,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Stirling {
 
     private static Stirling instance;
-    private @Getter StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
+
+    @Getter
+    private StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
     // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2) (Maybe SACE integration)
     // TODO: 17/10/17 Add map null checks
@@ -76,6 +84,14 @@ public class Stirling {
         if (getInstance().getVersion().getType() == VersionType.DEVELOPMENT_BUILD) {
             APIManager.getInstance().registerCall(DebugAPI.class, true);
         }
+
+        AccountManager.getInstance().createAccount("ObadiahCrowe", "obadiah.crowe@gihs.sa.edu.au", "@nMV6dHRQMKac");
+        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
+        com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance().addImportCredential(account,
+          ImportSource.DAYMAP, new ImportCredential("obadiah.crowe", "N2ZekHJwVqDv".toCharArray()));
+
+        DaymapScraper.getInstance().getFullCourse("obadiah.crowe", "N2ZekHJwVqDv", new ImportableClass("12 EnglishFB", "3755"));
+        System.exit(0);
 
         utilLog.log("Loading modules..");
         ModuleManager.getInstance().registerModules();

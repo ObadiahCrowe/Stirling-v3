@@ -91,7 +91,11 @@ public enum LessonTimeSlot {
                 hour = hour + 12;
             }
 
-            start = String.valueOf(hour) + ":" + String.valueOf(minute);
+            if (!startPart.split(":")[1].equalsIgnoreCase(String.valueOf(minute))) {
+                start = String.valueOf(hour) + ":0" + String.valueOf(minute);
+            } else {
+                start = String.valueOf(hour) + ":" + String.valueOf(minute);
+            }
         } else {
             start = start.replace("AM", "");
         }
@@ -105,13 +109,19 @@ public enum LessonTimeSlot {
                 hour = hour + 12;
             }
 
-            end = String.valueOf(hour) + ":" + String.valueOf(minute);
+            if (!endPart.split(":")[1].equalsIgnoreCase(String.valueOf(minute))) {
+                end = String.valueOf(hour) + ":0" + String.valueOf(minute);
+            } else {
+                end = String.valueOf(hour) + ":" + String.valueOf(minute);
+            }
         } else {
             end = end.replace("AM", "");
         }
 
         final String fStart = start;
         final String fEnd = end;
+
+        System.out.println("start:" + fStart + " end: " + fEnd);
 
         for (LessonTimeSlot s : LessonTimeSlot.values()) {
             s.getWeeklyOccurances().forEach(data -> {

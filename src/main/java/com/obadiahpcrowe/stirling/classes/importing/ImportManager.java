@@ -272,6 +272,10 @@ public class ImportManager {
         importDAO.updateField(account, field, value);
     }
 
+    public List<ImportAccount> getAllAccounts() {
+        return importDAO.getAllImportAccounts();
+    }
+
     public ImportAccount getByUuid(UUID uuid) {
         return importDAO.getByUuid(uuid);
     }
