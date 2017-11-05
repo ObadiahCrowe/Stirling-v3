@@ -42,6 +42,7 @@ public class SchoolManager {
         if (school == null) {
             UtilLog.getInstance().log("This version of Stirling is unregistered, please apply your specific school " +
               "settings. If this version of Stirling was not licensed to your school, cease using it immediately.");
+            System.exit(0);
         } else {
             UtilLog.getInstance().log("You have set your school to: " + school.getName() + "! Thank you for using Stirling.");
         }

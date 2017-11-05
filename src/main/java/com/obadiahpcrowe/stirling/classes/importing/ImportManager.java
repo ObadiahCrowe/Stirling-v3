@@ -5,8 +5,11 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
+import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
+import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapHandler;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GClassroomHandler;
@@ -17,6 +20,7 @@ import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ImportDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ImportDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -266,6 +270,21 @@ public class ImportManager {
     public String importExternalCourseForClass(StirlingAccount account, UUID classUuid, ImportSource source, String id) {
         // TEACHER ONLY
         return "";
+    }
+
+    public String createClassFromDaymap(String courseId, String courseName, String room, LessonTimeSlot slot) {
+        ClassManager mgr = ClassManager.getInstance();
+        if (mgr.getByOwner(courseId) == null) {
+            StirlingClass clazz = new StirlingClass(courseId, courseName, "", room, slot);
+            UtilFile.getInstance().createClassFolder(clazz.getUuid());
+            CalendarManager.getInstance().createCalendar(clazz.getUuid(), courseName, "", Lists.newArrayList());
+            mgr.saveClass(clazz);
+
+            mgr.generateCalendarLessons(clazz.getUuid(), slot, ClassLength.SEMESTER);
+
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_CREATED, StirlingLocale.ENGLISH, courseName));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ALREADY_EXISTS, StirlingLocale.ENGLISH, courseName));
     }
 
     public void updateField(ImportAccount account, String field, Object value) {

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
+import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
@@ -48,6 +49,7 @@ public class StirlingClass {
     private List<UUID> teachers;
 
     private List<StirlingLesson> lessons;
+    private LessonTimeSlot timeSlot;
 
     // Resources and such
     private List<StirlingSection> sections;
@@ -64,7 +66,7 @@ public class StirlingClass {
     @Deprecated
     public StirlingClass() {}
 
-    public StirlingClass(StirlingAccount account, String name, String desc, String room) {
+    public StirlingClass(StirlingAccount account, String name, String desc, String room, LessonTimeSlot slot) {
         this.uuid = UUID.randomUUID();
         this.owners = Lists.newArrayList(account.getAccountName());
         this.name = name;
@@ -75,6 +77,7 @@ public class StirlingClass {
         this.students = Lists.newArrayList();
         this.teachers = Lists.newArrayList(account.getUuid());
         this.lessons = Lists.newArrayList();
+        this.timeSlot = slot;
 
         this.sections = Lists.newArrayList();
         this.catchups = Lists.newArrayList();
@@ -87,7 +90,7 @@ public class StirlingClass {
         this.progressMarkers = Maps.newHashMap();
     }
 
-    public StirlingClass(String ownerId, String name, String desc, String room) {
+    public StirlingClass(String ownerId, String name, String desc, String room, LessonTimeSlot slot) {
         this.uuid = UUID.randomUUID();
         this.owners = Lists.newArrayList(ownerId);
         this.name = name;
@@ -101,6 +104,7 @@ public class StirlingClass {
         this.students = Lists.newArrayList();
         this.teachers = Lists.newArrayList();
         this.lessons = Lists.newArrayList();
+        this.timeSlot = slot;
 
         this.sections = Lists.newArrayList();
         this.catchups = Lists.newArrayList();

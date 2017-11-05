@@ -6,18 +6,24 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.common.collect.Lists;
+import com.obadiahpcrowe.stirling.classes.ClassManager;
+import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.enums.AssignmentType;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
+import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingResult;
 import com.obadiahpcrowe.stirling.exceptions.FuckDaymapException;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -63,7 +69,7 @@ public class DaymapScraper {
         return classes;
     }
 
-    public DaymapClass getFullCourse(String username, String password, ImportableClass clazz) {
+    public DaymapClass getFullCourse(String username, String password, ImportableClass clazz, boolean importing) {
         // Completable holders
         CompletableFuture<String> dataId = new CompletableFuture<>();
 
@@ -72,6 +78,9 @@ public class DaymapScraper {
         CompletableFuture<String> room = new CompletableFuture<>();
         CompletableFuture<String> teacher = new CompletableFuture<>();
         CompletableFuture<List<StirlingAssignment>> assignments = new CompletableFuture<>();
+        CompletableFuture<List<StirlingPostable>> classNotes = new CompletableFuture<>();
+        CompletableFuture<List<StirlingPostable>> homework = new CompletableFuture<>();
+        CompletableFuture<List<AttachableResource>> resources = new CompletableFuture<>();
 
         Authenticator.setDefault(new Authenticator() {
             @Override
@@ -82,7 +91,6 @@ public class DaymapScraper {
 
         DefaultCredentialsProvider provider = new DefaultCredentialsProvider();
         provider.addNTLMCredentials(username, password, null, -1, "localhost", "curric");
-
 
         // Room and Class Slot
         Thread slot = new Thread(() -> {
@@ -281,42 +289,175 @@ public class DaymapScraper {
         });
         assessmentThread.start();
 
+        ImportManager mgr = ImportManager.getInstance();
+        try {
+            mgr.createClassFromDaymap(clazz.getId(), clazz.getClassName(), room.get(), timeSlot.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
         Thread resourcesThread = new Thread(() -> {
             final WebClient client = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
 
+            List<StirlingPostable> noteList = Lists.newArrayList();
+            List<StirlingPostable> homeList = Lists.newArrayList();
+            List<AttachableResource> resList = Lists.newArrayList();
+
+            List<Thread> threads = Lists.newArrayList();
+
             try {
                 HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/plans/class.aspx?id=" + dId);
-            } catch (IOException e) {
+
+                HtmlTableBody body = (HtmlTableBody) page.getByXPath("//*[@id=\"divFeed\"]/table[2]/tbody").get(0);
+
+                body.getChildElements().forEach(e -> {
+                    if (e.getFirstElementChild().getAttribute("class").equalsIgnoreCase("capb")) {
+                        if (!e.getLastElementChild().getAttribute("onclick").contains("_taskClass")) {
+                            Thread sectionThread = new Thread(() -> {
+                                DomElement element = e;
+                                CompletableFuture<String> title = new CompletableFuture<>();
+
+                                element.getLastElementChild().getChildElements().forEach(el -> {
+                                    if (el.getAttribute("class").equals("lpTitle")) {
+                                        title.complete(el.getTextContent());
+                                    }
+                                });
+
+                                String rawPostDate = element.getLastElementChild().getFirstElementChild().getTextContent();
+                                if (rawPostDate.contains("<br/>")) {
+                                    try {
+                                        rawPostDate = rawPostDate.substring(0, 10);
+                                    } catch (IndexOutOfBoundsException e1) {
+                                        try {
+                                            rawPostDate = rawPostDate.substring(0, rawPostDate.indexOf("<br/>"));
+                                        } catch (IndexOutOfBoundsException e2) {
+                                            rawPostDate = rawPostDate.substring(0, 9);
+                                        }
+                                    }
+                                }
+
+                                String yr = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+                                if (!rawPostDate.endsWith(yr)) {
+                                    String[] parts = rawPostDate.split(yr);
+                                    rawPostDate = parts[0] + yr;
+                                }
+
+                                if (rawPostDate.contains("comment")) {
+                                    rawPostDate = rawPostDate.split(" ")[rawPostDate.split(" ").length - 1];
+                                }
+
+                                String typeRaw = element.getFirstElementChild().getFirstElementChild().getTextContent();
+                                String type = "";
+                                if (typeRaw.contains("File")) {
+                                    type = "Resource";
+                                } else if (type.contains("Home Work")) {
+                                    type = "Homework";
+                                } else if (type.contains("Class Note")) {
+                                    type = "Class Note";
+                                } else if (type.contains("Class Post")) {
+                                    type = "CLASSPOST";
+                                } else {
+                                    type = "Other";
+                                }
+
+                                String t = title.getNow(null);
+                                if (t == null) {
+                                    if (type.equals("CLASSPOST")) {
+                                        t = "Class Note from " + rawPostDate;
+                                    } else {
+                                        t = type + " from " + rawPostDate;
+                                    }
+                                }
+
+                                final WebClient intClient = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
+                                if (type.equals("Class Note") || type.equals("Homework")) {
+                                    String onClick = element.getLastElementChild().getAttribute("onclick")
+                                      .replace("DMU.ViewPlan(", "").replace(");;", "");
+
+                                    try {
+                                        HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/DayMap/curriculum/plan.aspx?id=" + onClick);
+                                        HtmlDivision div = (HtmlDivision) resPage.getByXPath("//*[@class=\"lpAll\"]").get(0);
+
+                                        StirlingPostable postable = new StirlingPostable(t,
+                                          div.getTextContent().replace("\\u00a0", ""), Lists.newArrayList());
+
+                                        if (type.equals("Class Note")) {
+                                            noteList.add(postable);
+                                        } else {
+                                            homeList.add(postable);
+                                        }
+                                    } catch (IOException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                } else if (type.equals("CLASSPOST")) {
+                                    String onClick = element.getLastElementChild().getAttribute("onclick")
+                                      .replace("return openMsg(", "").replace(", true);;", "");
+
+                                    try {
+                                        HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/daymap/coms/Message.aspx?ID=" + onClick);
+                                        HtmlDivision div = (HtmlDivision) resPage.getByXPath("//*[@id=\"msgBody\"]");
+
+                                        noteList.add(new StirlingPostable(t, div.getTextContent().replace("\\u00a0", ""),
+                                          Lists.newArrayList()));
+                                    } catch (IOException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                } else if (type.equals("Resource")) {
+                                    String onClick = element.getLastElementChild().getLastElementChild()
+                                      .getLastElementChild().getLastElementChild().getAttribute("onclick")
+                                      .replace("DMU.OpenAttachment(", "").replace(");", "");
+
+                                    String name = element.getLastElementChild().getLastElementChild().getLastElementChild()
+                                      .getLastElementChild().getTextContent();
+
+                                    ClassManager classManager = ClassManager.getInstance();
+                                    StirlingClass stirlingClass = classManager.getByOwner(clazz.getId());
+                                    AttachableResource resource = new AttachableResource(stirlingClass.getUuid(), name);
+                                    resList.add(resource);
+
+                                    Thread res = new Thread(() -> {
+                                        //
+                                    });
+                                    res.start();
+                                }
+                            });
+                            sectionThread.start();
+                        }
+                    }
+                });
+            } catch (IOException | IndexOutOfBoundsException | NullPointerException e) {
                 e.printStackTrace();
             }
+
+            threads.forEach(t -> {
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            classNotes.complete(noteList);
+            homework.complete(homeList);
+            resources.complete(resList);
         });
+        resourcesThread.start();
 
         try {
             System.out.println("SLOT: " + timeSlot.get().getSlotNumber());
             System.out.println("ROOM: " + room.get());
             System.out.println("TEACHER: " + teacher.get());
 
-            List<StirlingAssignment> assignmentsList = assignments.get();
-            System.out.println("SIZE: " + assignmentsList.size());
-
-            assignmentsList.forEach(a -> {
-                System.out.println("ASSIGNMENT: " + a.getTitle());
-                System.out.println("DESC: " + a.getDesc());
-                System.out.println("TYPE: " + a.getType());
-                System.out.println("FORMATIVE: " + a.getType());
-                System.out.println("DATE: " + a.getDueDateTime().getDate());
-                System.out.println("TIME: " + a.getDueDateTime().getTime());
-                StirlingResult result = a.getResult();
-                System.out.println("GRADE: " + result.getGrade());
-                System.out.println("MAX: " + result.getMaxMarks());
-                System.out.println("REC: " + result.getReceivedMarks());
-                System.out.println("WEIGHTING: " + result.getWeighting());
-                System.out.println("COMMENTS: " + result.getComments());
-            });
+            //
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        return null;
+        try {
+            return new DaymapClass(clazz.getId(), clazz.getClassName(), timeSlot.get(), room.get(), teacher.get(),
+              classNotes.get(), homework.get(), resources.get(), assignments.get());
+        } catch (InterruptedException | ExecutionException e) {
+            return null;
+        }
     }
 }

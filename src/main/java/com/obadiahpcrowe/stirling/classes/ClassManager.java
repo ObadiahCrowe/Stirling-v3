@@ -65,7 +65,7 @@ public class ClassManager {
     public String createClass(StirlingAccount account, String name, String desc, String room, LessonTimeSlot timeSlot) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (!classExists(name)) {
-                StirlingClass clazz = new StirlingClass(account, name, desc, room);
+                StirlingClass clazz = new StirlingClass(account, name, desc, room, timeSlot);
                 UtilFile.getInstance().createClassFolder(clazz.getUuid());
                 CalendarManager.getInstance().createCalendar(clazz.getUuid(), name, desc, Lists.newArrayList());
                 classesDAO.save(clazz);
@@ -1040,12 +1040,6 @@ public class ClassManager {
         return "";
     }
 
-    public String convertDaymapClass(StirlingAccount account, String courseId, String name, String room) {
-        StirlingClass clazz = new StirlingClass(courseId, name, "", room);
-        // daymap times are the same as lessontimeslot, find first instance of class and compare against the enum, genreate from there.
-        return "";
-    }
-
     public List<StirlingClass> getClassesFromDaymapAccount(StirlingAccount account) {
         return null;
     }
@@ -1069,6 +1063,10 @@ public class ClassManager {
     // We're all thinking it ;)
     private boolean isAccountHighEnough(StirlingAccount account, AccountType targetType) {
         return account.getAccountType().getAccessLevel() >= targetType.getAccessLevel();
+    }
+
+    public void saveClass(StirlingClass clazz) {
+        classesDAO.save(clazz);
     }
 
     public static ClassManager getInstance() {
