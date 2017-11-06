@@ -36,7 +36,7 @@ public class ClassesDAOImpl extends BasicDAO<StirlingClass, ObjectId> implements
     @Override
     public StirlingClass getByOwner(String owner) {
         Query<StirlingClass> query = createQuery()
-          .field("owners").contains(owner);
+          .field("owners").equal(owner);
 
         return query.get();
     }

@@ -1,17 +1,5 @@
 package com.obadiahpcrowe.stirling.classes.runners;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
-import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapClass;
-import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
-import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
-import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GoogleClass;
-import com.obadiahpcrowe.stirling.classes.importing.moodle.MoodleClass;
-import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
-
-import java.util.concurrent.CompletableFuture;
-
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 4/11/17 at 4:05 PM
@@ -30,6 +18,7 @@ public class ImportRunner {
     }
 
     public void start() {
+        /*
         Thread t = new Thread(() -> {
             ImportManager.getInstance().getAllAccounts().forEach(account -> {
                 Thread accounts = new Thread(() -> {
@@ -93,6 +82,6 @@ public class ImportRunner {
                 accounts.start();
             });
         });
-        t.start();
+        t.start();*/
     }
 }

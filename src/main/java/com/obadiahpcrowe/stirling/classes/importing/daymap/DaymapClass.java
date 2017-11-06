@@ -37,7 +37,7 @@ public class DaymapClass extends ImportableClass {
 
     public DaymapClass(ImportableClass clazz, LessonTimeSlot slot, String room, String teacher, List<StirlingPostable> classNotes,
                        List<StirlingPostable> homework, List<AttachableResource> resources, List<StirlingAssignment> assignments) {
-        super(clazz.getId(), clazz.getClassName());
+        super(clazz.getClassName(), clazz.getId());
         this.slot = slot;
         this.room = room;
         this.teacher = teacher;
@@ -49,7 +49,7 @@ public class DaymapClass extends ImportableClass {
 
     public DaymapClass(String id, String name, LessonTimeSlot slot, String room, String teacher, List<StirlingPostable> classNotes,
                        List<StirlingPostable> homework, List<AttachableResource> resources, List<StirlingAssignment> assignments) {
-        super(id, name);
+        super(name, id);
         this.slot = slot;
         this.room = room;
         this.teacher = teacher;

@@ -9,6 +9,7 @@ import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.enums.AssignmentType;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
@@ -71,6 +72,27 @@ public class DaymapScraper {
         }
 
         return classes;
+    }
+
+    public boolean areCredentialsValid(ImportCredential credential) {
+        Authenticator.setDefault(new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("curric\\" + credential.getUsername(), credential.getPassword().toCharArray());
+            }
+        });
+
+        DefaultCredentialsProvider provider = new DefaultCredentialsProvider();
+        provider.addNTLMCredentials(credential.getUsername(), credential.getPassword(), null, -1, "localhost", "curric");
+
+        final WebClient client = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
+
+        try {
+            HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/dayplan.aspx");
+            return true;
+        } catch (IOException | ClassCastException e) {
+            return false;
+        }
     }
 
     public DaymapClass getFullCourse(String username, String password, ImportableClass clazz, boolean importing) {
@@ -448,8 +470,6 @@ public class DaymapScraper {
                                         resList.add(resource);
                                     }
 
-                                    String finalName = n;
-
                                     Thread res = new Thread(() -> {
                                         final WebClient dlClient = new StirlingWebClient(BrowserVersion.CHROME)
                                           .getClient(provider, new NicelyResynchronizingAjaxController());
@@ -461,7 +481,7 @@ public class DaymapScraper {
 
                                             File cFile = new File(UtilFile.getInstance().getStorageLoc() +
                                               File.separator + "Classes" + File.separator + stirlingClass.getUuid() +
-                                              File.separator + "Resources" + File.separator + finalName.trim());
+                                              File.separator + "Resources" + File.separator + n.trim());
 
                                             if (!cFile.exists()) {
                                                 cFile.createNewFile();
@@ -504,7 +524,7 @@ public class DaymapScraper {
 
         DaymapClass daymapClass = null;
         try {
-            daymapClass = new DaymapClass(clazz.getId(), clazz.getClassName(), timeSlot.get(), room.get(), teacher.get().trim(),
+            daymapClass = new DaymapClass(clazz, timeSlot.get(), room.get(), teacher.get().trim(),
               classNotes.get(), homework.get(), resources.get(), assignments.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

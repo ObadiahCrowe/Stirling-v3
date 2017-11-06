@@ -10,10 +10,10 @@ import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
-import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapHandler;
+import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapClass;
+import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GClassroomHandler;
-import com.obadiahpcrowe.stirling.classes.importing.moodle.MoodleHandler;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
@@ -24,11 +24,10 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -41,13 +40,17 @@ public class ImportManager {
 
     private static ImportManager instance;
 
-    // Add course to user methods, import for class (teacher only). Write methods and scrapers in each platform handler.
+    private AccountManager accountManager;
+    private ClassManager classManager;
 
     private MorphiaService morphiaService;
     private ImportDAO importDAO;
     private Gson gson;
 
     public ImportManager() {
+        this.accountManager = AccountManager.getInstance();
+        this.classManager = ClassManager.getInstance();
+
         this.morphiaService = new MorphiaService();
         this.importDAO = new ImportDAOImpl(ImportAccount.class, morphiaService.getDatastore());
         this.gson = new Gson();
@@ -59,126 +62,150 @@ public class ImportManager {
         return instance;
     }
 
-    public void performImportRefreshSingle(UUID accountUuid) {
-        // TODO: 17/10/17 this
+    public List<ImportableClass> getDaymapCourses(StirlingAccount account) {
+        if (importAccExists(account.getUuid())) {
+            ImportAccount acc = getByUuid(account.getUuid());
+
+            if (credentialsExist(acc, ImportSource.DAYMAP)) {
+                ImportCredential cred = getCreds(acc, ImportSource.DAYMAP);
+                if (cred == null) {
+                    return null;
+                }
+
+                try {
+                    return DaymapScraper.getInstance().getCourses(cred.getUsername(), cred.getPassword());
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+            return null;
+        }
+        return null;
     }
 
-    public void performImportRefreshAll() {
-        // TODO: 17/10/17 Yeah, nah
+    public List<ImportableClass> getMoodleCourses(StirlingAccount account) {
+        //
+        return null;
+    }
+
+    public List<ImportableClass> getGoogleCourses(StirlingAccount account) {
+        //
+        return null;
     }
 
     public String addImportCredential(StirlingAccount account, ImportSource source, ImportCredential credential) {
+        if (source == ImportSource.GOOGLE_CLASSROOM) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CANNOT_ADD, account.getLocale()));
+        }
+
         Map<ImportSource, ImportCredential> credentialMap;
         if (!importAccExists(account.getUuid())) {
             credentialMap = Maps.newHashMap();
             credentialMap.put(source, credential);
 
             importDAO.save(new ImportAccount(account.getUuid(), credentialMap));
-            performImport(account);
+            if (areCredentialsValid(account, source)) {
+                switch (source) {
+                    case DAYMAP:
+                        importAllDaymap(getByUuid(account.getUuid()), getDaymapCourses(account));
+                        break;
+                    case MOODLE:
+                        importAllMoodle();
+                        break;
+                }
+            }
             return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
         }
 
         // Add account then import
         ImportAccount importAccount = getByUuid(account.getUuid());
-        try {
-            if (importAccount.getCredentials().containsKey(source)) {
-                return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CONTAINS_CRED, account.getLocale(), source.getFriendlyName()));
-            }
-        } catch (NullPointerException ignored) {
-        }
-
         credentialMap = Maps.newHashMap();
-
         try {
             credentialMap.putAll(importAccount.getCredentials());
         } catch (NullPointerException ignored) {
         }
 
-        credentialMap.put(source, credential);
-
+        credentialMap.replace(source, credential);
         importDAO.updateField(importAccount, "credentials", credentialMap);
-        performImport(account);
+
+        if (areCredentialsValid(account, source)) {
+            switch (source) {
+                case DAYMAP:
+                    importAllDaymap(importAccount, getDaymapCourses(account));
+                    break;
+                case MOODLE:
+                    importAllMoodle();
+                    break;
+            }
+        }
 
         return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
     }
 
-    // TODO: 17/10/17 Fix up this
-    public void performImport(StirlingAccount account) {
-        List<ImportableClass> daymapClasses = Lists.newArrayList();
-        List<ImportableClass> moodleClasses = Lists.newArrayList();
-        List<ImportableClass> googleClasses = Lists.newArrayList();
-
-        List<Thread> threads = Lists.newArrayList();
-        ImportAccount importAccount = getByUuid(account.getUuid());
-
-        Thread daymap = new Thread(() -> {
-            daymapClasses.addAll(DaymapHandler.getInstance().getAllCourses(importAccount));
-        });
-        daymap.start();
-
-
-        Thread moodle = new Thread(() -> {
-            moodleClasses.addAll(MoodleHandler.getInstance().getAllCourses(importAccount));
-        });
-        moodle.start();
-
-        Thread google = new Thread(() -> {
-            googleClasses.addAll(GClassroomHandler.getInstance().getAllCourses(importAccount));
-        });
-        google.start();
-
-        threads.addAll(Arrays.asList(daymap, moodle, google));
-
-        threads.forEach(thread -> {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-
-        Map<ImportSource, List<ImportableClass>> classes = Maps.newHashMap();
-        try {
-            classes.putAll(importAccount.getCourseHolders());
-
-            for (ImportSource source : ImportSource.values()) {
-                List<ImportableClass> clazzes = Lists.newArrayList();
-                clazzes.addAll(classes.get(source));
-
-                switch (source) {
-                    case DAYMAP:
-                        for (ImportableClass c : daymapClasses) {
-                            if (!clazzes.contains(c)) {
-                                clazzes.add(c);
-                            }
-                        }
-                        break;
-                    case MOODLE:
-                        for (ImportableClass c : moodleClasses) {
-                            if (!clazzes.contains(c)) {
-                                clazzes.add(c);
-                            }
-                        }
-                        break;
-                    case GOOGLE_CLASSROOM:
-                        for (ImportableClass c : googleClasses) {
-                            if (!clazzes.contains(c)) {
-                                clazzes.add(c);
-                            }
-                        }
-                        break;
-                }
-
-                classes.replace(source, clazzes);
-            }
-        } catch (NullPointerException ignored) {
-        }
-
-        importDAO.updateField(importAccount, "courseHolders", classes);
+    public String addGoogleImportCode(StirlingAccount account, String authCode) {
+        return GClassroomHandler.getInstance().addGoogleClassroomCreds(account, authCode);
     }
 
-    public String downloadCourse(StirlingAccount account, ImportSource source, String id) {
-        return "";
+    private void importAllDaymap(ImportAccount account, List<ImportableClass> classes) {
+        classes.forEach(c -> {
+            Thread t = new Thread(() -> {
+                importDaymapCourse(accountManager.getAccount(account.getAccountUuid()), c);
+            });
+            t.start();
+        });
+    }
+
+    public void importDaymapCourse(StirlingAccount account, ImportableClass clazz) {
+        ImportAccount acc = getByUuid(account.getUuid());
+        ImportCredential cred = getCreds(acc, ImportSource.DAYMAP);
+        DaymapClass daymapClass = DaymapScraper.getInstance().getFullCourse(cred.getUsername(), cred.getPassword(),
+          clazz, false);
+
+        StirlingClass stirlingClass = classManager.getByOwner(daymapClass.getId());
+        classManager.addClassToAccount(account, stirlingClass.getUuid());
+    }
+
+    private void importAllMoodle() {
+        //
+    }
+
+    private void importAllGoogle() {
+        //
+    }
+
+    public ImportCredential getCreds(ImportAccount account, ImportSource source) {
+        if (credentialsExist(account, source)) {
+            return account.getCredentials().get(source);
+        }
+        return null;
+    }
+
+    public boolean areCredentialsValid(StirlingAccount account, ImportSource source) {
+        ImportAccount acc = getByUuid(account.getUuid());
+        switch (source) {
+            case DAYMAP:
+                return DaymapScraper.getInstance().areCredentialsValid(acc.getCredentials().get(source));
+        }
+        return false;
+    }
+
+    public boolean credentialsExist(StirlingAccount account, ImportSource source) {
+        return credentialsExist(getByUuid(account.getUuid()), source);
+    }
+
+    public boolean credentialsExist(ImportAccount account, ImportSource source) {
+        List<ImportCredential> credentials = Lists.newArrayList();
+
+        account.getCredentials().forEach((src, cred) -> {
+            if (src == source) {
+                try {
+                    credentials.add(cred);
+                } catch (NullPointerException ignored) {
+                }
+            }
+        });
+
+        return credentials.size() > 0;
     }
 
     public String removeImportCredential(StirlingAccount account, ImportSource source) {
@@ -198,78 +225,6 @@ public class ImportManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_REMOVED, account.getLocale(), source.getFriendlyName()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_DOES_NOT_EXIST, account.getLocale()));
-    }
-
-    public List<ImportableClass> getAllCourses(StirlingAccount account, ImportSource source) {
-        if (importAccExists(account.getUuid())) {
-            ImportAccount acc = getByUuid(account.getUuid());
-            List<ImportableClass> holders = Lists.newArrayList();
-            holders.addAll(acc.getCourseHolders().get(source));
-
-            return holders;
-        }
-        return null;
-    }
-
-    public ImportableClass getCourse(StirlingAccount account, ImportSource source, String id) {
-        CompletableFuture<ImportableClass> future = new CompletableFuture<>();
-        getAllCourses(account, source).forEach(course -> {
-            if (course.getId().equalsIgnoreCase(id)) {
-                future.complete(course);
-            }
-        });
-
-        return future.getNow(null);
-    }
-
-    public String importExternalCourseForAccount(UUID uuid, UUID classUuid, ImportSource source, String id) {
-        AccountManager accManager = AccountManager.getInstance();
-        StirlingAccount account = null;
-
-        try {
-            account = accManager.getAccount(uuid);
-        } catch (NullPointerException e) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, account.getUuid().toString()));
-        }
-
-        if (account == null) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, account.getUuid().toString()));
-        }
-
-        ClassManager classManager = ClassManager.getInstance();
-        if (accManager.accountExists(account.getUuid())) {
-            if (classManager.classExists(classUuid)) {
-                ImportAccount acc = getByUuid(account.getUuid());
-                StirlingClass clazz = classManager.getByUuid(classUuid);
-
-                Map<ImportSource, List<ImportableClass>> currentClasses = Maps.newHashMap();
-                try {
-                    currentClasses.putAll(clazz.getStudentImportHolders().get(account.getUuid()));
-                } catch (NullPointerException ignored) {
-                }
-
-                ImportableClass importableClass = getCourse(account, source, id);
-                if (!currentClasses.get(source).contains(importableClass)) {
-                    List<ImportableClass> classes = Lists.newArrayList();
-                    try {
-                        classes.addAll(currentClasses.get(source));
-                    } catch (NullPointerException ignored) {
-                    }
-
-                    classes.add(importableClass);
-                    currentClasses.replace(source, classes);
-                }
-
-                return classManager.updateStudentHolders(account, currentClasses);
-            }
-            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
-        }
-        return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, account.getUuid().toString()));
-    }
-
-    public String importExternalCourseForClass(StirlingAccount account, UUID classUuid, ImportSource source, String id) {
-        // TEACHER ONLY
-        return "";
     }
 
     public String createClassFromDaymap(String courseId, String courseName, String room, LessonTimeSlot slot) {

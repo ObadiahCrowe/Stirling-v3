@@ -106,6 +106,34 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete classes", "TEACHER"));
     }
 
+    public String addClassToAccount(StirlingAccount account, UUID classUuid) {
+        if (classExists(classUuid)) {
+            List<StirlingClass> classes = Lists.newArrayList();
+            try {
+                classes.addAll(account.getStirlingClasses());
+            } catch (NullPointerException ignored) {
+                ignored.printStackTrace();
+            }
+
+            CompletableFuture<Boolean> exists = new CompletableFuture<>();
+
+            classes.forEach(c -> {
+                if (c.getUuid().equals(classUuid)) {
+                    exists.complete(true);
+                }
+            });
+
+            if (!exists.getNow(false)) {
+                classes.add(getByUuid(classUuid));
+            }
+
+            AccountManager.getInstance().updateField(account, "stirlingClasses", classes);
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_STUDENT_ADDED, account.getLocale(),
+              classUuid.toString(), account.getAccountName()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+    }
+
     public StirlingClass getByUuid(UUID classUuid) {
         return classesDAO.getByUuid(classUuid);
     }
@@ -115,7 +143,10 @@ public class ClassManager {
     }
 
     public boolean classExists(UUID classUuid) {
-        return getByUuid(classUuid) != null;
+        if (getByUuid(classUuid) == null) {
+            return false;
+        }
+        return true;
     }
 
     public boolean classExists(String className) {
@@ -1038,10 +1069,6 @@ public class ClassManager {
 
     public String updateStudentHolders(StirlingAccount account, Map<ImportSource, List<ImportableClass>> classes) {
         return "";
-    }
-
-    public List<StirlingClass> getClassesFromDaymapAccount(StirlingAccount account) {
-        return null;
     }
 
     public String takeClassOwnership(StirlingAccount account, String ownerId) {

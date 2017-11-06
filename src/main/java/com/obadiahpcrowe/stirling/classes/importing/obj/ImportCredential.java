@@ -17,8 +17,8 @@ public class ImportCredential {
     private String password;
 
     // Google Classroom
-    private String gAuthCode;
-    private String gRefreshCode;
+    private String accessToken;
+    private String refreshToken;
 
     @Deprecated
     public ImportCredential() {
@@ -29,8 +29,8 @@ public class ImportCredential {
         this.password = String.valueOf(password);
     }
 
-    public ImportCredential(String gAuthCode, String gRefreshCode) {
-        this.gAuthCode = gAuthCode;
-        this.gRefreshCode = gRefreshCode;
+    public ImportCredential(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }
