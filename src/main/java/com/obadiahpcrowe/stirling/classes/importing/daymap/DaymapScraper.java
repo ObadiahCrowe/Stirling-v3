@@ -142,7 +142,6 @@ public class DaymapScraper {
         slot.start();
 
         try {
-            System.out.println(timeSlot.get());
             if (timeSlot.get() == null) {
                 throw new FuckDaymapException("Could not retrieve timeslot from DayMap! Cannot complete import!");
             }
@@ -352,14 +351,14 @@ public class DaymapScraper {
                                 }
 
                                 String typeRaw = e.getFirstElementChild().getFirstElementChild().getTextContent();
-                                String type = "";
+                                String type;
                                 if (typeRaw.contains("File")) {
                                     type = "Resource";
-                                } else if (type.contains("Home Work")) {
+                                } else if (typeRaw.contains("Home Work")) {
                                     type = "Homework";
-                                } else if (type.contains("Class Note")) {
+                                } else if (typeRaw.contains("Class Note")) {
                                     type = "Class Note";
-                                } else if (type.contains("Class Post")) {
+                                } else if (typeRaw.contains("Class Post")) {
                                     type = "CLASSPOST";
                                 } else {
                                     type = "Other";
@@ -378,8 +377,6 @@ public class DaymapScraper {
                                 if (type.equals("Class Note") || type.equals("Homework")) {
                                     String onClick = e.getLastElementChild().getAttribute("onclick")
                                       .replace("DMU.ViewPlan(", "").replace(");;", "");
-
-                                    // TODO: 6/11/17 This does not work
 
                                     try {
                                         HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/DayMap/curriculum/plan.aspx?id=" + onClick);
@@ -402,7 +399,7 @@ public class DaymapScraper {
 
                                     try {
                                         HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/daymap/coms/Message.aspx?ID=" + onClick);
-                                        HtmlDivision div = (HtmlDivision) resPage.getByXPath("//*[@id=\"msgBody\"]");
+                                        HtmlDivision div = (HtmlDivision) resPage.getByXPath("//*[@id=\"msgBody\"]").get(0);
 
                                         noteList.add(new StirlingPostable(t, div.getTextContent().replace("\\u00a0", ""),
                                           Lists.newArrayList()));
@@ -410,22 +407,48 @@ public class DaymapScraper {
                                         e1.printStackTrace();
                                     }
                                 } else if (type.equals("Resource")) {
-                                    String onClick = e.getLastElementChild().getLastElementChild()
-                                      .getLastElementChild().getLastElementChild().getAttribute("onclick");
+                                    CompletableFuture<String> onClick = new CompletableFuture<>();
+                                    CompletableFuture<String> name = new CompletableFuture<>();
 
-                                    // TODO: 6/11/17 Fix english bullshit
+                                    HtmlDivision div = (HtmlDivision) e.getLastElementChild().getLastElementChild();
+                                    div.getChildElements().forEach(el -> {
+                                        if (el.getAttribute("class").equals("fLinkDiv")) {
+                                            onClick.complete(el.getFirstElementChild().getAttribute("onclick"));
 
-                                    String name = e.getLastElementChild().getLastElementChild().getLastElementChild()
-                                      .getLastElementChild().getTextContent().trim().replace("/", "-")
-                                      .replace("\n", "").replace("\t", "")
-                                      .replace("\\u00a0", "");
+                                            name.complete(el.getFirstElementChild().getTextContent().trim()
+                                              .replace("/", "-").replace("\n", "")
+                                              .replace("\t", "").replace("\\u00a0", ""));
+                                        }
+                                    });
 
-                                    System.out.println("NAME: " + name);
+                                    String n = name.getNow(null);
+                                    if (n == null) {
+                                        try {
+                                            throw new FuckDaymapException("Resource name is null!");
+                                        } catch (FuckDaymapException e1) {
+                                            e1.printStackTrace();
+                                            return;
+                                        }
+                                    }
 
                                     ClassManager classManager = ClassManager.getInstance();
                                     StirlingClass stirlingClass = classManager.getByOwner(clazz.getId());
-                                    AttachableResource resource = new AttachableResource(stirlingClass.getUuid(), name.trim());
-                                    resList.add(resource);
+                                    AttachableResource resource = new AttachableResource(stirlingClass.getUuid(),
+                                      UtilFile.getInstance().getStorageLoc() + File.separator + stirlingClass.getUuid() +
+                                        File.separator + "Resources" + File.separator + n.trim());
+
+                                    CompletableFuture<Boolean> contains = new CompletableFuture<>();
+                                    resList.forEach(res -> {
+                                        if (res.getFilePath().equalsIgnoreCase(resource.getFilePath())) {
+                                            contains.complete(true);
+                                        }
+                                    });
+
+                                    if (!contains.getNow(false)) {
+                                        resList.add(resource);
+                                    }
+
+                                    String finalName = n;
 
                                     Thread res = new Thread(() -> {
                                         final WebClient dlClient = new StirlingWebClient(BrowserVersion.CHROME)
@@ -433,12 +456,12 @@ public class DaymapScraper {
 
                                         try {
                                             HtmlPage dummyPage = dlClient.getPage("https://daymap.gihs.sa.edu.au/daymap/student/dayplan.aspx");
-                                            ScriptResult result = dummyPage.executeJavaScript(onClick);
+                                            ScriptResult result = dummyPage.executeJavaScript(onClick.get());
                                             InputStream in = result.getNewPage().getWebResponse().getContentAsStream();
 
                                             File cFile = new File(UtilFile.getInstance().getStorageLoc() +
                                               File.separator + "Classes" + File.separator + stirlingClass.getUuid() +
-                                              File.separator + "Resources" + File.separator + name.trim());
+                                              File.separator + "Resources" + File.separator + finalName.trim());
 
                                             if (!cFile.exists()) {
                                                 cFile.createNewFile();
@@ -449,7 +472,7 @@ public class DaymapScraper {
                                             FileOutputStream out = new FileOutputStream(cFile);
                                             ReadableByteChannel rbc = Channels.newChannel(in);
                                             out.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                                        } catch (IOException e1) {
+                                        } catch (IOException | InterruptedException | ExecutionException e1) {
                                             e1.printStackTrace();
                                         }
                                     });

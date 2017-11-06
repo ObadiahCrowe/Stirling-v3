@@ -129,9 +129,6 @@ public enum LessonTimeSlot {
             });
         }
 
-        System.out.println("START: " + fStart);
-        System.out.println("END: " + fEnd);
-
         return slot.getNow(null);
     }
 }
