@@ -100,7 +100,7 @@ public class Stirling {
         SpringApplication.run(Stirling.class, args);
 
         DaymapScraper.getInstance().getFullCourse("obadiah.crowe", "N2ZekHJwVqDv",
-          new ImportableClass("12 EnglishFB", "3755"), true);
+          new ImportableClass("12 Legal StudiesF", "4103"), true);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

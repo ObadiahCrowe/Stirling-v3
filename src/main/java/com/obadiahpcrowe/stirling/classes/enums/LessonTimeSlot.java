@@ -121,8 +121,6 @@ public enum LessonTimeSlot {
         final String fStart = start;
         final String fEnd = end;
 
-        System.out.println("start:" + fStart + " end: " + fEnd);
-
         for (LessonTimeSlot s : LessonTimeSlot.values()) {
             s.getWeeklyOccurances().forEach(data -> {
                 if (data.getStartTime().equalsIgnoreCase(fStart) && data.getEndTime().equalsIgnoreCase(fEnd) && data.getDayOfWeek().equalsIgnoreCase(day)) {
@@ -130,6 +128,9 @@ public enum LessonTimeSlot {
                 }
             });
         }
+
+        System.out.println("START: " + fStart);
+        System.out.println("END: " + fEnd);
 
         return slot.getNow(null);
     }

@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.classes.importing.daymap;
 import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.enums.AssignmentType;
@@ -102,12 +103,10 @@ public class DaymapScraper {
 
             try {
                 HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/dayplan.aspx");
-
                 HtmlDivision div = (HtmlDivision) page.getByXPath("//*[@id=\"divEvents\"]/div").get(0);
 
-                HtmlDivision dayDiv = (HtmlDivision) page.getByXPath("//*[@id=\"divEvents\"]/div/div[2]").get(0);
-                String day = dayDiv.getTextContent().split(",")[0];
-
+                String day = "";
+                boolean found = false;
                 String roomStr = "";
 
                 for (DomElement element : div.getChildElements()) {
@@ -117,7 +116,12 @@ public class DaymapScraper {
                                 dataId.complete(element.getAttribute("data-id"));
                                 roomStr = e.getTextContent().replace(clazz.getClassName(), "").replace(" ", "");
                                 future.complete(element.getFirstElementChild().getTextContent());
+                                found = true;
                             }
+                        }
+                    } else if (element.getAttribute("class").equalsIgnoreCase("diaryDay")) {
+                        if (!found) {
+                            day = element.getTextContent().split(",")[0];
                         }
                     }
                 }
@@ -138,6 +142,7 @@ public class DaymapScraper {
         slot.start();
 
         try {
+            System.out.println(timeSlot.get());
             if (timeSlot.get() == null) {
                 throw new FuckDaymapException("Could not retrieve timeslot from DayMap! Cannot complete import!");
             }
@@ -307,7 +312,7 @@ public class DaymapScraper {
             List<Thread> threads = Lists.newArrayList();
 
             try {
-                HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/plans/class.aspx?id=" + dId);
+                HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/plans/class.aspx?id=" + clazz.getId());
 
                 HtmlTableBody body = (HtmlTableBody) page.getByXPath("//*[@id=\"divFeed\"]/table[2]/tbody").get(0);
 
@@ -315,16 +320,15 @@ public class DaymapScraper {
                     if (e.getFirstElementChild().getAttribute("class").equalsIgnoreCase("capb")) {
                         if (!e.getLastElementChild().getAttribute("onclick").contains("_taskClass")) {
                             Thread sectionThread = new Thread(() -> {
-                                DomElement element = e;
                                 CompletableFuture<String> title = new CompletableFuture<>();
 
-                                element.getLastElementChild().getChildElements().forEach(el -> {
+                                e.getLastElementChild().getChildElements().forEach(el -> {
                                     if (el.getAttribute("class").equals("lpTitle")) {
                                         title.complete(el.getTextContent());
                                     }
                                 });
 
-                                String rawPostDate = element.getLastElementChild().getFirstElementChild().getTextContent();
+                                String rawPostDate = e.getLastElementChild().getFirstElementChild().getTextContent();
                                 if (rawPostDate.contains("<br/>")) {
                                     try {
                                         rawPostDate = rawPostDate.substring(0, 10);
@@ -347,7 +351,7 @@ public class DaymapScraper {
                                     rawPostDate = rawPostDate.split(" ")[rawPostDate.split(" ").length - 1];
                                 }
 
-                                String typeRaw = element.getFirstElementChild().getFirstElementChild().getTextContent();
+                                String typeRaw = e.getFirstElementChild().getFirstElementChild().getTextContent();
                                 String type = "";
                                 if (typeRaw.contains("File")) {
                                     type = "Resource";
@@ -372,8 +376,10 @@ public class DaymapScraper {
 
                                 final WebClient intClient = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
                                 if (type.equals("Class Note") || type.equals("Homework")) {
-                                    String onClick = element.getLastElementChild().getAttribute("onclick")
+                                    String onClick = e.getLastElementChild().getAttribute("onclick")
                                       .replace("DMU.ViewPlan(", "").replace(");;", "");
+
+                                    // TODO: 6/11/17 This does not work
 
                                     try {
                                         HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/DayMap/curriculum/plan.aspx?id=" + onClick);
@@ -390,8 +396,8 @@ public class DaymapScraper {
                                     } catch (IOException e1) {
                                         e1.printStackTrace();
                                     }
-                                }/* else if (type.equals("CLASSPOST")) {
-                                    String onClick = element.getLastElementChild().getAttribute("onclick")
+                                } else if (type.equals("CLASSPOST")) {
+                                    String onClick = e.getLastElementChild().getAttribute("onclick")
                                       .replace("return openMsg(", "").replace(", true);;", "");
 
                                     try {
@@ -403,18 +409,22 @@ public class DaymapScraper {
                                     } catch (IOException e1) {
                                         e1.printStackTrace();
                                     }
-                                }*/ else if (type.equals("Resource")) {
-                                    String onClick = element.getLastElementChild().getLastElementChild()
+                                } else if (type.equals("Resource")) {
+                                    String onClick = e.getLastElementChild().getLastElementChild()
                                       .getLastElementChild().getLastElementChild().getAttribute("onclick");
 
-                                    String name = element.getLastElementChild().getLastElementChild().getLastElementChild()
+                                    // TODO: 6/11/17 Fix english bullshit
+
+                                    String name = e.getLastElementChild().getLastElementChild().getLastElementChild()
                                       .getLastElementChild().getTextContent().trim().replace("/", "-")
                                       .replace("\n", "").replace("\t", "")
                                       .replace("\\u00a0", "");
 
+                                    System.out.println("NAME: " + name);
+
                                     ClassManager classManager = ClassManager.getInstance();
                                     StirlingClass stirlingClass = classManager.getByOwner(clazz.getId());
-                                    AttachableResource resource = new AttachableResource(stirlingClass.getUuid(), name);
+                                    AttachableResource resource = new AttachableResource(stirlingClass.getUuid(), name.trim());
                                     resList.add(resource);
 
                                     Thread res = new Thread(() -> {
@@ -428,10 +438,12 @@ public class DaymapScraper {
 
                                             File cFile = new File(UtilFile.getInstance().getStorageLoc() +
                                               File.separator + "Classes" + File.separator + stirlingClass.getUuid() +
-                                              File.separator + "Resources" + File.separator + name);
+                                              File.separator + "Resources" + File.separator + name.trim());
 
                                             if (!cFile.exists()) {
                                                 cFile.createNewFile();
+                                            } else {
+                                                return;
                                             }
 
                                             FileOutputStream out = new FileOutputStream(cFile);
@@ -445,6 +457,7 @@ public class DaymapScraper {
                                 }
                             });
                             sectionThread.start();
+                            threads.add(sectionThread);
                         }
                     }
                 });
@@ -466,21 +479,16 @@ public class DaymapScraper {
         });
         resourcesThread.start();
 
+        DaymapClass daymapClass = null;
         try {
-            System.out.println("SLOT: " + timeSlot.get().getSlotNumber());
-            System.out.println("ROOM: " + room.get());
-            System.out.println("TEACHER: " + teacher.get());
-
-            //
+            daymapClass = new DaymapClass(clazz.getId(), clazz.getClassName(), timeSlot.get(), room.get(), teacher.get().trim(),
+              classNotes.get(), homework.get(), resources.get(), assignments.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        try {
-            return new DaymapClass(clazz.getId(), clazz.getClassName(), timeSlot.get(), room.get(), teacher.get(),
-              classNotes.get(), homework.get(), resources.get(), assignments.get());
-        } catch (InterruptedException | ExecutionException e) {
-            return null;
-        }
+        System.out.println(new Gson().toJson(daymapClass));
+
+        return daymapClass;
     }
 }
