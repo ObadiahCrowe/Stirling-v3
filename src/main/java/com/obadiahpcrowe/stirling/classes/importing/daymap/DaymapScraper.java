@@ -265,9 +265,7 @@ public class DaymapScraper {
                                           new StirlingDate(date, time));
                                         asses.add(assignment);
                                     } catch (IOException e1) {
-                                        System.out.println("STACK TRACE!!!");
                                         e1.printStackTrace();
-                                        System.exit(0);
                                     }
                                 });
                                 assThread.start();
@@ -392,7 +390,7 @@ public class DaymapScraper {
                                     } catch (IOException e1) {
                                         e1.printStackTrace();
                                     }
-                                } else if (type.equals("CLASSPOST")) {
+                                }/* else if (type.equals("CLASSPOST")) {
                                     String onClick = element.getLastElementChild().getAttribute("onclick")
                                       .replace("return openMsg(", "").replace(", true);;", "");
 
@@ -405,7 +403,7 @@ public class DaymapScraper {
                                     } catch (IOException e1) {
                                         e1.printStackTrace();
                                     }
-                                } else if (type.equals("Resource")) {
+                                }*/ else if (type.equals("Resource")) {
                                     String onClick = element.getLastElementChild().getLastElementChild()
                                       .getLastElementChild().getLastElementChild().getAttribute("onclick");
 

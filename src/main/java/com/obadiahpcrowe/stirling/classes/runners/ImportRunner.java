@@ -51,7 +51,7 @@ public class ImportRunner {
                                     }
 
                                     DaymapClass daymapClass = DaymapScraper.getInstance().getFullCourse(
-                                      credential.getUsername(), credential.getPassword(), c);
+                                      credential.getUsername(), credential.getPassword(), c, true);
 
                                     //
                                 } else if (source == ImportSource.MOODLE) {

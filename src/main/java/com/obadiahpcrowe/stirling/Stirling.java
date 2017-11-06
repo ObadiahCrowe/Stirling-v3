@@ -81,9 +81,6 @@ public class Stirling {
             APIManager.getInstance().registerCall(DebugAPI.class, true);
         }
 
-        DaymapScraper.getInstance().getFullCourse("obadiah.crowe", "N2ZekHJwVqDv", new ImportableClass("12 PsychologyFA", "3823"));
-        System.exit(0);
-
         utilLog.log("Loading modules..");
         ModuleManager.getInstance().registerModules();
 
@@ -102,6 +99,8 @@ public class Stirling {
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
 
+        DaymapScraper.getInstance().getFullCourse("obadiah.crowe", "N2ZekHJwVqDv",
+          new ImportableClass("12 EnglishFB", "3755"), true);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
