@@ -1,7 +1,15 @@
 package com.obadiahpcrowe.stirling.api;
 
+import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.accounts.AccountManager;
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
+import com.obadiahpcrowe.stirling.classes.ClassManager;
+import com.obadiahpcrowe.stirling.localisation.LocalisationManager;
+import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
+import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +28,10 @@ public class ClassesAPI implements APIController {
     // TODO: 26/10/17 Create edit api calls
     // TODO: 26/10/17 Resources in sections
 
+    private AccountManager accountManager = AccountManager.getInstance();
+    private ClassManager classManager = ClassManager.getInstance();
+    private Gson gson = new Gson();
+
     private final String CALL_DISABLED = "This API call is undergoing rigorous testing before becoming a beta API. Please wait a day from now.";
 
     @CallableAPI(fields = {"accountName", "password", "name", "desc", "room", "timeSlot"})
@@ -31,6 +43,22 @@ public class ClassesAPI implements APIController {
                               @RequestParam("room") String room,
                               @RequestParam("timeSlot") String timeSlot) {
         return CALL_DISABLED;
+    }
+
+    @CallableAPI(fields = {"accountName", "password "})
+    @RequestMapping(value = "/stirling/v3/classes/getAll", method = RequestMethod.GET)
+    public String getAllClasses(@RequestParam("accountName") String accountName,
+                                @RequestParam("password") String password) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        return LocalisationManager.getInstance().translate(gson.toJson(classManager.getAllClasses(account)), account.getLocale());
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})

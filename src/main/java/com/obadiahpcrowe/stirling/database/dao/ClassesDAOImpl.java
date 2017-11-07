@@ -44,7 +44,7 @@ public class ClassesDAOImpl extends BasicDAO<StirlingClass, ObjectId> implements
     @Override
     public List<StirlingClass> getByTeacher(String teacherName) {
         Query<StirlingClass> query = createQuery()
-          .field("teachers").contains(teacherName);
+          .field("teachers").equal(teacherName);
 
         return query.asList();
     }
@@ -52,7 +52,7 @@ public class ClassesDAOImpl extends BasicDAO<StirlingClass, ObjectId> implements
     @Override
     public List<StirlingClass> getByEnrollment(StirlingAccount account) {
         Query<StirlingClass> query = createQuery()
-          .field("students").contains(account.getAccountName());
+          .field("students").equal(account.getUuid());
 
         return query.asList();
     }

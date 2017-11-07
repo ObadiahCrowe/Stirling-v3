@@ -170,6 +170,15 @@ public class ClassManager {
         return classesDAO.getByName(className);
     }
 
+    public List<StirlingClass> getAllClasses(StirlingAccount account) {
+        List<StirlingClass> classes = Lists.newArrayList();
+        account.getStirlingClasses().forEach(c -> {
+            classes.add(getByUuid(c.getUuid()));
+        });
+
+        return classes;
+    }
+
     public boolean classExists(UUID classUuid) {
         if (getByUuid(classUuid) == null) {
             return false;
@@ -1097,6 +1106,10 @@ public class ClassManager {
 
     public String updateStudentHolders(StirlingAccount account, Map<ImportSource, List<ImportableClass>> classes) {
         return "";
+    }
+
+    public void updateField(StirlingClass clazz, String field, Object value) {
+        classesDAO.updateField(clazz, field, value);
     }
 
     public String takeClassOwnership(StirlingAccount account, String ownerId) {

@@ -49,7 +49,7 @@ public class ImportAPI implements APIController {
 
         ImportSource source;
         try {
-            source = ImportSource.valueOf(rawCredType);
+            source = ImportSource.valueOf(rawCredType.toUpperCase());
         } catch (IllegalArgumentException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawCredType, "credType"));
         }
@@ -88,7 +88,7 @@ public class ImportAPI implements APIController {
 
         ImportSource source;
         try {
-            source = ImportSource.valueOf(rawCredType);
+            source = ImportSource.valueOf(rawCredType.toUpperCase());
         } catch (IllegalArgumentException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawCredType, "credType"));
         }
@@ -96,5 +96,27 @@ public class ImportAPI implements APIController {
         return gson.toJson(importManager.areCredentialsValid(account, source));
     }
 
-    //@RequestMapping(value = "/stirling/v3/")
+    @CallableAPI(fields = {"accountName", "password", "credType"})
+    @RequestMapping(value = "/stirling/v3/import/removeCredentials", method = RequestMethod.GET)
+    public String removeCredentials(@RequestParam("accountName") String accountName,
+                                    @RequestParam("password") String password,
+                                    @RequestParam("credType") String rawCredType) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        ImportSource source;
+        try {
+            source = ImportSource.valueOf(rawCredType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawCredType, "credType"));
+        }
+
+        return importManager.removeImportCredential(account, source);
+    }
 }

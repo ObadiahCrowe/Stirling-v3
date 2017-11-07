@@ -148,8 +148,21 @@ public class ImportManager {
 
     public void importAllDaymap(ImportAccount account, List<ImportableClass> classes) {
         classes.forEach(c -> {
-            Thread t = new Thread(() -> classManager.addClassToAccount(accountManager.getAccount(account.getAccountUuid()),
-              importDaymapCourse(accountManager.getAccount(account.getAccountUuid()), c).getUuid()));
+            Thread t = new Thread(() -> {
+                StirlingClass stirlingClass = importDaymapCourse(accountManager.getAccount(account.getAccountUuid()), c);
+                classManager.addClassToAccount(accountManager.getAccount(account.getAccountUuid()), stirlingClass.getUuid());
+
+                List<UUID> students = Lists.newArrayList();
+                try {
+                    students.addAll(stirlingClass.getStudents());
+                } catch (NullPointerException ignored) {
+                }
+
+                if (!students.contains(account.getAccountUuid())) {
+                    students.add(account.getAccountUuid());
+                    classManager.updateField(stirlingClass, "students", students);
+                }
+            });
             t.start();
         });
     }
