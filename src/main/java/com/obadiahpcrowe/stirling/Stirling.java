@@ -1,12 +1,8 @@
 package com.obadiahpcrowe.stirling;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
-import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -70,6 +66,7 @@ public class Stirling {
           new ClassesAPI(),
           new CloudAPI(),
           new FeedbackAPI(),
+          new ImportAPI(),
           new InfoAPI(),
           new NotesAPI(),
           new SaceAPI(),
@@ -100,11 +97,6 @@ public class Stirling {
 
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
-
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
-
-        mgr.addImportCredential(account, ImportSource.DAYMAP, new ImportCredential("obadiah.crowe", "N2ZekHJwVqDv".toCharArray()));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

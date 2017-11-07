@@ -106,13 +106,41 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete classes", "TEACHER"));
     }
 
+    public String addClassesToAccount(StirlingAccount account, UUID... classUuids) {
+        List<StirlingClass> classes = Lists.newArrayList();
+        for (UUID uuid : classUuids) {
+            if (classExists(uuid)) {
+                try {
+                    classes.addAll(account.getStirlingClasses());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<Boolean> exists = new CompletableFuture<>();
+
+                classes.forEach(c -> {
+                    if (c.getUuid().equals(uuid)) {
+                        exists.complete(true);
+                    }
+                });
+
+                if (!exists.getNow(false)) {
+                    classes.add(getByUuid(uuid));
+                }
+            } else {
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
+            }
+        }
+
+        AccountManager.getInstance().updateField(account, "stirlingClasses", classes);
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_STUDENT_ADDED, account.getLocale(), "multiple classes", account.getAccountName()));
+    }
+
     public String addClassToAccount(StirlingAccount account, UUID classUuid) {
         if (classExists(classUuid)) {
             List<StirlingClass> classes = Lists.newArrayList();
             try {
                 classes.addAll(account.getStirlingClasses());
             } catch (NullPointerException ignored) {
-                ignored.printStackTrace();
             }
 
             CompletableFuture<Boolean> exists = new CompletableFuture<>();

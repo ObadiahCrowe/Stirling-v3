@@ -203,7 +203,14 @@ public class DaymapScraper {
 
             try {
                 HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/plans/lesson.aspx?ID=" + dId);
-                HtmlTableBody table = (HtmlTableBody) page.getByXPath("//*[@id=\"ctl00_cp_divTasks\"]/div/table/tbody").get(0);
+
+                HtmlTableBody table;
+                try {
+                    table = (HtmlTableBody) page.getByXPath("//*[@id=\"ctl00_cp_divTasks\"]/div/table/tbody").get(0);
+                } catch (IndexOutOfBoundsException e) {
+                    assignments.complete(asses);
+                    return;
+                }
 
                 table.getChildElements().forEach(e -> {
                     if (e.getTagName().equalsIgnoreCase("tr")) {
@@ -335,7 +342,15 @@ public class DaymapScraper {
             try {
                 HtmlPage page = client.getPage("https://daymap.gihs.sa.edu.au/daymap/student/plans/class.aspx?id=" + clazz.getId());
 
-                HtmlTableBody body = (HtmlTableBody) page.getByXPath("//*[@id=\"divFeed\"]/table[2]/tbody").get(0);
+                HtmlTableBody body;
+                try {
+                    body = (HtmlTableBody) page.getByXPath("//*[@id=\"divFeed\"]/table[2]/tbody").get(0);
+                } catch (IndexOutOfBoundsException e) {
+                    classNotes.complete(noteList);
+                    homework.complete(homeList);
+                    resources.complete(resList);
+                    return;
+                }
 
                 body.getChildElements().forEach(e -> {
                     if (e.getFirstElementChild().getAttribute("class").equalsIgnoreCase("capb")) {

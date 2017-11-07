@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
+import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
@@ -29,6 +30,7 @@ public class ImportAPI implements APIController {
     private AccountManager accountManager = AccountManager.getInstance();
     private ImportManager importManager = ImportManager.getInstance();
 
+    @CallableAPI(fields = {"accountName", "password", "credUsername", "credPassword", "authCode", "credType"})
     @RequestMapping(value = "/stirling/v3/import/addCredentials", method = RequestMethod.GET)
     public String addImportCredentials(@RequestParam(value = "accountName") String accountName,
                                        @RequestParam(value = "password") String password,
@@ -70,6 +72,7 @@ public class ImportAPI implements APIController {
         }
     }
 
+    @CallableAPI(fields = {"accountName", "password", "credType"})
     @RequestMapping(value = "/stirling/v3/import/isValid", method = RequestMethod.GET)
     public String areCredentialsValid(@RequestParam("accountName") String accountName,
                                       @RequestParam("password") String password,

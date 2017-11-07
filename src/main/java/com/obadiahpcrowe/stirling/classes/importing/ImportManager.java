@@ -146,23 +146,21 @@ public class ImportManager {
         return GClassroomHandler.getInstance().addGoogleClassroomCreds(account, authCode);
     }
 
-    private void importAllDaymap(ImportAccount account, List<ImportableClass> classes) {
+    public void importAllDaymap(ImportAccount account, List<ImportableClass> classes) {
         classes.forEach(c -> {
-            Thread t = new Thread(() -> {
-                importDaymapCourse(accountManager.getAccount(account.getAccountUuid()), c);
-            });
+            Thread t = new Thread(() -> classManager.addClassToAccount(accountManager.getAccount(account.getAccountUuid()),
+              importDaymapCourse(accountManager.getAccount(account.getAccountUuid()), c).getUuid()));
             t.start();
         });
     }
 
-    public void importDaymapCourse(StirlingAccount account, ImportableClass clazz) {
+    public StirlingClass importDaymapCourse(StirlingAccount account, ImportableClass clazz) {
         ImportAccount acc = getByUuid(account.getUuid());
         ImportCredential cred = getCreds(acc, ImportSource.DAYMAP);
         DaymapClass daymapClass = DaymapScraper.getInstance().getFullCourse(cred.getUsername(), cred.getPassword(),
           clazz, false);
 
-        StirlingClass stirlingClass = classManager.getByOwner(daymapClass.getId());
-        classManager.addClassToAccount(account, stirlingClass.getUuid());
+        return classManager.getByOwner(daymapClass.getId());
     }
 
     private void importAllMoodle() {
