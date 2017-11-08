@@ -3,12 +3,13 @@ package com.obadiahpcrowe.stirling.classes.importing.daymap;
 import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.enums.AssignmentType;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
+import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
+import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
@@ -95,9 +96,12 @@ public class DaymapScraper {
         }
     }
 
-    public DaymapClass getFullCourse(String username, String password, ImportableClass clazz, boolean importing) {
+    public DaymapClass getFullCourse(ImportAccount account, ImportableClass clazz, boolean importing) {
         // Completable holders
         CompletableFuture<String> dataId = new CompletableFuture<>();
+
+        String username = account.getCredentials().get(ImportSource.DAYMAP).getUsername();
+        String password = account.getCredentials().get(ImportSource.DAYMAP).getPassword();
 
         // Completable info
         CompletableFuture<LessonTimeSlot> timeSlot = new CompletableFuture<>();
@@ -545,8 +549,25 @@ public class DaymapScraper {
             e.printStackTrace();
         }
 
-        System.out.println(new Gson().toJson(daymapClass));
+        ImportManager importManager = ImportManager.getInstance();
+        List<DaymapClass> classes = Lists.newArrayList();
+        try {
+            classes.addAll(account.getDaymapClasses());
+        } catch (NullPointerException e) {
+        }
 
+        CompletableFuture<Boolean> exists = new CompletableFuture<>();
+        classes.forEach(c -> {
+            if (clazz.getId().equals(c.getId())) {
+                exists.complete(true);
+            }
+        });
+
+        if (!exists.getNow(false)) {
+            classes.add(daymapClass);
+        }
+
+        importManager.updateField(account, "daymapClasses", classes);
         return daymapClass;
     }
 }

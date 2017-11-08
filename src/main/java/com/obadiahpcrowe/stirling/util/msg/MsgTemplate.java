@@ -188,7 +188,11 @@ public enum MsgTemplate {
     SURVEY_UPDATED(MsgResponse.SUCCESS, "The survey, {0}, has had the field, {1}, updated!", 2),
     SURVEY_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The survey with the id: {0}, does not exist!", 1),
 
-    INVALID_TYPE_FORMAT(MsgResponse.USER_ERROR, "{0} is invalid! The required format is {1}!", 2);
+    INVALID_TYPE_FORMAT(MsgResponse.USER_ERROR, "{0} is invalid! The required format is {1}!", 2),
+
+    IMPORT_CREDS_INVALID(MsgResponse.USER_ERROR, "You credentials for {0} are invalid!", 1),
+    IMPORT_CANNOT_REFRESH_TOKEN(MsgResponse.STIRLING_ERROR, "Stirling could not refresh your Google access token. Does it still have access?", 0),
+    IMPORT_REFRESH_INVALID(MsgResponse.STIRLING_ERROR, "Your refresh token has expired!", 0);
 
     private MsgResponse response;
     private String message;

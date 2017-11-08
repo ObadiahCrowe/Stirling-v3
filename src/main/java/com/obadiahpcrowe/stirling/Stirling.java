@@ -1,8 +1,12 @@
 package com.obadiahpcrowe.stirling;
 
+import com.obadiahpcrowe.stirling.accounts.AccountManager;
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
+import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GClassroomHandler;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -97,6 +101,11 @@ public class Stirling {
 
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
+
+        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
+        com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
+        System.out.println(GClassroomHandler.getInstance().importCourse(account,
+          new ImportableClass("Year 12 Legal Studies", "4164302900")));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

@@ -168,11 +168,7 @@ public class ImportManager {
     }
 
     public StirlingClass importDaymapCourse(StirlingAccount account, ImportableClass clazz) {
-        ImportAccount acc = getByUuid(account.getUuid());
-        ImportCredential cred = getCreds(acc, ImportSource.DAYMAP);
-        DaymapClass daymapClass = DaymapScraper.getInstance().getFullCourse(cred.getUsername(), cred.getPassword(),
-          clazz, false);
-
+        DaymapClass daymapClass = DaymapScraper.getInstance().getFullCourse(getByUuid(account.getUuid()), clazz, false);
         return classManager.getByOwner(daymapClass.getId());
     }
 

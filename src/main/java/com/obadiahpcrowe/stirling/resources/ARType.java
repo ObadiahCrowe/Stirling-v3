@@ -14,6 +14,7 @@ public enum ARType {
 
     NORMAL("Resource"),
     CLASS("Class Resource"),
+    CLASS_SINGLE("User Class Resource"),
     ANNOUNCEMENT("Announcement Resource");
 
     private String friendlyName;

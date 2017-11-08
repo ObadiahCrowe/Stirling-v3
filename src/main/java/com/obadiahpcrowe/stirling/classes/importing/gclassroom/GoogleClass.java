@@ -1,7 +1,6 @@
 package com.obadiahpcrowe.stirling.classes.importing.gclassroom;
 
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
-import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
@@ -21,18 +20,15 @@ import java.util.List;
 public class GoogleClass extends ImportableClass {
 
     private List<AttachableResource> resources;
-    private List<StirlingAssignment> assignments;
     private List<StirlingPostable> postables;
 
     @Deprecated
     public GoogleClass() {
     }
 
-    public GoogleClass(String id, String name, List<AttachableResource> resources, List<StirlingAssignment> assignments,
-                       List<StirlingPostable> postables) {
+    public GoogleClass(String id, String name, List<AttachableResource> resources, List<StirlingPostable> postables) {
         super(name, id);
         this.resources = resources;
-        this.assignments = assignments;
         this.postables = postables;
     }
 }
