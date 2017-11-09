@@ -22,7 +22,6 @@ import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
-import com.obadiahpcrowe.stirling.localisation.LocalisationManager;
 import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilFile;
@@ -172,9 +171,9 @@ public class GClassroomHandler {
         }
     }
 
-    public String importCourse(StirlingAccount account, ImportableClass c) {
+    public GoogleClass importCourse(StirlingAccount account, ImportableClass c) {
         if (!areCredentialsPresent(account)) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_CREDS_INVALID, account.getLocale(), ImportSource.GOOGLE_CLASSROOM.getFriendlyName()));
+            return null;
         }
 
         GoogleCredential credential = new GoogleCredential().setAccessToken(importManager.getByUuid(account.getUuid())
@@ -186,7 +185,7 @@ public class GClassroomHandler {
               credential).setApplicationName("Stirling").build();
         } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
-            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "initialising google transport services"));
+            return null;
         }
 
         Drive drive = new Drive.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName("Stirling").build();
@@ -200,7 +199,7 @@ public class GClassroomHandler {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "getting your google courses"));
+            return null;
         }
 
         File classFile = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "UserData" +
@@ -218,78 +217,67 @@ public class GClassroomHandler {
         Thread resourceThread = new Thread(() -> {
             List<AttachableResource> resList = Lists.newArrayList();
             for (CourseWork courseWork : lcwr.getCourseWork()) {
-                // Resources
-                try {
-                    for (Material material : courseWork.getMaterials()) {
-                        DriveFile file = material.getDriveFile().getDriveFile();
+                if (courseWork.getMaterials() != null && courseWork.getMaterials().size() > 0) {
+                    try {
+                        for (Material material : courseWork.getMaterials()) {
+                            DriveFile file = material.getDriveFile().getDriveFile();
 
-                        File dlFile = new File(classFile, file.getTitle());
-                        if (dlFile.exists()) {
-                            continue;
-                        } else {
+                            File dlFile = new File(classFile, file.getTitle());
+                            if (dlFile.exists()) {
+                                continue;
+                            } else {
+                                try {
+                                    dlFile.createNewFile();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            courseId.complete(courseWork.getCourseId());
+
+                            CompletableFuture<AttachableResource> resource = new CompletableFuture<>();
+                            Thread dlThread = new Thread(() -> {
+                                OutputStream outputStream = null;
+
+                                try {
+                                    outputStream = new FileOutputStream(new File(classFile, file.getTitle()));
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+
+                                MediaHttpDownloader downloader = new MediaHttpDownloader(new NetHttpTransport(),
+                                  drive.getRequestFactory().getInitializer());
+
+                                downloader.setDirectDownloadEnabled(true);
+                                try {
+                                    drive.files().get(file.getId()).executeMediaAndDownloadTo(outputStream);
+
+                                    resource.complete(new AttachableResource(account.getUuid(), c.getId() + File.separator +
+                                      file.getTitle(), ARType.CLASS_SINGLE));
+                                } catch (HttpResponseException e) {
+                                    if (e.getStatusCode() == 404) {
+                                        dlFile.delete();
+                                    }
+                                    resource.complete(null);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    resource.complete(null);
+                                }
+                            });
+                            dlThread.start();
+
                             try {
-                                dlFile.createNewFile();
-                            } catch (IOException e) {
+                                if (resource.get() != null) {
+                                    resList.add(resource.get());
+                                }
+                            } catch (InterruptedException | ExecutionException e) {
                                 e.printStackTrace();
                             }
                         }
-
-                        courseId.complete(courseWork.getCourseId());
-
-                        Thread dlThread = new Thread(() -> {
-                            OutputStream outputStream = null;
-
-                            try {
-                                outputStream = new FileOutputStream(new File(classFile, file.getTitle()));
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-
-                            MediaHttpDownloader downloader = new MediaHttpDownloader(new NetHttpTransport(),
-                              drive.getRequestFactory().getInitializer());
-
-                            downloader.setDirectDownloadEnabled(true);
-                            try {
-                                drive.files().get(file.getId()).executeMediaAndDownloadTo(outputStream);
-
-                                AttachableResource resource = new AttachableResource(account.getUuid(), c.getId() + File.separator +
-                                  file.getTitle(), ARType.CLASS_SINGLE);
-                                resList.add(resource);
-                            } catch (HttpResponseException e) {
-                                if (e.getStatusCode() == 404) {
-                                    dlFile.delete();
-                                }
-                            } catch (IOException e) {
-                                // Assume drive file
-                                File f = new File(classFile, file.getTitle() + ".pdf");
-                                try {
-                                    if (f.exists()) {
-                                        return;
-                                    }
-
-                                    f.createNewFile();
-
-                                    outputStream = new FileOutputStream(f);
-                                    drive.files().export(file.getId(), "application/pdf").executeMediaAndDownloadTo(outputStream);
-                                } catch (HttpResponseException e1) {
-                                    if (e1.getStatusCode() == 404) {
-                                        dlFile.delete();
-                                        f.delete();
-                                        return;
-                                    }
-                                    e1.printStackTrace();
-                                } catch (IOException e1) {
-                                    e1.printStackTrace();
-                                }
-                            }
-                        });
-                        dlThread.start();
+                    } catch (NullPointerException ignored) {
                     }
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
                 }
             }
-
             resources.complete(resList);
         });
         resourceThread.start();
@@ -313,14 +301,24 @@ public class GClassroomHandler {
             return null;
         }
 
-        return LocalisationManager.getInstance().translate(gson.toJson(googleClass), account.getLocale());
+        for (File f : classFile.listFiles()) {
+            if (f.length() == 0) {
+                f.delete();
+            }
+        }
+
+        return googleClass;
     }
 
     public boolean areCredentialsPresent(StirlingAccount account) {
         ImportCredential credential = importManager.getCreds(importManager.getByUuid(account.getUuid()), ImportSource.GOOGLE_CLASSROOM);
 
-        if (credential.getRefreshToken() != null && credential.getAccessToken() != null) {
-            return true;
+        try {
+            if (credential.getRefreshToken() != null && credential.getAccessToken() != null) {
+                return true;
+            }
+        } catch (NullPointerException e) {
+            return false;
         }
         return false;
     }

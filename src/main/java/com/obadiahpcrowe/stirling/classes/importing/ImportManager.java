@@ -115,6 +115,9 @@ public class ImportManager {
                     case MOODLE:
                         importAllMoodle();
                         break;
+                    case GOOGLE_CLASSROOM:
+                        importAllGoogle(account);
+                        break;
                 }
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
@@ -138,6 +141,9 @@ public class ImportManager {
                     break;
                 case MOODLE:
                     importAllMoodle();
+                    break;
+                case GOOGLE_CLASSROOM:
+                    importAllGoogle(account);
                     break;
             }
         }
@@ -179,8 +185,14 @@ public class ImportManager {
         //
     }
 
-    private void importAllGoogle() {
-        //
+    private void importAllGoogle(StirlingAccount account) {
+        List<ImportableClass> classes = GClassroomHandler.getInstance().getCourses(account);
+        classes.forEach(c -> {
+            Thread t = new Thread(() -> {
+                GClassroomHandler.getInstance().importCourse(account, c);
+            });
+            t.start();
+        });
     }
 
     public ImportCredential getCreds(ImportAccount account, ImportSource source) {
