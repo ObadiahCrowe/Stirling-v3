@@ -219,62 +219,74 @@ public class GClassroomHandler {
             List<AttachableResource> resList = Lists.newArrayList();
             for (CourseWork courseWork : lcwr.getCourseWork()) {
                 // Resources
-                for (Material material : courseWork.getMaterials()) {
-                    DriveFile file = material.getDriveFile().getDriveFile();
+                try {
+                    for (Material material : courseWork.getMaterials()) {
+                        DriveFile file = material.getDriveFile().getDriveFile();
 
-                    File dlFile = new File(classFile, file.getTitle());
-                    if (dlFile.exists()) {
-                        continue;
-                    } else {
-                        try {
-                            dlFile.createNewFile();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    courseId.complete(courseWork.getCourseId());
-
-                    AttachableResource resource = new AttachableResource(account.getUuid(), c.getId() + File.separator +
-                      file.getTitle(), ARType.CLASS_SINGLE);
-                    resList.add(resource);
-
-                    Thread dlThread = new Thread(() -> {
-                        OutputStream outputStream = null;
-
-                        try {
-                            outputStream = new FileOutputStream(new File(classFile, file.getTitle()));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
-                        MediaHttpDownloader downloader = new MediaHttpDownloader(new NetHttpTransport(),
-                          drive.getRequestFactory().getInitializer());
-
-                        downloader.setDirectDownloadEnabled(true);
-                        try {
-                            drive.files().get(file.getId()).executeMediaAndDownloadTo(outputStream);
-                        } catch (HttpResponseException e) {
-                            if (e.getStatusCode() == 404) {
-                                dlFile.delete();
-                            }
-                        } catch (IOException e) {
-                            // Assume drive file
+                        File dlFile = new File(classFile, file.getTitle());
+                        if (dlFile.exists()) {
+                            continue;
+                        } else {
                             try {
-                                outputStream = new FileOutputStream(new File(classFile, file.getTitle() + ".pdf"));
-                                drive.files().export(file.getId(), "application/pdf").executeMediaAndDownloadTo(outputStream);
-                            } catch (HttpResponseException e1) {
-                                if (e1.getStatusCode() == 404) {
-                                    dlFile.delete();
-                                    return;
-                                }
-                                e1.printStackTrace();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
+                                dlFile.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
-                    });
-                    dlThread.start();
+
+                        courseId.complete(courseWork.getCourseId());
+
+                        Thread dlThread = new Thread(() -> {
+                            OutputStream outputStream = null;
+
+                            try {
+                                outputStream = new FileOutputStream(new File(classFile, file.getTitle()));
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+
+                            MediaHttpDownloader downloader = new MediaHttpDownloader(new NetHttpTransport(),
+                              drive.getRequestFactory().getInitializer());
+
+                            downloader.setDirectDownloadEnabled(true);
+                            try {
+                                drive.files().get(file.getId()).executeMediaAndDownloadTo(outputStream);
+
+                                AttachableResource resource = new AttachableResource(account.getUuid(), c.getId() + File.separator +
+                                  file.getTitle(), ARType.CLASS_SINGLE);
+                                resList.add(resource);
+                            } catch (HttpResponseException e) {
+                                if (e.getStatusCode() == 404) {
+                                    dlFile.delete();
+                                }
+                            } catch (IOException e) {
+                                // Assume drive file
+                                File f = new File(classFile, file.getTitle() + ".pdf");
+                                try {
+                                    if (f.exists()) {
+                                        return;
+                                    }
+
+                                    f.createNewFile();
+
+                                    outputStream = new FileOutputStream(f);
+                                    drive.files().export(file.getId(), "application/pdf").executeMediaAndDownloadTo(outputStream);
+                                } catch (HttpResponseException e1) {
+                                    if (e1.getStatusCode() == 404) {
+                                        dlFile.delete();
+                                        f.delete();
+                                        return;
+                                    }
+                                    e1.printStackTrace();
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                        });
+                        dlThread.start();
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -292,8 +304,6 @@ public class GClassroomHandler {
             postables.complete(pList);
         });
         postThread.start();
-
-        // TODO: 8/11/17 Write some code to check names of files download with attachableresources and remove non-existent ones
 
         GoogleClass googleClass;
         try {

@@ -327,9 +327,8 @@ public class DaymapScraper {
         });
         assessmentThread.start();
 
-        ImportManager mgr = ImportManager.getInstance();
         try {
-            mgr.createClassFromDaymap(clazz.getId(), clazz.getClassName(), room.get(), timeSlot.get());
+            ImportManager.getInstance().createClassFromDaymap(clazz.getId(), clazz.getClassName(), room.get(), timeSlot.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -550,6 +549,18 @@ public class DaymapScraper {
         }
 
         ImportManager importManager = ImportManager.getInstance();
+
+        Thread addThread = new Thread(() -> {
+            try {
+                importManager.addNotesToDaymapClass(clazz.getId(), classNotes.get());
+                importManager.addHomeworkToDaymapClass(clazz.getId(), homework.get());
+                importManager.addResourcesToDaymapClass(clazz.getId(), resources.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+        addThread.start();
+
         List<DaymapClass> classes = Lists.newArrayList();
         try {
             classes.addAll(account.getDaymapClasses());

@@ -16,10 +16,12 @@ import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GClassroomHandler;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.ImportDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.ImportDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -247,6 +250,76 @@ public class ImportManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_CREATED, StirlingLocale.ENGLISH, courseName));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ALREADY_EXISTS, StirlingLocale.ENGLISH, courseName));
+    }
+
+    public void addNotesToDaymapClass(String courseId, List<StirlingPostable> notes) {
+        ClassManager mgr = ClassManager.getInstance();
+        if (mgr.getByOwner(courseId) != null) {
+            StirlingClass clazz = mgr.getByOwner(courseId);
+            List<StirlingPostable> classNotes = Lists.newArrayList();
+
+            try {
+                classNotes.addAll(clazz.getClassNotes());
+            } catch (NullPointerException ignored) {
+            }
+
+            notes.forEach(note -> {
+                if (!classNotes.contains(note)) {
+                    classNotes.add(note);
+                }
+            });
+
+            mgr.updateField(clazz, "classNotes", classNotes);
+        }
+    }
+
+    public void addHomeworkToDaymapClass(String courseId, List<StirlingPostable> homework) {
+        ClassManager mgr = ClassManager.getInstance();
+        if (mgr.getByOwner(courseId) != null) {
+            StirlingClass clazz = mgr.getByOwner(courseId);
+            List<StirlingPostable> hwList = Lists.newArrayList();
+
+            try {
+                hwList.addAll(clazz.getHomework());
+            } catch (NullPointerException ignored) {
+            }
+
+            homework.forEach(hw -> {
+                if (!hwList.contains(hw)) {
+                    hwList.add(hw);
+                }
+            });
+
+            mgr.updateField(clazz, "homework", hwList);
+        }
+    }
+
+    public void addResourcesToDaymapClass(String courseId, List<AttachableResource> resources) {
+        ClassManager mgr = ClassManager.getInstance();
+        if (mgr.getByOwner(courseId) != null) {
+            StirlingClass clazz = mgr.getByOwner(courseId);
+            List<AttachableResource> resourceList = Lists.newArrayList();
+
+            try {
+                resourceList.addAll(clazz.getResources());
+            } catch (NullPointerException ignored) {
+            }
+
+            resources.forEach(res -> {
+                CompletableFuture<Boolean> contains = new CompletableFuture<>();
+                resourceList.forEach(r -> {
+                    if (res.getFilePath().equals(r.getFilePath())) {
+                        contains.complete(true);
+                    }
+                });
+
+                if (!contains.getNow(false)) {
+                    resourceList.add(res);
+                }
+            });
+
+            mgr.updateField(clazz, "resources", resourceList);
+        }
     }
 
     public void updateField(ImportAccount account, String field, Object value) {
