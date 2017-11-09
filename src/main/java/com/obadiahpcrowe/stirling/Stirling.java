@@ -5,9 +5,6 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GClassroomHandler;
-import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
-import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -105,8 +102,6 @@ public class Stirling {
 
         StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
         com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
-        AccountManager.getInstance().updateField(account, "locale", StirlingLocale.ENGLISH);
-        System.out.println(GClassroomHandler.getInstance().importCourse(account, new ImportableClass("Stage II Modern History", "4029884796")));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

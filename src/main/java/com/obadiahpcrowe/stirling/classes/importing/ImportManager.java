@@ -14,6 +14,7 @@ import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapClass;
 import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GClassroomHandler;
+import com.obadiahpcrowe.stirling.classes.importing.moodle.MoodleScraper;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
@@ -97,10 +98,6 @@ public class ImportManager {
     }
 
     public String addImportCredential(StirlingAccount account, ImportSource source, ImportCredential credential) {
-        if (source == ImportSource.GOOGLE_CLASSROOM) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CANNOT_ADD, account.getLocale()));
-        }
-
         Map<ImportSource, ImportCredential> credentialMap;
         if (!importAccExists(account.getUuid())) {
             credentialMap = Maps.newHashMap();
@@ -131,7 +128,12 @@ public class ImportManager {
         } catch (NullPointerException ignored) {
         }
 
-        credentialMap.replace(source, credential);
+        if (credentialMap.containsKey(source)) {
+            credentialMap.replace(source, credential);
+        } else {
+            credentialMap.put(source, credential);
+        }
+
         importDAO.updateField(importAccount, "credentials", credentialMap);
 
         if (areCredentialsValid(account, source)) {
@@ -207,6 +209,8 @@ public class ImportManager {
         switch (source) {
             case DAYMAP:
                 return DaymapScraper.getInstance().areCredentialsValid(acc.getCredentials().get(source));
+            case MOODLE:
+                return MoodleScraper.getInstance().areCredentialsValid(acc.getCredentials().get(source));
         }
         return false;
     }
