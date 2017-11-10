@@ -95,4 +95,8 @@ public class MoodleScraper {
         }
         return null;
     }
+
+    public MoodleClass getCourse(StirlingAccount account, ImportableClass clazz) {
+        return null;
+    }
 }

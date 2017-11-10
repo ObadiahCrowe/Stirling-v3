@@ -14,6 +14,8 @@ import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapClass;
 import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GClassroomHandler;
+import com.obadiahpcrowe.stirling.classes.importing.gclassroom.GoogleClass;
+import com.obadiahpcrowe.stirling.classes.importing.moodle.MoodleClass;
 import com.obadiahpcrowe.stirling.classes.importing.moodle.MoodleScraper;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
@@ -68,10 +70,8 @@ public class ImportManager {
 
     public List<ImportableClass> getDaymapCourses(StirlingAccount account) {
         if (importAccExists(account.getUuid())) {
-            ImportAccount acc = getByUuid(account.getUuid());
-
-            if (credentialsExist(acc, ImportSource.DAYMAP)) {
-                ImportCredential cred = getCreds(acc, ImportSource.DAYMAP);
+            if (credentialsExist(account, ImportSource.DAYMAP)) {
+                ImportCredential cred = getCreds(account, ImportSource.DAYMAP);
                 if (cred == null) {
                     return null;
                 }
@@ -88,12 +88,30 @@ public class ImportManager {
     }
 
     public List<ImportableClass> getMoodleCourses(StirlingAccount account) {
-        //
+        if (credentialsExist(account, ImportSource.MOODLE)) {
+            return MoodleScraper.getInstance().getCourses(account);
+        }
         return null;
     }
 
     public List<ImportableClass> getGoogleCourses(StirlingAccount account) {
-        //
+        if (credentialsExist(account, ImportSource.GOOGLE_CLASSROOM)) {
+            return GClassroomHandler.getInstance().getCourses(account);
+        }
+        return null;
+    }
+
+    public GoogleClass getGoogleClass(StirlingAccount account, ImportableClass clazz) {
+        if (credentialsExist(account, ImportSource.GOOGLE_CLASSROOM)) {
+            return GClassroomHandler.getInstance().importCourse(account, clazz);
+        }
+        return null;
+    }
+
+    public MoodleClass getMoodleClass(StirlingAccount account, ImportableClass clazz) {
+        if (credentialsExist(account, ImportSource.MOODLE)) {
+            return MoodleScraper.getInstance().getCourse(account, clazz);
+        }
         return null;
     }
 
@@ -107,10 +125,10 @@ public class ImportManager {
             if (areCredentialsValid(account, source)) {
                 switch (source) {
                     case DAYMAP:
-                        importAllDaymap(getByUuid(account.getUuid()), getDaymapCourses(account));
+                        importAllDaymap(account);
                         break;
                     case MOODLE:
-                        importAllMoodle();
+                        importAllMoodle(account);
                         break;
                     case GOOGLE_CLASSROOM:
                         importAllGoogle(account);
@@ -139,10 +157,10 @@ public class ImportManager {
         if (areCredentialsValid(account, source)) {
             switch (source) {
                 case DAYMAP:
-                    importAllDaymap(importAccount, getDaymapCourses(account));
+                    importAllDaymap(account);
                     break;
                 case MOODLE:
-                    importAllMoodle();
+                    importAllMoodle(account);
                     break;
                 case GOOGLE_CLASSROOM:
                     importAllGoogle(account);
@@ -157,25 +175,28 @@ public class ImportManager {
         return GClassroomHandler.getInstance().addGoogleClassroomCreds(account, authCode);
     }
 
-    public void importAllDaymap(ImportAccount account, List<ImportableClass> classes) {
-        classes.forEach(c -> {
-            Thread t = new Thread(() -> {
-                StirlingClass stirlingClass = importDaymapCourse(accountManager.getAccount(account.getAccountUuid()), c);
-                classManager.addClassToAccount(accountManager.getAccount(account.getAccountUuid()), stirlingClass.getUuid());
+    private void importAllDaymap(StirlingAccount account) {
+        if (credentialsExist(account, ImportSource.DAYMAP)) {
+            List<ImportableClass> classes = getDaymapCourses(account);
+            classes.forEach(c -> {
+                Thread t = new Thread(() -> {
+                    StirlingClass stirlingClass = importDaymapCourse(account, c);
+                    classManager.addClassToAccount(account, stirlingClass.getUuid());
 
-                List<UUID> students = Lists.newArrayList();
-                try {
-                    students.addAll(stirlingClass.getStudents());
-                } catch (NullPointerException ignored) {
-                }
+                    List<UUID> students = Lists.newArrayList();
+                    try {
+                        students.addAll(stirlingClass.getStudents());
+                    } catch (NullPointerException ignored) {
+                    }
 
-                if (!students.contains(account.getAccountUuid())) {
-                    students.add(account.getAccountUuid());
-                    classManager.updateField(stirlingClass, "students", students);
-                }
+                    if (!students.contains(account.getUuid())) {
+                        students.add(account.getUuid());
+                        classManager.updateField(stirlingClass, "students", students);
+                    }
+                });
+                t.start();
             });
-            t.start();
-        });
+        }
     }
 
     public StirlingClass importDaymapCourse(StirlingAccount account, ImportableClass clazz) {
@@ -183,8 +204,17 @@ public class ImportManager {
         return classManager.getByOwner(daymapClass.getId());
     }
 
-    private void importAllMoodle() {
-        //
+    private void importAllMoodle(StirlingAccount account) {
+        if (credentialsExist(account, ImportSource.MOODLE)) {
+            List<ImportableClass> classes = MoodleScraper.getInstance().getCourses(account);
+
+            classes.forEach(c -> {
+                Thread t = new Thread(() -> {
+                    getMoodleClass(account, c);
+                });
+                t.start();
+            });
+        }
     }
 
     private void importAllGoogle(StirlingAccount account) {
@@ -197,9 +227,10 @@ public class ImportManager {
         });
     }
 
-    public ImportCredential getCreds(ImportAccount account, ImportSource source) {
-        if (credentialsExist(account, source)) {
-            return account.getCredentials().get(source);
+    public ImportCredential getCreds(StirlingAccount account, ImportSource source) {
+        ImportAccount acc = getByUuid(account.getUuid());
+        if (credentialsExist(acc, source)) {
+            return acc.getCredentials().get(source);
         }
         return null;
     }

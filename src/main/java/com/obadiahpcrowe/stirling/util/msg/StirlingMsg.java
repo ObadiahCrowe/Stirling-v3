@@ -2,6 +2,7 @@ package com.obadiahpcrowe.stirling.util.msg;
 
 import com.obadiahpcrowe.stirling.localisation.LocalisationManager;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.util.UtilLog;
 import lombok.Getter;
 
 /**
@@ -25,6 +26,7 @@ public class StirlingMsg {
             rawMessage = rawMessage.replace("{" + i + "}", args[i]);
         }
 
+        UtilLog.getInstance().log("[" + response + "] " + rawMessage);
         this.message = LocalisationManager.getInstance().translate(rawMessage, locale);
     }
 }
