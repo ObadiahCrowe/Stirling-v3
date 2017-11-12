@@ -104,7 +104,7 @@ public class GClassroomHandler {
             return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_CREDS_INVALID, account.getLocale(), ImportSource.GOOGLE_CLASSROOM.getFriendlyName()));
         }
 
-        ImportCredential cred = importManager.getCreds(importManager.getByUuid(account.getUuid()), ImportSource.GOOGLE_CLASSROOM);
+        ImportCredential cred = importManager.getCreds(account, ImportSource.GOOGLE_CLASSROOM);
         String clientSecret = UtilFile.getInstance().getStorageLoc() + File.separator + "client_secret.json";
 
         try {
@@ -134,7 +134,7 @@ public class GClassroomHandler {
             return null;
         }
 
-        ImportCredential cred = importManager.getCreds(importManager.getByUuid(account.getUuid()), ImportSource.GOOGLE_CLASSROOM);
+        ImportCredential cred = importManager.getCreds(account, ImportSource.GOOGLE_CLASSROOM);
 
         try {
             HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
@@ -311,7 +311,7 @@ public class GClassroomHandler {
     }
 
     public boolean areCredentialsPresent(StirlingAccount account) {
-        ImportCredential credential = importManager.getCreds(importManager.getByUuid(account.getUuid()), ImportSource.GOOGLE_CLASSROOM);
+        ImportCredential credential = importManager.getCreds(account, ImportSource.GOOGLE_CLASSROOM);
 
         try {
             if (credential.getRefreshToken() != null && credential.getAccessToken() != null) {

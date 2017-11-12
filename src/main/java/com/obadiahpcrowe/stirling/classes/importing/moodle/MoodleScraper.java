@@ -13,10 +13,15 @@ import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingSection;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -97,6 +102,57 @@ public class MoodleScraper {
     }
 
     public MoodleClass getCourse(StirlingAccount account, ImportableClass clazz) {
+        ImportCredential cred = importManager.getCreds(account, ImportSource.MOODLE);
+
+        final WebClient webClient = new StirlingWebClient(BrowserVersion.CHROME).getClient(null,
+          new NicelyResynchronizingAjaxController());
+
+        HtmlPage page;
+        try {
+            String url = "http://dlb.sa.edu.au/gihsmoodle/login/index.php";
+
+            page = webClient.getPage(url);
+
+            HtmlForm loginForm = page.getForms().get(0);
+            loginForm.getInputByName("username").type(cred.getUsername());
+            loginForm.getInputByName("password").type(cred.getPassword());
+
+            page = loginForm.getInputByValue("Log in").click();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        String classUrl = "http://dlb.sa.edu.au/gihsmoodle/course/view.php?id=" + clazz.getId();
+        try {
+            page = webClient.getPage(classUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        CompletableFuture<List<AttachableResource>> resources = new CompletableFuture<>();
+        CompletableFuture<List<StirlingPostable>> posts = new CompletableFuture<>();
+        CompletableFuture<List<StirlingAssignment>> assignments = new CompletableFuture<>();
+        CompletableFuture<List<StirlingSection>> sections = new CompletableFuture<>();
+
+        Thread resourcesThread = new Thread(() -> {
+            //
+        });
+
+        Thread contentThread = new Thread(() -> {
+            //
+        });
+
+        Thread assignmentThread = new Thread(() -> {
+            //
+        });
+
+        Thread workbookThread = new Thread(() -> {
+            //
+        });
+
+
         return null;
     }
 }

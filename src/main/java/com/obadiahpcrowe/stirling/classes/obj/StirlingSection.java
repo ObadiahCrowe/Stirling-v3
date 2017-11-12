@@ -1,6 +1,7 @@
 package com.obadiahpcrowe.stirling.classes.obj;
 
 import com.google.common.collect.Lists;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
 
 import java.util.List;
@@ -20,7 +21,9 @@ public class StirlingSection {
     private UUID sectionUuid;
     private String title;
     private String desc;
-    private List<Object> children;
+    private List<StirlingPostable> classNotes;
+    private List<StirlingPostable> homework;
+    private List<AttachableResource> resources;
 
     @Deprecated
     public StirlingSection() {}
@@ -30,14 +33,19 @@ public class StirlingSection {
         this.sectionUuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;
-        this.children = Lists.newArrayList();
+        this.classNotes = Lists.newArrayList();
+        this.homework = Lists.newArrayList();
+        this.resources = Lists.newArrayList();
     }
 
-    public StirlingSection(UUID classUuid, String title, String desc, List<Object> children) {
+    public StirlingSection(UUID classUuid, String title, String desc, List<StirlingPostable> classNotes, List<StirlingPostable> homework,
+                           List<AttachableResource> resources) {
         this.classUuid = classUuid;
         this.sectionUuid = UUID.randomUUID();
         this.title = title;
         this.desc = desc;
-        this.children = children;
+        this.classNotes = classNotes;
+        this.homework = homework;
+        this.resources = resources;
     }
 }

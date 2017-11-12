@@ -279,7 +279,7 @@ public class ClassManager {
                 try {
                     StirlingSection section = future.get();
                     StirlingPostable postable = new StirlingPostable(title, content, resources);
-                    section.getChildren().add(postable);
+                    section.getClassNotes().add(postable);
 
                     List<StirlingSection> sections = Lists.newArrayList(clazz.getSections());
                     clazz.getSections().forEach(s -> {
@@ -317,7 +317,7 @@ public class ClassManager {
                     StirlingSection section = future.get();
                     CompletableFuture<Object> postableFuture = new CompletableFuture<>();
 
-                    section.getChildren().forEach(s -> {
+                    section.getClassNotes().forEach(s -> {
                         if (s instanceof StirlingPostable) {
                             StirlingPostable postable = (StirlingPostable) s;
                             if (postable.getUuid().equals(postableUuid)) {
@@ -326,7 +326,7 @@ public class ClassManager {
                         }
                     });
 
-                    List<Object> objects = Lists.newArrayList(section.getChildren());
+                    List<Object> objects = Lists.newArrayList(section.getClassNotes());
                     objects.remove(postableFuture.get());
 
                     List<StirlingSection> sections = Lists.newArrayList(clazz.getSections());
