@@ -10,9 +10,11 @@ import com.obadiahpcrowe.stirling.database.dao.interfaces.AnnouncementDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -72,6 +74,18 @@ public class AnnouncementManager {
         StirlingAnnouncement announcement = new StirlingAnnouncement(account, uuid, title, shortDesc, type, bannerImage,
           content, resourcesList, audience, tagsList);
 
+        File file = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
+          File.separator + announcement.getUuid());
+
+        if (!file.exists()) {
+            file.mkdir();
+
+            File resFile = new File(file, "Resources");
+            if (!resFile.exists()) {
+                resFile.mkdir();
+            }
+        }
+
         announcementDAO.save(announcement);
 
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_CREATED, account.getLocale(), title));
@@ -92,6 +106,13 @@ public class AnnouncementManager {
 
             return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(),
               "delete this announcement", valid.toString()));
+        }
+
+        File file = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
+          File.separator + uuid);
+
+        if (file.exists()) {
+            UtilFile.getInstance().deleteDirectory(file);
         }
 
         announcementDAO.delete(announcement);

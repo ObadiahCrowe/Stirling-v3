@@ -35,9 +35,7 @@ public class AtarCalculator {
         List<Grade> gradeList = Lists.newArrayList();
         List<Integer> gradeInts = Lists.newArrayList();
 
-        grades.forEach(g -> {
-            gradeList.add(g);
-        });
+        gradeList.addAll(grades);
 
         if (gradeList.size() <= 4) {
             gradeList.forEach(g -> {

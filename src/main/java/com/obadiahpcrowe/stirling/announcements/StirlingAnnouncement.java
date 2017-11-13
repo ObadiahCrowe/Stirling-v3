@@ -41,6 +41,7 @@ public class StirlingAnnouncement {
     private List<AccountType> targetAudience;
     private List<String> tags;
 
+    @Deprecated
     public StirlingAnnouncement() {}
 
     public StirlingAnnouncement(StirlingAccount account, UUID uuid, String title, String shortDesc, AnnouncementType announcementType,

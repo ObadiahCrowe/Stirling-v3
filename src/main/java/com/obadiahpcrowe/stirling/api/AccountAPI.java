@@ -52,6 +52,13 @@ public class AccountAPI implements APIController {
         return accountManager.deleteAccount(accountName, password);
     }
 
+    @CallableAPI(fields = {"accountName", "password"})
+    @RequestMapping(value = "/stirling/v3/accounts/validCredentials", method = RequestMethod.GET)
+    public boolean validateCredentials(@RequestParam("accountName") String accountName,
+                                       @RequestParam("password") String password) {
+        return accountManager.validCredentials(accountName, password);
+    }
+
     @CallableAPI(fields = { "accountName", "password", "displayName" })
     @RequestMapping(value = "/stirling/v3/accounts/update/displayName", method = RequestMethod.GET)
     public String updateDisplayName(@RequestParam("accountName") String accountName,

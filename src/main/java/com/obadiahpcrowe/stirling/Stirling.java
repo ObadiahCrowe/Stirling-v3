@@ -1,6 +1,5 @@
 package com.obadiahpcrowe.stirling;
 
-import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
@@ -8,8 +7,6 @@ import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
 import com.obadiahpcrowe.stirling.modules.importables.ImportManager;
-import com.obadiahpcrowe.stirling.sace.atar.AtarCalculator;
-import com.obadiahpcrowe.stirling.sace.atar.Grade;
 import com.obadiahpcrowe.stirling.schools.SchoolManager;
 import com.obadiahpcrowe.stirling.util.StirlingVersion;
 import com.obadiahpcrowe.stirling.util.UtilConfig;
@@ -18,9 +15,6 @@ import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -109,18 +103,6 @@ public class Stirling {
         //StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
         //com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
         //System.out.println(mgr.getMoodleClass(account, new ImportableClass("Stage 2 Psychology - Johnson", "1895")));
-
-        List<Grade> grades = Arrays.asList(
-          Grade.A_PLUS,
-          Grade.A_MINUS,
-          Grade.A_MINUS,
-          Grade.A_MINUS
-        );
-
-        Grade rpGrade = Grade.A;
-
-        AtarCalculator calculator = AtarCalculator.getInstance();
-        System.out.println(new Gson().toJson(calculator.calculateAtar(grades, rpGrade)));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
