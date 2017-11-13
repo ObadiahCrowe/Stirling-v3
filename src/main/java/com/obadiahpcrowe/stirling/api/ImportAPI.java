@@ -93,6 +93,10 @@ public class ImportAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawCredType, "credType"));
         }
 
+        if (source == ImportSource.GOOGLE_CLASSROOM) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_CANNOT_VERIFY, account.getLocale(), ImportSource.GOOGLE_CLASSROOM.getFriendlyName()));
+        }
+
         return gson.toJson(importManager.areCredentialsValid(account, source));
     }
 

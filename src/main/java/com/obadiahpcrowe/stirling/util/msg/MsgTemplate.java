@@ -192,7 +192,8 @@ public enum MsgTemplate {
 
     IMPORT_CREDS_INVALID(MsgResponse.USER_ERROR, "You credentials for {0} are invalid!", 1),
     IMPORT_CANNOT_REFRESH_TOKEN(MsgResponse.STIRLING_ERROR, "Stirling could not refresh your Google access token. Does it still have access?", 0),
-    IMPORT_REFRESH_INVALID(MsgResponse.STIRLING_ERROR, "Your refresh token has expired!", 0);
+    IMPORT_REFRESH_INVALID(MsgResponse.STIRLING_ERROR, "Your refresh token has expired!", 0),
+    IMPORT_CANNOT_VERIFY(MsgResponse.USER_ERROR, "We are unable to verify your {0} credentials!", 1);
 
     private MsgResponse response;
     private String message;

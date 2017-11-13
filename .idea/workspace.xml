@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/AnnouncementManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/AnnouncementManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/StirlingAnnouncement.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/StirlingAnnouncement.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AccountAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AccountAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/atar/AtarCalculator.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/atar/AtarCalculator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -49,8 +46,8 @@
       <file leaf-file-name="ImportManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="574">
-              <caret line="117" column="113" lean-forward="false" selection-start-line="117" selection-start-column="113" selection-end-line="117" selection-end-column="113" />
+            <state relative-caret-position="658">
+              <caret line="243" column="105" lean-forward="true" selection-start-line="243" selection-start-column="105" selection-end-line="243" selection-end-column="105" />
               <folding>
                 <element signature="method#ImportManager#0;class#ImportManager#0" expanded="false" />
                 <element signature="method#getInstance#0;class#ImportManager#0" expanded="false" />
@@ -65,7 +62,6 @@
                 <element signature="method#importAllMoodle#0;class#ImportManager#0" expanded="false" />
                 <element signature="method#importAllGoogle#0;class#ImportManager#0" expanded="false" />
                 <element signature="method#getCreds#0;class#ImportManager#0" expanded="false" />
-                <element signature="method#areCredentialsValid#0;class#ImportManager#0" expanded="false" />
                 <element signature="method#credentialsExist#0;class#ImportManager#0" expanded="false" />
                 <element signature="method#credentialsExist#1;class#ImportManager#0" expanded="false" />
                 <element signature="method#removeImportCredential#0;class#ImportManager#0" expanded="false" />
@@ -88,6 +84,16 @@
                 <element signature="imports" expanded="true" />
                 <element signature="method#getCourses#0;class#MoodleScraper#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MsgTemplate.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="661">
+              <caret line="195" column="56" lean-forward="false" selection-start-line="195" selection-start-column="56" selection-end-line="195" selection-end-column="56" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -127,7 +133,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>no slot found</find>
       <find>str is null</find>
       <find>if stat</find>
       <find>L`</find>
@@ -157,6 +162,7 @@
       <find>createDa</find>
       <find>daymapClas</find>
       <find>resList</find>
+      <find>IMPORT</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -194,8 +200,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapClass.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/ClassesDAOImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/ARType.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/gclassroom/GoogleClass.java" />
@@ -224,6 +228,8 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/AnnouncementManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/StirlingAnnouncement.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AccountAPI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java" />
       </list>
     </option>
   </component>
@@ -364,6 +370,25 @@
               <item name="classes" type="462c0819:PsiDirectoryNode" />
               <item name="importing" type="462c0819:PsiDirectoryNode" />
               <item name="moodle" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Stirling" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Stirling" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="stirling" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+              <item name="msg" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -738,14 +763,7 @@
       <workItem from="1510470571613" duration="345000" />
       <workItem from="1510478122678" duration="2258000" />
       <workItem from="1510484194641" duration="523000" />
-      <workItem from="1510539544999" duration="299000" />
-    </task>
-    <task id="LOCAL-00075" summary="Announcement stuff">
-      <created>1506563169791</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1506563169792</updated>
+      <workItem from="1510539544999" duration="762000" />
     </task>
     <task id="LOCAL-00076" summary="Announcement field editing">
       <created>1506586590107</created>
@@ -1083,14 +1101,22 @@
       <option name="project" value="LOCAL" />
       <updated>1510478173575</updated>
     </task>
-    <option name="localTasksCounter" value="124" />
+    <task id="LOCAL-00124" summary="Tweaks across the board">
+      <created>1510539863126</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1510539863127</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="392462000" />
+    <option name="totallyTimeSpent" value="392925000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="35" y="22" width="1645" height="1028" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1105,7 +1131,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2632219" sideWeight="0.4958159" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2632219" sideWeight="0.4958159" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294979" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1132,7 +1158,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="LOTS of class stuff" />
     <MESSAGE value="More class shit" />
     <MESSAGE value="APIs and class stuff" />
     <MESSAGE value="Unfucked notes." />
@@ -1157,7 +1182,8 @@
     <MESSAGE value="Beginning moodle scrapers" />
     <MESSAGE value="ImportManager updates and extra logging" />
     <MESSAGE value="Atar calculations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Atar calculations" />
+    <MESSAGE value="Tweaks across the board" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tweaks across the board" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1283,13 +1309,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="12" column="12" lean-forward="false" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgResponse.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -1323,13 +1342,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="588">
           <caret line="51" column="22" lean-forward="false" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1134">
-          <caret line="95" column="48" lean-forward="false" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
         </state>
       </provider>
     </entry>
@@ -1405,6 +1417,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="518">
           <caret line="37" column="31" lean-forward="true" selection-start-line="37" selection-start-column="31" selection-end-line="37" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1412,37 +1427,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
           <caret line="23" column="14" lean-forward="false" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="117" column="113" lean-forward="false" selection-start-line="117" selection-start-column="113" selection-end-line="117" selection-end-column="113" />
-          <folding>
-            <element signature="method#ImportManager#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#getInstance#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#getDaymapCourses#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#getMoodleCourses#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#getGoogleCourses#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#getGoogleClass#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#addImportCredential#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#addGoogleImportCode#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#importAllDaymap#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#importDaymapCourse#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#importAllMoodle#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#importAllGoogle#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#getCreds#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#areCredentialsValid#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#credentialsExist#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#credentialsExist#1;class#ImportManager#0" expanded="false" />
-            <element signature="method#removeImportCredential#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#createClassFromDaymap#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#addNotesToDaymapClass#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#addHomeworkToDaymapClass#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#addResourcesToDaymapClass#0;class#ImportManager#0" expanded="false" />
-            <element signature="method#updateField#0;class#ImportManager#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1458,22 +1442,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
           <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="23" column="25" lean-forward="false" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="10" column="40" lean-forward="false" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
           <folding />
         </state>
       </provider>
@@ -1527,6 +1495,68 @@
             <element signature="e#5606#5607#0" expanded="true" />
             <element signature="e#5656#5657#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="10" column="40" lean-forward="false" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="23" column="25" lean-forward="false" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="658">
+          <caret line="243" column="105" lean-forward="true" selection-start-line="243" selection-start-column="105" selection-end-line="243" selection-end-column="105" />
+          <folding>
+            <element signature="method#ImportManager#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#getInstance#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#getDaymapCourses#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#getMoodleCourses#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#getGoogleCourses#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#getGoogleClass#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#addImportCredential#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#addGoogleImportCode#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#importAllDaymap#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#importDaymapCourse#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#importAllMoodle#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#importAllGoogle#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#getCreds#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#credentialsExist#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#credentialsExist#1;class#ImportManager#0" expanded="false" />
+            <element signature="method#removeImportCredential#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#createClassFromDaymap#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#addNotesToDaymapClass#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#addHomeworkToDaymapClass#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#addResourcesToDaymapClass#0;class#ImportManager#0" expanded="false" />
+            <element signature="method#updateField#0;class#ImportManager#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="661">
+          <caret line="195" column="56" lean-forward="false" selection-start-line="195" selection-start-column="56" selection-end-line="195" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="979">
+          <caret line="96" column="152" lean-forward="false" selection-start-line="96" selection-start-column="152" selection-end-line="96" selection-end-column="152" />
+          <folding />
         </state>
       </provider>
     </entry>
