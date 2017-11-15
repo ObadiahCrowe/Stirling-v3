@@ -1,8 +1,11 @@
 package com.obadiahpcrowe.stirling;
 
+import com.obadiahpcrowe.stirling.accounts.AccountManager;
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -14,6 +17,7 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -95,14 +99,14 @@ public class Stirling {
         ModuleManager.getInstance().registerAPICalls();
 
         utilLog.log("Starting REST API service..");
-        //SpringApplication.run(Stirling.class, args);
+        SpringApplication.run(Stirling.class, args);
 
         //Stage 2 Psychology - Johnson 1895
         //Ms Sawrey: Year 12 English 2100
 
-        //StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        //com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
-        //System.out.println(mgr.getMoodleClass(account, new ImportableClass("Stage 2 Psychology - Johnson", "1895")));
+        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
+        com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
+        System.out.println(mgr.getMoodleClass(account, new ImportableClass("Stage 2 Psychology - Johnson", "1895")));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
