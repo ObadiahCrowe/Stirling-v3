@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling;
 
+import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
@@ -106,7 +107,7 @@ public class Stirling {
 
         StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
         com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
-        System.out.println(mgr.getMoodleClass(account, new ImportableClass("Ms Sawrey: Year 12 English", "2100")));
+        System.out.println(new Gson().toJson(mgr.getMoodleClass(account, new ImportableClass("Ms Sawrey: Year 12 English", "2100"))));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

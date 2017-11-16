@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleClass.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleClass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleScraper.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleScraper.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -26,8 +26,8 @@
       <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="671">
-              <caret line="108" column="110" lean-forward="false" selection-start-line="108" selection-start-column="110" selection-end-line="108" selection-end-column="110" />
+            <state relative-caret-position="563">
+              <caret line="109" column="120" lean-forward="false" selection-start-line="109" selection-start-column="120" selection-end-line="109" selection-end-column="120" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -70,14 +70,11 @@
       <file leaf-file-name="MoodleScraper.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleScraper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="675">
-              <caret line="564" column="27" lean-forward="false" selection-start-line="564" selection-start-column="27" selection-end-line="564" selection-end-column="27" />
+            <state relative-caret-position="184">
+              <caret line="413" column="37" lean-forward="false" selection-start-line="413" selection-start-column="37" selection-end-line="413" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getCourses#0;class#MoodleScraper#0" expanded="false" />
-                <element signature="e#7073#20740#0" expanded="false" />
-                <element signature="e#20914#32921#0" expanded="false" />
-                <element signature="e#22497#32259#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -148,8 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fanning</find>
-      <find>Sy</find>
       <find>id</find>
       <find>standard</find>
       <find>[templ</find>
@@ -178,6 +173,8 @@
       <find>TITLE:</find>
       <find>ClassCastException</find>
       <find>div class=&quot;summary&quot;</find>
+      <find>s</find>
+      <find>sections</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$</dir>
@@ -242,9 +239,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AccountAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleClass.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleScraper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleClass.java" />
       </list>
     </option>
   </component>
@@ -769,14 +766,7 @@
       <workItem from="1510746987060" duration="2182000" />
       <workItem from="1510751866783" duration="292000" />
       <workItem from="1510794764205" duration="3327000" />
-      <workItem from="1510802147238" duration="4163000" />
-    </task>
-    <task id="LOCAL-00079" summary="Removed stupid instance stuff">
-      <created>1507719836319</created>
-      <option name="number" value="00079" />
-      <option name="presentableId" value="LOCAL-00079" />
-      <option name="project" value="LOCAL" />
-      <updated>1507719836320</updated>
+      <workItem from="1510802147238" duration="8263000" />
     </task>
     <task id="LOCAL-00080" summary="Stirling importables">
       <created>1507722089031</created>
@@ -1114,11 +1104,18 @@
       <option name="project" value="LOCAL" />
       <updated>1510801980290</updated>
     </task>
-    <option name="localTasksCounter" value="128" />
+    <task id="LOCAL-00128" summary="Moodle shit">
+      <created>1510809272693</created>
+      <option name="number" value="00128" />
+      <option name="presentableId" value="LOCAL-00128" />
+      <option name="project" value="LOCAL" />
+      <updated>1510809272694</updated>
+    </task>
+    <option name="localTasksCounter" value="129" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="420739000" />
+    <option name="totallyTimeSpent" value="424839000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="35" y="22" width="1645" height="1028" extended-state="6" />
@@ -1164,7 +1161,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Notes API" />
     <MESSAGE value="SignIn API" />
     <MESSAGE value="Working on survey api and adjusting permissions" />
     <MESSAGE value="Unfucking school shit" />
@@ -1189,7 +1185,8 @@
     <MESSAGE value="Finalising import credential apis" />
     <MESSAGE value="Lots of Moodle stuff" />
     <MESSAGE value="Moodle section support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moodle section support" />
+    <MESSAGE value="Moodle shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moodle shit" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1542,8 +1539,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="671">
-          <caret line="108" column="110" lean-forward="false" selection-start-line="108" selection-start-column="110" selection-end-line="108" selection-end-column="110" />
+        <state relative-caret-position="563">
+          <caret line="109" column="120" lean-forward="false" selection-start-line="109" selection-start-column="120" selection-end-line="109" selection-end-column="120" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1552,14 +1549,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/moodle/MoodleScraper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="675">
-          <caret line="564" column="27" lean-forward="false" selection-start-line="564" selection-start-column="27" selection-end-line="564" selection-end-column="27" />
+        <state relative-caret-position="184">
+          <caret line="413" column="37" lean-forward="false" selection-start-line="413" selection-start-column="37" selection-end-line="413" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#getCourses#0;class#MoodleScraper#0" expanded="false" />
-            <element signature="e#7073#20740#0" expanded="false" />
-            <element signature="e#20914#32921#0" expanded="false" />
-            <element signature="e#22497#32259#0" expanded="false" />
           </folding>
         </state>
       </provider>

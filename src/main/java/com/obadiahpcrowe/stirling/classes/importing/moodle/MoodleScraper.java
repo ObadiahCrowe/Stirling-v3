@@ -5,7 +5,6 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
@@ -18,6 +17,7 @@ import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 import com.obadiahpcrowe.stirling.util.UtilFile;
+import com.obadiahpcrowe.stirling.util.UtilLog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -165,12 +165,31 @@ public class MoodleScraper {
 
             List<Thread> threads = Lists.newArrayList();
             List<AttachableResource> resourceList = Lists.newArrayList();
+            List<StirlingPostable> postables = Lists.newArrayList();
             if (topics != null) {
                 topics.getChildElements().forEach(section -> {
                     if (section.getTagName().equalsIgnoreCase("li")) {
+                        CompletableFuture<String> sName = new CompletableFuture<>();
+                        section.getFirstElementChild().getChildElements().forEach(div -> {
+                            if (div.getAttribute("class").contains("sectionname")) {
+                                sName.complete(div.getTextContent());
+                            }
+                        });
+
                         section.getChildElements().forEach(div -> {
                             if (div.getAttribute("class").equalsIgnoreCase("content")) {
                                 try {
+                                    div.getChildElements().forEach(e -> {
+                                        if (e.getAttribute("class").equalsIgnoreCase("summary")) {
+                                            try {
+                                                postables.add(new StirlingPostable(sName.get(),
+                                                  e.getFirstElementChild().getTextContent(), Lists.newArrayList()));
+                                            } catch (InterruptedException | ExecutionException e1) {
+                                                e1.printStackTrace();
+                                            }
+                                        }
+                                    });
+
                                     div.getLastElementChild().getChildElements().forEach(node -> {
                                         Thread t = new Thread(() -> {
                                             if (node.getAttribute("class").contains("modtype_resource")) {
@@ -384,7 +403,7 @@ public class MoodleScraper {
                                     } else if (fileType.contains("URL")) {
                                         return;
                                     } else if (fileType.contains("Book")) {
-                                        return;
+                                        type = ".book";
                                     } else if (fileType.contains("Game")) {
                                         return;
                                     } else if (fileType.contains("Glossary")) {
@@ -466,6 +485,23 @@ public class MoodleScraper {
                                                       .getLastElementChild().getFirstElementChild().getFirstElementChild().click();
                                                 } catch (IOException e3) {
                                                     e3.printStackTrace();
+                                                } catch (ClassCastException e3) {
+                                                    try {
+                                                        folderPage = li.getLastElementChild().getLastElementChild().getLastElementChild()
+                                                          .getFirstElementChild().getFirstElementChild().click();
+                                                    } catch (IOException e4) {
+                                                        e4.printStackTrace();
+                                                    } catch (ClassCastException e4) {
+                                                        try {
+                                                            folderPage = li.getLastElementChild().getLastElementChild().getLastElementChild()
+                                                              .getFirstElementChild().getFirstElementChild().click();
+                                                        } catch (IOException e5) {
+                                                            e5.printStackTrace();
+                                                        } catch (ClassCastException e5) {
+                                                            UtilLog.getInstance().log("GOT TO EXCEPTION 5 IN THE MOODLE BS. Add more.");
+                                                            return;
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -549,14 +585,9 @@ public class MoodleScraper {
 
             resources.complete(resourceList);
             sections.complete(sectionList);
+            posts.complete(postables);
         });
         everythingThread.start();
-
-        try {
-            System.out.println(new Gson().toJson(resources.get()));
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
 
         MoodleClass moodleClass;
         try {
@@ -566,8 +597,6 @@ public class MoodleScraper {
             e.printStackTrace();
             return null;
         }
-
-        System.out.println(new Gson().toJson(moodleClass));
 
         return moodleClass;
     }
