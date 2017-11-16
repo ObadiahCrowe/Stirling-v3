@@ -1,12 +1,8 @@
 package com.obadiahpcrowe.stirling;
 
-import com.google.gson.Gson;
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -36,17 +32,14 @@ public class Stirling {
     @Getter
     private StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
-    // TODO: 24/9/17 Daymap, Moodle, Gclassroom imports (Use some of the shit from v2) (Maybe SACE integration)
     // TODO: 17/10/17 Add map null checks
     // TODO: 17/10/17 Add user linkers to class through their import account. On init class, check user import account then readd.
     // TODO: 17/10/17 Scrape every morning
-    // TODO: 17/10/17 Remove profanity from code
-    // TODO: 17/10/17 Make sure the ImportableClass shit doesn't fuck up
-    // TODO: 17/10/17 Import from daymap through the daymapId, then store the daymap shit against a user account and update it through a non-account method for all users.
     // TODO: 27/10/17 Junit
 
     // AFTER RELEASE
     // TODO: 17/10/17 Generate report and predicted grades from Stirling results
+    // TODO: 16/11/17 Moodle workbooks maybe
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
@@ -102,12 +95,7 @@ public class Stirling {
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
 
-        //Stage 2 Psychology - Johnson 1895
-        //Ms Sawrey: Year 12 English 2100
-
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
-        System.out.println(new Gson().toJson(mgr.getMoodleClass(account, new ImportableClass("Ms Sawrey: Year 12 English", "2100"))));
+        // TODO: 16/11/17 Finish imports
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

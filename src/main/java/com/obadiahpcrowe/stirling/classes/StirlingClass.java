@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
-import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import lombok.Getter;
@@ -40,7 +39,7 @@ public class StirlingClass {
     private String room;
 
     // For imports
-    private Map<UUID, Map<ImportSource, List<ImportableClass>>> studentImportHolders;
+    private Map<UUID, List<String>> studentImportHolders; // Account UUID, Course ID
     private List<? extends ImportableClass> globalHolders;
 
     // Members and times

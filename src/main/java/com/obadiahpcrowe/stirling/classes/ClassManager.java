@@ -1104,7 +1104,8 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "update lessons", "TEACHER"));
     }
 
-    public String updateStudentHolders(StirlingAccount account, Map<ImportSource, List<ImportableClass>> classes) {
+    public String addStudentClassHolder(StirlingAccount account, ImportSource source, ImportableClass clazz) {
+        //
         return "";
     }
 

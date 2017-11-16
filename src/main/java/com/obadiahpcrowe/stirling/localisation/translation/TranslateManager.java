@@ -29,7 +29,7 @@ public class TranslateManager {
             process.waitFor();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line = "";
+            String line;
 
             while ((line = reader.readLine()) != null) {
                 builder.append(line).append(" ");

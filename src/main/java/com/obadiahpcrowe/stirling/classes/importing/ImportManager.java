@@ -103,14 +103,58 @@ public class ImportManager {
 
     public GoogleClass getGoogleClass(StirlingAccount account, ImportableClass clazz) {
         if (credentialsExist(account, ImportSource.GOOGLE_CLASSROOM)) {
-            return GClassroomHandler.getInstance().importCourse(account, clazz);
+            GoogleClass c = GClassroomHandler.getInstance().importCourse(account, clazz);
+
+            ImportAccount acc = getByUuid(account.getUuid());
+            List<GoogleClass> googleClasses = Lists.newArrayList();
+
+            try {
+                googleClasses.addAll(acc.getGoogleClasses());
+            } catch (NullPointerException ignored) {
+            }
+
+            CompletableFuture<Boolean> contains = new CompletableFuture<>();
+            acc.getGoogleClasses().forEach(googleClass -> {
+                if (googleClass.getClassName().equals(clazz.getClassName())) {
+                    contains.complete(true);
+                }
+            });
+
+            if (!contains.getNow(false)) {
+                googleClasses.add(c);
+                updateField(acc, "googleClasses", googleClasses);
+            }
+
+            return c;
         }
         return null;
     }
 
     public MoodleClass getMoodleClass(StirlingAccount account, ImportableClass clazz) {
         if (credentialsExist(account, ImportSource.MOODLE)) {
-            return MoodleScraper.getInstance().getCourse(account, clazz);
+            MoodleClass c = MoodleScraper.getInstance().getCourse(account, clazz);
+
+            ImportAccount acc = getByUuid(account.getUuid());
+            List<MoodleClass> moodleClasses = Lists.newArrayList();
+
+            try {
+                moodleClasses.addAll(acc.getMoodleClasses());
+            } catch (NullPointerException ignored) {
+            }
+
+            CompletableFuture<Boolean> contains = new CompletableFuture<>();
+            acc.getMoodleClasses().forEach(moodleClass -> {
+                if (moodleClass.getClassName().equals(clazz.getClassName())) {
+                    contains.complete(true);
+                }
+            });
+
+            if (!contains.getNow(false)) {
+                moodleClasses.add(c);
+                updateField(acc, "moodleClasses", moodleClasses);
+            }
+
+            return c;
         }
         return null;
     }
@@ -129,9 +173,6 @@ public class ImportManager {
                         break;
                     case MOODLE:
                         importAllMoodle(account);
-                        break;
-                    case GOOGLE_CLASSROOM:
-                        importAllGoogle(account);
                         break;
                 }
             }
@@ -161,9 +202,6 @@ public class ImportManager {
                     break;
                 case MOODLE:
                     importAllMoodle(account);
-                    break;
-                case GOOGLE_CLASSROOM:
-                    importAllGoogle(account);
                     break;
             }
         }
@@ -215,16 +253,6 @@ public class ImportManager {
                 t.start();
             });
         }
-    }
-
-    private void importAllGoogle(StirlingAccount account) {
-        List<ImportableClass> classes = GClassroomHandler.getInstance().getCourses(account);
-        classes.forEach(c -> {
-            Thread t = new Thread(() -> {
-                GClassroomHandler.getInstance().importCourse(account, c);
-            });
-            t.start();
-        });
     }
 
     public ImportCredential getCreds(StirlingAccount account, ImportSource source) {
