@@ -348,22 +348,38 @@ public class MoodleScraper {
 
             if (gtopics != null) {
                 gtopics.getChildElements().forEach(section -> {
+                    CompletableFuture<String> sectionName = new CompletableFuture<>();
+                    CompletableFuture<String> sectionDesc = new CompletableFuture<>();
                     section.getFirstElementChild().getChildElements().forEach(child -> {
-                        CompletableFuture<String> sectionName = new CompletableFuture<>();
-                        CompletableFuture<String> summary = new CompletableFuture<>();
-                        if (child.getAttribute("class").contains("sectionname")) {
+                        if (child.getAttribute("class").equalsIgnoreCase("sectionname")) {
                             sectionName.complete(child.getTextContent());
-                        } else if (child.getAttribute("class").contains("summary")) {
-                            StringBuilder sum = new StringBuilder();
-                            for (DomElement e : child.getFirstElementChild().getChildElements()) {
-                                if (e.getAttribute("style").contains("margin-bottom")) {
-                                    sum.append(e.getFirstElementChild().getTextContent());
-                                }
+                        } else if (child.getAttribute("class").equalsIgnoreCase("summary")) {
+                            StringBuilder builder = new StringBuilder();
+                            try {
+                                child.getFirstElementChild().getChildElements().forEach(c -> {
+                                    builder.append(c.getFirstElementChild().getTextContent());
+                                });
+                            } catch (NullPointerException ignored) {
                             }
 
-                            summary.complete(sum.toString());
+                            if (builder.toString().length() == 0) {
+                                builder.append("");
+                            }
+
+                            sectionDesc.complete(builder.toString());
+                        } else if (child.getAttribute("class").contains("section") && child.getTagName().equalsIgnoreCase("ul")) {
+                            //
                         }
                     });
+
+                    if (sectionName.getNow(null) == null || sectionDesc.getNow(null) == null) {
+                        return;
+                    }
+
+                    System.out.println("START");
+                    System.out.println(sectionName.getNow(null));
+                    System.out.println(sectionDesc.getNow(null));
+                    System.out.println("END");
                 });
             }
 

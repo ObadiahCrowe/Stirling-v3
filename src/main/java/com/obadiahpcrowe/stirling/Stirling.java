@@ -106,7 +106,7 @@ public class Stirling {
 
         StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
         com.obadiahpcrowe.stirling.classes.importing.ImportManager mgr = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance();
-        System.out.println(mgr.getMoodleClass(account, new ImportableClass("Stage 2 Psychology - Johnson", "1895")));
+        System.out.println(mgr.getMoodleClass(account, new ImportableClass("Ms Sawrey: Year 12 English", "2100")));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
