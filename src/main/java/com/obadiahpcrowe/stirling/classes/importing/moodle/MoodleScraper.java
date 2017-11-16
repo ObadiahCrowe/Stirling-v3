@@ -12,7 +12,6 @@ import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportCredential;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
-import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingSection;
 import com.obadiahpcrowe.stirling.resources.ARType;
@@ -134,7 +133,6 @@ public class MoodleScraper {
 
         CompletableFuture<List<AttachableResource>> resources = new CompletableFuture<>();
         CompletableFuture<List<StirlingPostable>> posts = new CompletableFuture<>();
-        CompletableFuture<List<StirlingAssignment>> assignments = new CompletableFuture<>();
         CompletableFuture<List<StirlingSection>> sections = new CompletableFuture<>();
 
         Thread everythingThread = new Thread(() -> {
@@ -346,10 +344,12 @@ public class MoodleScraper {
                 });
             }
 
+            List<StirlingSection> sectionList = Lists.newArrayList();
             if (gtopics != null) {
                 gtopics.getChildElements().forEach(section -> {
                     CompletableFuture<String> sectionName = new CompletableFuture<>();
                     CompletableFuture<String> sectionDesc = new CompletableFuture<>();
+                    CompletableFuture<List<AttachableResource>> sectionResources = new CompletableFuture<>();
                     section.getFirstElementChild().getChildElements().forEach(child -> {
                         if (child.getAttribute("class").equalsIgnoreCase("sectionname")) {
                             sectionName.complete(child.getTextContent());
@@ -368,7 +368,161 @@ public class MoodleScraper {
 
                             sectionDesc.complete(builder.toString());
                         } else if (child.getAttribute("class").contains("section") && child.getTagName().equalsIgnoreCase("ul")) {
-                            //
+                            List<AttachableResource> sectionResList = Lists.newArrayList();
+                            child.getChildElements().forEach(li -> {
+                                if (li.getAttribute("class").contains("modtype_resource")) {
+                                    String type = "";
+                                    String fileType = li.getFirstElementChild().getFirstElementChild().getLastElementChild()
+                                      .getFirstElementChild().getLastElementChild().getTextContent();
+
+                                    if (fileType.contains("Word document")) {
+                                        type = ".doc";
+                                    } else if (fileType.contains("Powerpoint")) {
+                                        type = ".ppt";
+                                    } else if (fileType.contains("PDF")) {
+                                        type = ".pdf";
+                                    } else if (fileType.contains("URL")) {
+                                        return;
+                                    } else if (fileType.contains("Book")) {
+                                        return;
+                                    } else if (fileType.contains("Game")) {
+                                        return;
+                                    } else if (fileType.contains("Glossary")) {
+                                        return;
+                                    } else if (fileType.contains("Turnitin Assignment")) {
+                                        return;
+                                    }
+
+                                    DomElement c = li.getFirstElementChild().getFirstElementChild().getLastElementChild()
+                                      .getFirstElementChild().getFirstElementChild();
+
+                                    String href = c.getAttribute("href");
+                                    CompletableFuture<String> resName = new CompletableFuture<>();
+                                    c.getChildElements().forEach(e -> {
+                                        if (e.getAttribute("class").equalsIgnoreCase("instancename")) {
+                                            resName.complete(e.getTextContent().replace(" File", ""));
+                                        }
+                                    });
+
+                                    if (resName.getNow(null) == null) {
+                                        return;
+                                    }
+
+                                    sectionResList.add(new AttachableResource(account.getUuid(),
+                                      clazz.getId() + File.separator + resName.getNow(null) + type,
+                                      ARType.CLASS_SINGLE));
+
+                                    final String fType = type;
+                                    Thread dlThread = new Thread(() -> {
+                                        File classFile = new File(UtilFile.getInstance().getUserFolder(account.getUuid()) +
+                                          File.separator + "Classes" + File.separator + clazz.getId());
+
+                                        File dlFile = new File(classFile, resName.getNow(null) + fType);
+
+                                        try {
+                                            if (!classFile.exists()) {
+                                                classFile.mkdir();
+                                            }
+
+                                            if (!dlFile.exists()) {
+                                                dlFile.createNewFile();
+                                            }
+
+                                            InputStream in = client.getPage(href).getWebResponse().getContentAsStream();
+                                            FileOutputStream out = new FileOutputStream(dlFile);
+
+                                            ReadableByteChannel rbc = Channels.newChannel(in);
+                                            out.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                                        } catch (IOException e1) {
+                                            e1.printStackTrace();
+                                        }
+                                    });
+                                    dlThread.start();
+                                } else if (li.getAttribute("class").contains("modtype_folder")) {
+                                    HtmlPage folderPage = null;
+
+                                    // The Moodle fuckery - Part 2
+                                    try {
+                                        folderPage = li.getLastElementChild().getLastElementChild().getLastElementChild()
+                                          .getFirstElementChild().getLastElementChild().click();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        return;
+                                    } catch (ClassCastException e) {
+                                        try {
+                                            folderPage = li.getLastElementChild().getLastElementChild()
+                                              .getLastElementChild().getFirstElementChild().getFirstElementChild().click();
+                                        } catch (IOException e1) {
+                                            e1.printStackTrace();
+                                        } catch (ClassCastException e1) {
+                                            try {
+                                                folderPage = li.getLastElementChild().getLastElementChild()
+                                                  .getLastElementChild().getFirstElementChild().getFirstElementChild().click();
+                                            } catch (IOException e2) {
+                                                e2.printStackTrace();
+                                            } catch (ClassCastException e2) {
+                                                try {
+                                                    folderPage = li.getLastElementChild().getLastElementChild()
+                                                      .getLastElementChild().getFirstElementChild().getFirstElementChild().click();
+                                                } catch (IOException e3) {
+                                                    e3.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (folderPage == null) {
+                                        return;
+                                    }
+
+                                    HtmlDivision folderDiv = (HtmlDivision) folderPage.getByXPath("//*[@id=\"folder_tree0\"]").get(0);
+
+                                    folderDiv.getFirstElementChild().getFirstElementChild().getChildElements().forEach(e -> {
+                                        if (e.getTagName().equalsIgnoreCase("ul")) {
+                                            e.getChildElements().forEach(e1 -> {
+                                                HtmlAnchor link = (HtmlAnchor) e1.getFirstElementChild().getFirstElementChild();
+
+                                                String dlUrl = link.getAttribute("href");
+                                                String name = link.getLastElementChild().getTextContent();
+
+                                                sectionResList.add(new AttachableResource(account.getUuid(),
+                                                  clazz.getId() + File.separator + name,
+                                                  ARType.CLASS_SINGLE));
+
+                                                Thread dlThread = new Thread(() -> {
+                                                    File classFile = new File(UtilFile.getInstance().getUserFolder(account.getUuid()) +
+                                                      File.separator + "Classes" + File.separator + clazz.getId());
+
+                                                    File dlFile = new File(classFile, name);
+
+                                                    try {
+                                                        if (!classFile.exists()) {
+                                                            classFile.mkdir();
+                                                        }
+
+                                                        if (!dlFile.exists()) {
+                                                            dlFile.createNewFile();
+                                                        } else {
+                                                            return;
+                                                        }
+
+                                                        InputStream in = client.getPage(dlUrl).getWebResponse().getContentAsStream();
+                                                        FileOutputStream out = new FileOutputStream(dlFile);
+
+                                                        ReadableByteChannel rbc = Channels.newChannel(in);
+                                                        out.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+                                                    } catch (IOException e5) {
+                                                        e5.printStackTrace();
+                                                    }
+                                                });
+                                                dlThread.start();
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+
+                            sectionResources.complete(sectionResList);
                         }
                     });
 
@@ -376,10 +530,12 @@ public class MoodleScraper {
                         return;
                     }
 
-                    System.out.println("START");
-                    System.out.println(sectionName.getNow(null));
-                    System.out.println(sectionDesc.getNow(null));
-                    System.out.println("END");
+                    try {
+                        sectionList.add(new StirlingSection(null, sectionName.get(), sectionDesc.get(),
+                          Lists.newArrayList(), Lists.newArrayList(), sectionResources.get()));
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 });
             }
 
@@ -392,6 +548,7 @@ public class MoodleScraper {
             });
 
             resources.complete(resourceList);
+            sections.complete(sectionList);
         });
         everythingThread.start();
 
@@ -404,7 +561,7 @@ public class MoodleScraper {
         MoodleClass moodleClass;
         try {
             moodleClass = new MoodleClass(clazz.getId(), clazz.getClassName(), sections.get(), posts.get(),
-              resources.get(), assignments.get());
+              resources.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;

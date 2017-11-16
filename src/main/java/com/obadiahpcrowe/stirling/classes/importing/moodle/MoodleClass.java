@@ -1,7 +1,6 @@
 package com.obadiahpcrowe.stirling.classes.importing.moodle;
 
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
-import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingSection;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
@@ -24,18 +23,16 @@ public class MoodleClass extends ImportableClass {
     private List<StirlingSection> sections;
     private List<StirlingPostable> postables;
     private List<AttachableResource> resources;
-    private List<StirlingAssignment> assignments;
 
     @Deprecated
     public MoodleClass() {
     }
 
     public MoodleClass(String id, String name, List<StirlingSection> sections, List<StirlingPostable> postables,
-                       List<AttachableResource> resources, List<StirlingAssignment> assignments) {
+                       List<AttachableResource> resources) {
         super(name, id);
         this.sections = sections;
         this.postables = postables;
         this.resources = resources;
-        this.assignments = assignments;
     }
 }
