@@ -10,7 +10,6 @@ import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.enums.*;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
-import com.obadiahpcrowe.stirling.classes.importing.enums.ImportSource;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.classes.terms.TermLength;
@@ -1104,9 +1103,76 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "update lessons", "TEACHER"));
     }
 
-    public String addStudentClassHolder(StirlingAccount account, ImportSource source, ImportableClass clazz) {
-        //
-        return "";
+    public String addStudentClassHolder(StirlingAccount account, UUID classUuid, ImportableClass clazz) {
+        StirlingClass stirlingClass = getByUuid(classUuid);
+
+        if (stirlingClass != null) {
+            if (stirlingClass.getStudents().contains(account.getUuid())) {
+                Map<UUID, List<String>> holders = Maps.newHashMap();
+                try {
+                    holders.putAll(stirlingClass.getStudentImportHolders());
+                } catch (NullPointerException ignored) {
+                }
+
+                if (holders.containsKey(account.getUuid())) {
+                    List<String> classes = Lists.newArrayList();
+
+                    try {
+                        classes.addAll(holders.get(account.getUuid()));
+                    } catch (NullPointerException ignored) {
+                    }
+
+                    if (!classes.contains(clazz.getId())) {
+                        classes.add(clazz.getId());
+                    }
+
+                    holders.replace(account.getUuid(), classes);
+                } else {
+                    List<String> classes = Lists.newArrayList();
+                    classes.add(clazz.getId());
+                    holders.put(account.getUuid(), classes);
+                }
+
+                updateField(stirlingClass, "studentImportHolders", holders);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_HOLDER_ADDED, account.getLocale(), clazz.getClassName(), stirlingClass.getName()));
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
+    }
+
+    public String removeStudentClassHolder(StirlingAccount account, UUID classUuid, ImportableClass clazz) {
+        StirlingClass stirlingClass = getByUuid(classUuid);
+
+        if (stirlingClass != null) {
+            if (stirlingClass.getStudents().contains(account.getUuid())) {
+                Map<UUID, List<String>> holders = Maps.newHashMap();
+
+                try {
+                    holders.putAll(stirlingClass.getStudentImportHolders());
+                } catch (NullPointerException ignored) {
+                }
+
+                if (holders.containsKey(account.getUuid())) {
+                    List<String> classes = Lists.newArrayList();
+
+                    try {
+                        classes.addAll(holders.get(account.getUuid()));
+                    } catch (NullPointerException e) {
+                    }
+
+                    if (classes.contains(clazz.getId())) {
+                        classes.remove(clazz.getId());
+                    }
+
+                    holders.replace(account.getUuid(), classes);
+                    updateField(stirlingClass, "studentImportHolders", holders);
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_HOLDER_REMOVED, account.getLocale(), clazz.getClassName(), stirlingClass.getName()));
+                }
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public void updateField(StirlingClass clazz, String field, Object value) {

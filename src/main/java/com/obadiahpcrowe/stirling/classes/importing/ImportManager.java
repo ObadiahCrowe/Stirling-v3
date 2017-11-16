@@ -114,7 +114,7 @@ public class ImportManager {
             }
 
             CompletableFuture<Boolean> contains = new CompletableFuture<>();
-            acc.getGoogleClasses().forEach(googleClass -> {
+            googleClasses.forEach(googleClass -> {
                 if (googleClass.getClassName().equals(clazz.getClassName())) {
                     contains.complete(true);
                 }
@@ -143,7 +143,7 @@ public class ImportManager {
             }
 
             CompletableFuture<Boolean> contains = new CompletableFuture<>();
-            acc.getMoodleClasses().forEach(moodleClass -> {
+            moodleClasses.forEach(moodleClass -> {
                 if (moodleClass.getClassName().equals(clazz.getClassName())) {
                     contains.complete(true);
                 }
