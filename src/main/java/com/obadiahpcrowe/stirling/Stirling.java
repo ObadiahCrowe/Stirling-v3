@@ -6,7 +6,6 @@ import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
-import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -20,8 +19,6 @@ import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -103,14 +100,9 @@ public class Stirling {
 
         // TODO: 16/11/17 Finish imports
         StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        ClassManager classManager = ClassManager.getInstance();
-        classManager.getAllClasses(account).forEach(c -> {
-            System.out.println(c.getName());
-            System.out.println(c.getUuid());
+        ClassManager.getInstance().getAllClasses(account).forEach(c -> {
+            System.out.println(c.getName() + " " + c.getUuid());
         });
-
-        System.out.println(classManager.addStudentClassHolder(account, UUID.fromString("8672df88-2bf4-411a-a8d4-94091665eabf"),
-          new ImportableClass("Ms Sawrey: Year 12 English", "2100")));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

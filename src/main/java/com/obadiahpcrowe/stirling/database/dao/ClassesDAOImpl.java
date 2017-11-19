@@ -66,6 +66,13 @@ public class ClassesDAOImpl extends BasicDAO<StirlingClass, ObjectId> implements
     }
 
     @Override
+    public List<StirlingClass> getAllClasses() {
+        Query<StirlingClass> query = createQuery();
+
+        return query.asList();
+    }
+
+    @Override
     public void updateField(StirlingClass clazz, String field, Object value) {
         Query<StirlingClass> query = createQuery().field("uuid").equal(clazz.getUuid());
         UpdateOperations<StirlingClass> updateOps = createUpdateOperations().set(field, value);

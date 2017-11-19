@@ -1,11 +1,16 @@
 package com.obadiahpcrowe.stirling.api;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
+import com.obadiahpcrowe.stirling.classes.StirlingClass;
+import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
+import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
+import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.localisation.LocalisationManager;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
@@ -14,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -30,9 +38,9 @@ public class ClassesAPI implements APIController {
 
     private AccountManager accountManager = AccountManager.getInstance();
     private ClassManager classManager = ClassManager.getInstance();
+    private final String CALL_DISABLED = "This API call is undergoing rigorous testing before becoming a beta API. Please wait a while.";
     private Gson gson = new Gson();
-
-    private final String CALL_DISABLED = "This API call is undergoing rigorous testing before becoming a beta API. Please wait a day from now.";
+    private ImportManager importManager = ImportManager.getInstance();
 
     @CallableAPI(fields = {"accountName", "password", "name", "desc", "room", "timeSlot"})
     @RequestMapping(value = "/stirling/v3/classes/create", method = RequestMethod.GET)
@@ -45,7 +53,7 @@ public class ClassesAPI implements APIController {
         return CALL_DISABLED;
     }
 
-    @CallableAPI(fields = {"accountName", "password "})
+    @CallableAPI(fields = {"accountName", "password"})
     @RequestMapping(value = "/stirling/v3/classes/getAll", method = RequestMethod.GET)
     public String getAllClasses(@RequestParam("accountName") String accountName,
                                 @RequestParam("password") String password) {
@@ -59,6 +67,66 @@ public class ClassesAPI implements APIController {
         }
 
         return LocalisationManager.getInstance().translate(gson.toJson(classManager.getAllClasses(account)), account.getLocale());
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/get/notes", method = RequestMethod.GET)
+    public String getClassNotes(@RequestParam("accountName") String accountName,
+                                @RequestParam("password") String password,
+                                @RequestParam("classUuid") String classUuid) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(classUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "parsing the class uuid"));
+        }
+
+        StirlingClass stirlingClass = classManager.getByUuid(uuid);
+
+        if (stirlingClass == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid));
+        }
+
+        if (stirlingClass.getStudents().contains(account.getUuid()) ||
+          stirlingClass.getStudents().contains(account.getUuid())) {
+            List<StirlingPostable> classNotes = Lists.newArrayList();
+
+            try {
+                classNotes.addAll(stirlingClass.getClassNotes());
+            } catch (NullPointerException ignored) {
+            }
+
+            if (stirlingClass.getStudentImportHolders().containsKey(account.getUuid())) {
+                List<String> holders = stirlingClass.getStudentImportHolders().get(account.getUuid());
+                ImportAccount acc = importManager.getByUuid(account.getUuid());
+
+                holders.forEach(holder -> {
+                    acc.getMoodleClasses().forEach(c -> {
+                        if (c.getId().equals(holder)) {
+                            classNotes.addAll(c.getPostables());
+                        }
+                    });
+
+                    acc.getGoogleClasses().forEach(c -> {
+                        if (c.getId().equals(holder)) {
+                            classNotes.addAll(c.getPostables());
+                        }
+                    });
+                });
+            }
+
+            return LocalisationManager.getInstance().translate(gson.toJson(classNotes), account.getLocale());
+        }
+        return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})

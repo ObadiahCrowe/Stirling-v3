@@ -54,6 +54,10 @@ public class MoodleScraper {
     public boolean areCredentialsValid(ImportCredential credential) {
         final WebClient webClient = new StirlingWebClient(BrowserVersion.CHROME).getClient(null,
           new NicelyResynchronizingAjaxController());
+
+        System.out.println(credential.getUsername() == null);
+        System.out.println(credential.getPassword() == null);
+
         try {
             String url = "http://dlb.sa.edu.au/gihsmoodle/login/index.php";
 

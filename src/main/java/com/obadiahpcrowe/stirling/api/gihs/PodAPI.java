@@ -47,7 +47,7 @@ public class PodAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        Integer id = null;
+        Integer id;
         try {
             id = Integer.valueOf(studentId);
         } catch (IllegalArgumentException e) {
@@ -73,14 +73,14 @@ public class PodAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        PodLine line = null;
+        PodLine line;
         try {
             line = PodLine.valueOf(rawLine.toUpperCase());
         } catch (IllegalArgumentException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), "podLine", rawLine));
         }
 
-        PodReason reason = null;
+        PodReason reason;
         try {
             reason = PodReason.valueOf(rawReason.toUpperCase());
         } catch (IllegalArgumentException e) {

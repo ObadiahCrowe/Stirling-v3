@@ -10,6 +10,7 @@ import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.enums.*;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
+import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
 import com.obadiahpcrowe.stirling.classes.terms.TermLength;
@@ -156,7 +157,7 @@ public class ClassManager {
 
             AccountManager.getInstance().updateField(account, "stirlingClasses", classes);
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_STUDENT_ADDED, account.getLocale(),
-              classUuid.toString(), account.getAccountName()));
+              account.getAccountName(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
@@ -171,8 +172,10 @@ public class ClassManager {
 
     public List<StirlingClass> getAllClasses(StirlingAccount account) {
         List<StirlingClass> classes = Lists.newArrayList();
-        account.getStirlingClasses().forEach(c -> {
-            classes.add(getByUuid(c.getUuid()));
+        classesDAO.getAllClasses().forEach(c -> {
+            if (c.getStudents().contains(account.getUuid())) {
+                classes.add(c);
+            }
         });
 
         return classes;
@@ -1106,6 +1109,30 @@ public class ClassManager {
     public String addStudentClassHolder(StirlingAccount account, UUID classUuid, ImportableClass clazz) {
         StirlingClass stirlingClass = getByUuid(classUuid);
 
+        Thread t = new Thread(() -> {
+            ImportManager importManager = ImportManager.getInstance();
+            try {
+                importManager.getMoodleCourses(account).forEach(c -> {
+                    if (c.getId().equals(clazz.getId())) {
+                        Thread j = new Thread(() -> importManager.getMoodleClass(account, c));
+                        j.start();
+                    }
+                });
+            } catch (NullPointerException ignored) {
+            }
+
+            try {
+                importManager.getGoogleCourses(account).forEach(c -> {
+                    if (c.getId().equals(clazz.getId())) {
+                        Thread j = new Thread(() -> importManager.getGoogleClass(account, c));
+                        j.start();
+                    }
+                });
+            } catch (NullPointerException ignored) {
+            }
+        });
+        t.start();
+
         if (stirlingClass != null) {
             if (stirlingClass.getStudents().contains(account.getUuid())) {
                 Map<UUID, List<String>> holders = Maps.newHashMap();
@@ -1113,6 +1140,10 @@ public class ClassManager {
                     holders.putAll(stirlingClass.getStudentImportHolders());
                 } catch (NullPointerException ignored) {
                 }
+
+                holders.forEach(((uuid, strings) -> {
+                    System.out.println(uuid.toString());
+                }));
 
                 if (holders.containsKey(account.getUuid())) {
                     List<String> classes = Lists.newArrayList();
@@ -1130,6 +1161,7 @@ public class ClassManager {
                 } else {
                     List<String> classes = Lists.newArrayList();
                     classes.add(clazz.getId());
+
                     holders.put(account.getUuid(), classes);
                 }
 

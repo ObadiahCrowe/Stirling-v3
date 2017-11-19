@@ -213,12 +213,18 @@ public class ImportManager {
         return GClassroomHandler.getInstance().addGoogleClassroomCreds(account, authCode);
     }
 
-    private void importAllDaymap(StirlingAccount account) {
+    public void importAllDaymap(StirlingAccount account) {
         if (credentialsExist(account, ImportSource.DAYMAP)) {
             List<ImportableClass> classes = getDaymapCourses(account);
             classes.forEach(c -> {
                 Thread t = new Thread(() -> {
-                    StirlingClass stirlingClass = importDaymapCourse(account, c);
+                    StirlingClass stirlingClass;
+                    if (classManager.classExists(c.getClassName())) {
+                        stirlingClass = classManager.getByOwner(c.getId());
+                    } else {
+                        stirlingClass = importDaymapCourse(account, c);
+                    }
+
                     classManager.addClassToAccount(account, stirlingClass.getUuid());
 
                     List<UUID> students = Lists.newArrayList();
@@ -231,6 +237,18 @@ public class ImportManager {
                         students.add(account.getUuid());
                         classManager.updateField(stirlingClass, "students", students);
                     }
+
+                    List<StirlingClass> classList = Lists.newArrayList();
+                    try {
+                        classList.addAll(account.getStirlingClasses());
+                    } catch (NullPointerException ignored) {
+                    }
+
+                    if (!classList.contains(stirlingClass)) {
+                        classList.add(stirlingClass);
+                    }
+
+                    accountManager.updateField(account, "stirlingClasses", classList);
                 });
                 t.start();
             });
