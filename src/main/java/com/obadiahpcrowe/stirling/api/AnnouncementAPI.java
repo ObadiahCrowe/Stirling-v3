@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.api;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.announcements.AnnouncementManager;
 import com.obadiahpcrowe.stirling.announcements.StirlingAnnouncement;
 import com.obadiahpcrowe.stirling.announcements.enums.AnnouncementType;
@@ -28,6 +29,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -77,7 +81,7 @@ public class AnnouncementAPI implements APIController {
         File out = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
           File.separator + uuid);
 
-        String ext = "";
+        String ext;
         if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg")) {
             ext = ".jpg";
         } else if (file.getOriginalFilename().endsWith(".png")) {
@@ -244,8 +248,6 @@ public class AnnouncementAPI implements APIController {
         return gson.toJson(manager.getAnnouncements(account));
     }
 
-    // Always updates edit field
-
     @CallableAPI(fields = {"accountName", "password", "uuid", "title"})
     @RequestMapping(value = "/stirling/v3/announcements/update/title", method = RequestMethod.GET)
     public String updateTitle(@RequestParam("accountName") String accountName,
@@ -268,6 +270,11 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
         }
 
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
         manager.updateField(uuid, "title", title);
         manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
         return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "title"));
@@ -275,43 +282,290 @@ public class AnnouncementAPI implements APIController {
 
     @CallableAPI(fields = {"accountName", "password", "uuid", "desc"})
     @RequestMapping(value = "/stirling/v3/announcements/update/desc", method = RequestMethod.GET)
-    public String updateDesc() {
-        return "";
+    public String updateDesc(@RequestParam("accountName") String accountName,
+                             @RequestParam("password") String password,
+                             @RequestParam("uuid") String rawUuid,
+                             @RequestParam("desc") String desc) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
+        manager.updateField(uuid, "desc", desc);
+        manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "desc"));
     }
 
     @CallableAPI(fields = {"accountName", "password", "uuid", "type"})
     @RequestMapping(value = "/stirling/v3/announcements/update/type", method = RequestMethod.GET)
-    public String updateType() {
-        return "";
+    public String updateType(@RequestParam("accountName") String accountName,
+                             @RequestParam("password") String password,
+                             @RequestParam("uuid") String rawUuid,
+                             @RequestParam("type") String rawType) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+        AnnouncementType type;
+        try {
+            type = AnnouncementType.valueOf(rawType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawType, "type"));
+        }
+
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
+        manager.updateField(uuid, "type", type);
+        manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "type"));
     }
 
     @CallableAPI(fields = {"accountName", "password", "uuid", "banner"})
-    @RequestMapping(value = "/stirling/v3/announcements/update/banner", method = RequestMethod.GET)
-    public String updateBanner() {
-        return "";
+    @RequestMapping(value = "/stirling/v3/announcements/update/banner", method = RequestMethod.POST)
+    public String updateBanner(@RequestParam("accountName") String accountName,
+                               @RequestParam("password") String password,
+                               @RequestParam("uuid") String rawUuid,
+                               @RequestParam("banner") MultipartFile file) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
+        String ext;
+        if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg")) {
+            ext = ".jpg";
+        } else if (file.getOriginalFilename().endsWith(".png")) {
+            ext = ".png";
+        } else {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".jpg or .png"));
+        }
+
+        File out = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" + File.separator + uuid);
+        File banner = new File(out + File.separator + "banner" + ext);
+        try {
+            if (!out.exists()) {
+                out.mkdir();
+            }
+
+            if (banner.exists()) {
+                banner.delete();
+            }
+
+            file.transferTo(banner);
+        } catch (IOException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "uploading the new banner image"));
+        }
+
+        manager.updateField(uuid, "bannerImage", new AttachableResource(uuid, "banner" + ext, ARType.ANNOUNCEMENT));
+        manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "banner"));
     }
 
     @CallableAPI(fields = {"accountName", "password", "uuid", "content"})
     @RequestMapping(value = "/stirling/v3/announcements/update/content", method = RequestMethod.GET)
-    public String updateContent() {
-        return "";
+    public String updateContent(@RequestParam("accountName") String accountName,
+                                @RequestParam("password") String password,
+                                @RequestParam("uuid") String rawUuid,
+                                @RequestParam("content") String content) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
+        manager.updateField(uuid, "content", content);
+        manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "content"));
     }
 
     @CallableAPI(fields = {"accountName", "password", "uuid", "resources"})
-    @RequestMapping(value = "/stirling/v3/announcements/update/resources", method = RequestMethod.GET)
-    public String updateResources() {
-        return "";
+    @RequestMapping(value = "/stirling/v3/announcements/update/resources", method = RequestMethod.POST)
+    public String updateResources(@RequestParam("accountName") String accountName,
+                                  @RequestParam("password") String password,
+                                  @RequestParam("uuid") String rawUuid,
+                                  @RequestParam("resources") MultipartFile[] resources) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
+        File file = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
+          File.separator + uuid);
+
+        if (!file.exists()) {
+            file.mkdir();
+        }
+
+        List<AttachableResource> resourcesList = new ArrayList<>();
+        for (MultipartFile f : resources) {
+            File res = new File(file, f.getOriginalFilename());
+            try {
+                f.transferTo(res);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            resourcesList.add(new AttachableResource(uuid, f.getOriginalFilename(), ARType.ANNOUNCEMENT));
+        }
+
+        manager.updateField(uuid, "resources", resourcesList);
+        manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "resources"));
     }
 
     @CallableAPI(fields = {"accountName", "password", "uuid", "targetAudiences"})
     @RequestMapping(value = "/stirling/v3/announcements/update/targetAudience", method = RequestMethod.GET)
-    public String updateAudience() {
-        return "";
+    public String updateAudience(@RequestParam("accountName") String accountName,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("uuid") String rawUuid,
+                                 @RequestParam("targetAudiences") String rawAudiences) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+        StringTokenizer tokenizer = new StringTokenizer(rawAudiences, ",");
+        List<AccountType> audience = new ArrayList<>();
+        while (tokenizer.hasMoreElements()) {
+            audience.add(AccountType.valueOf(tokenizer.nextElement().toString().toUpperCase()));
+        }
+
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
+        manager.updateField(uuid, "targetAudience", audience);
+        manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "targetAudience"));
     }
 
     @CallableAPI(fields = {"accountName", "password", "uuid", "tags"})
     @RequestMapping(value = "/stirling/v3/announcements/update/tags", method = RequestMethod.GET)
-    public String updateTags() {
-        return "";
+    public String updateTags(@RequestParam("accountName") String accountName,
+                             @RequestParam("password") String password,
+                             @RequestParam("uuid") String rawUuid,
+                             @RequestParam("tags") String tags) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+
+        List<String> tagsList = new ArrayList<>();
+        if (tags != null) {
+            StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
+            while (tagTokenizer.hasMoreElements()) {
+                tagsList.add(tagTokenizer.nextElement().toString().trim().replace(" ", ""));
+            }
+        }
+
+        if (account.getAccountType().getAccessLevel() < 9) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "edit this announcement",
+              AccountType.SUB_SCHOOL_LEADER.getFriendlyName()));
+        }
+
+        manager.updateField(uuid, "tags", tagsList);
+        manager.updateField(uuid, "editDateTime", StirlingDate.getNow());
+        return gson.toJson(new StirlingMsg(MsgTemplate.ANNOUNCEMENT_UPDATED, account.getLocale(), "tags"));
     }
 }
