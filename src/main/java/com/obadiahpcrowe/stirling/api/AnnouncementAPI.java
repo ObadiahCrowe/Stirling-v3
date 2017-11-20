@@ -68,7 +68,7 @@ public class AnnouncementAPI implements APIController {
 
         AnnouncementType announcementType;
         try {
-            announcementType = AnnouncementType.valueOf(type);
+            announcementType = AnnouncementType.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), type, "type"));
         }
@@ -91,7 +91,7 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "creating the announcement"));
         }
 
-        return manager.postAnnouncement(account, uuid, announcementType, new AttachableResource(uuid, banner.getPath(), ARType.ANNOUNCEMENT),
+        return manager.postAnnouncement(account, uuid, announcementType, new AttachableResource(uuid, "banner.jpg", ARType.ANNOUNCEMENT),
           title, desc, content, files, targetAudiences, tags);
     }
 
@@ -109,29 +109,14 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        return manager.deleteAnnouncement(account, UUID.fromString(rawUuid));
-    }
-
-    @CallableAPI(fields = { "accountName", "password", "uuid" })
-    @RequestMapping(value = "/stirling/v3/announcements/get", method = RequestMethod.GET)
-    public String getAnnouncement(@RequestParam("accountName") String accountName,
-                                  @RequestParam("password") String password,
-                                  @RequestParam("uuid") String rawUuid) {
-        StirlingAccount account = accountManager.getAccount(accountName);
-        if (account == null) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
         }
 
-        if (!accountManager.validCredentials(accountName, password)) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
-        }
-
-        StirlingAnnouncement announcement = manager.getAnnouncement(UUID.fromString(rawUuid));
-        if (announcement.getTargetAudience().contains(account.getAccountType())) {
-            return gson.toJson(announcement);
-        }
-        return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "view this announcement",
-          announcement.getTargetAudience().get(0).getFriendlyName()));
+        return manager.deleteAnnouncement(account, uuid);
     }
 
     @CallableAPI(fields = { "accountName", "password", "uuid" })
@@ -148,10 +133,18 @@ public class AnnouncementAPI implements APIController {
             return null;
         }
 
+        UUID uuid;
         try {
-            StirlingAnnouncement announcement = manager.getAnnouncement(UUID.fromString(rawUuid));
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
+        try {
+            StirlingAnnouncement announcement = manager.getAnnouncement(uuid);
             if (announcement.getTargetAudience().contains(account.getAccountType())) {
-                InputStream inputStream = new FileInputStream(manager.getAnnouncement(UUID.fromString(rawUuid)).getBannerImage().getFile());
+                System.out.println(manager.getAnnouncement(uuid).getBannerImage().getFile().getPath());
+                InputStream inputStream = new FileInputStream(manager.getAnnouncement(uuid).getBannerImage().getFile());
                 return IOUtils.toByteArray(inputStream);
             }
             return null;
@@ -176,6 +169,8 @@ public class AnnouncementAPI implements APIController {
         return gson.toJson(manager.getAnnouncements(account));
     }
 
+    // Above is all g, below is fucked
+
     @CallableAPI(fields = { "accountName", "password", "uuid", "field", "value" })
     @RequestMapping(value = "/stirling/v3/announcements/update/field", method = RequestMethod.GET)
     public String updateAnnouncementField(@RequestParam("accountName") String accountName,
@@ -197,7 +192,6 @@ public class AnnouncementAPI implements APIController {
           "title",
           "desc",
           "content",
-          "resourceNames",
           "targetAudiences",
           "tags"
         );
@@ -218,7 +212,7 @@ public class AnnouncementAPI implements APIController {
     }
 
     @CallableAPI(fields = { "accountName", "password", "banner" })
-    @RequestMapping(value = "/stirling/v3/announcements/update/banner", method = RequestMethod.GET)
+    @RequestMapping(value = "/stirling/v3/announcements/update/banner", method = RequestMethod.POST)
     public String updateAnnouncementBanner(@RequestParam("accountName") String accountName,
                                            @RequestParam("password") String password,
                                            @RequestParam("uuid") String rawUuid,

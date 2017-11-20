@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -58,14 +61,14 @@ public class AnnouncementManager {
         StringTokenizer tokenizer = new StringTokenizer(targetAudience, ",");
         List<AccountType> audience = new ArrayList<>();
         while (tokenizer.hasMoreElements()) {
-            audience.add(AccountType.valueOf(tokenizer.nextElement().toString()));
+            audience.add(AccountType.valueOf(tokenizer.nextElement().toString().toUpperCase()));
         }
 
         List<String> tagsList = new ArrayList<>();
         if (tags != null) {
             StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
             while (tagTokenizer.hasMoreElements()) {
-                tagsList.add(tagTokenizer.nextElement().toString());
+                tagsList.add(tagTokenizer.nextElement().toString().trim().replace(" ", ""));
             }
         }
 
@@ -74,11 +77,6 @@ public class AnnouncementManager {
 
         if (!file.exists()) {
             file.mkdir();
-
-            File resFile = new File(file, "Resources");
-            if (!resFile.exists()) {
-                resFile.mkdir();
-            }
         }
 
         List<AttachableResource> resourcesList = new ArrayList<>();
@@ -149,7 +147,7 @@ public class AnnouncementManager {
     }
 
     public List<StirlingAnnouncement> getAnnouncements(StirlingAccount account) {
-        return announcementDAO.getByAudience(Arrays.asList(account.getAccountType()));
+        return announcementDAO.getByAccountType(account.getAccountType());
     }
 
     public static AnnouncementManager getInstance() {

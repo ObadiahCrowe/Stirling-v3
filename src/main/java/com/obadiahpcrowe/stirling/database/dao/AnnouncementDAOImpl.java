@@ -42,9 +42,9 @@ public class AnnouncementDAOImpl extends BasicDAO<StirlingAnnouncement, ObjectId
     }
 
     @Override
-    public List<StirlingAnnouncement> getByAudience(List<AccountType> targetAudience) {
+    public List<StirlingAnnouncement> getByAccountType(AccountType accountType) {
         Query<StirlingAnnouncement> query = createQuery()
-          .field("targetAudience").equal(targetAudience);
+          .field("targetAudience").equal(accountType);
 
         return query.asList();
     }

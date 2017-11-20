@@ -21,7 +21,7 @@ public interface AnnouncementDAO extends DAO<StirlingAnnouncement, ObjectId> {
 
     List<StirlingAnnouncement> getByPoster(String accountName);
 
-    List<StirlingAnnouncement> getByAudience(List<AccountType> targetAudience);
+    List<StirlingAnnouncement> getByAccountType(AccountType accountType);
 
     List<StirlingAnnouncement> getByTags(List<String> tags);
 

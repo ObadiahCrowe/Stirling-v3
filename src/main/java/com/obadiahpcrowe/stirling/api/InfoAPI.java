@@ -2,6 +2,7 @@ package com.obadiahpcrowe.stirling.api;
 
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.Stirling;
+import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
@@ -69,5 +70,11 @@ public class InfoAPI implements APIController {
     @RequestMapping(value = "/stirling/v3/school", method = RequestMethod.GET)
     public String getSchool() {
         return gson.toJson(SchoolManager.getInstance().getSchool());
+    }
+
+    @CallableAPI(fields = "")
+    @RequestMapping(value = "/stirling/v3/accountTypes", method = RequestMethod.GET)
+    public String getAccountTypes() {
+        return gson.toJson(AccountType.values());
     }
 }
