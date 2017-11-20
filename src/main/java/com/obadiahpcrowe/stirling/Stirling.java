@@ -1,11 +1,8 @@
 package com.obadiahpcrowe.stirling;
 
-import com.obadiahpcrowe.stirling.accounts.AccountManager;
-import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -97,12 +94,6 @@ public class Stirling {
 
         utilLog.log("Starting REST API service..");
         SpringApplication.run(Stirling.class, args);
-
-        // TODO: 16/11/17 Finish imports
-        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        ClassManager.getInstance().getAllClasses(account).forEach(c -> {
-            System.out.println(c.getName() + " " + c.getUuid());
-        });
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

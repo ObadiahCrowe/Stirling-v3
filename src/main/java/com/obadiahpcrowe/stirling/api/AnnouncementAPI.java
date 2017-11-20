@@ -54,7 +54,7 @@ public class AnnouncementAPI implements APIController {
                                      @RequestParam("title") String title,
                                      @RequestParam("desc") String desc,
                                      @RequestParam("content") String content,
-                                     @RequestParam(value = "resourceNames", required = false) String resourceNames,
+                                     @RequestParam(value = "resources", required = false) MultipartFile[] files,
                                      @RequestParam("targetAudiences") String targetAudiences,
                                      @RequestParam(value = "tags", required = false) String tags) {
         StirlingAccount account = accountManager.getAccount(accountName);
@@ -66,7 +66,7 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        AnnouncementType announcementType = null;
+        AnnouncementType announcementType;
         try {
             announcementType = AnnouncementType.valueOf(type);
         } catch (IllegalArgumentException e) {
@@ -92,7 +92,7 @@ public class AnnouncementAPI implements APIController {
         }
 
         return manager.postAnnouncement(account, uuid, announcementType, new AttachableResource(uuid, banner.getPath(), ARType.ANNOUNCEMENT),
-          title, desc, content, resourceNames, targetAudiences, tags);
+          title, desc, content, files, targetAudiences, tags);
     }
 
     @CallableAPI(fields = { "accountName", "password", "uuid" })

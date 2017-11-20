@@ -6,8 +6,10 @@ import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
+import com.obadiahpcrowe.stirling.classes.ClassIdentifier;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
+import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
@@ -50,13 +52,6 @@ public class ClassesAPI implements APIController {
                               @RequestParam("desc") String desc,
                               @RequestParam("room") String room,
                               @RequestParam("timeSlot") String timeSlot) {
-        return CALL_DISABLED;
-    }
-
-    @CallableAPI(fields = {"accountName", "password"})
-    @RequestMapping(value = "/stirling/v3/classes/getAll", method = RequestMethod.GET)
-    public String getAllClasses(@RequestParam("accountName") String accountName,
-                                @RequestParam("password") String password) {
         StirlingAccount account = accountManager.getAccount(accountName);
         if (account == null) {
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
@@ -66,7 +61,60 @@ public class ClassesAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        return LocalisationManager.getInstance().translate(gson.toJson(classManager.getAllClasses(account)), account.getLocale());
+        LessonTimeSlot slot;
+        try {
+            slot = LessonTimeSlot.valueOf(timeSlot);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), timeSlot, "timeSlot"));
+        }
+
+        return classManager.createClass(account, name, desc, room, slot);
+    }
+
+    @CallableAPI(fields = {"accountName", "password"})
+    @RequestMapping(value = "/stirling/v3/classes/get/classList", method = RequestMethod.GET)
+    public String getClassList(@RequestParam("accountName") String accountName,
+                               @RequestParam("password") String password) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        List<ClassIdentifier> identifiers = Lists.newArrayList();
+
+        classManager.getAllClasses(account).forEach(c -> {
+            identifiers.add(new ClassIdentifier(c.getName(), c.getUuid()));
+        });
+
+        return LocalisationManager.getInstance().translate(gson.toJson(identifiers), account.getLocale());
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/delete", method = RequestMethod.GET)
+    public String deleteClass(@RequestParam("accountName") String accountName,
+                              @RequestParam("password") String password,
+                              @RequestParam("classUuid") String rawUuid) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "classUuid"));
+        }
+
+        return classManager.deleteClass(account, uuid);
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -132,12 +180,6 @@ public class ClassesAPI implements APIController {
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
     @RequestMapping(value = "/stirling/v3/classes/get/timetable", method = RequestMethod.GET)
     public String getTimeTable() {
-        return CALL_DISABLED;
-    }
-
-    @CallableAPI(fields = {"accountName", "password", "classUuid"})
-    @RequestMapping(value = "/stirling/v3/classes/delete", method = RequestMethod.GET)
-    public String deleteClass() {
         return CALL_DISABLED;
     }
 

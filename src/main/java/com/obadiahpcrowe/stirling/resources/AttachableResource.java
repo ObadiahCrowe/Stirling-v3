@@ -40,7 +40,7 @@ public class AttachableResource {
 
     public File getFile() {
         if (arType == ARType.ANNOUNCEMENT) {
-            return getAnnouncementBanner();
+            return getAnnouncementResource();
         }
 
         if (arType == ARType.CLASS) {
@@ -70,9 +70,9 @@ public class AttachableResource {
         return new File(UtilFile.getInstance().getUserFolder(owner) + File.separator + "Images" + File.separator + "banner.jpg");
     }
 
-    private File getAnnouncementBanner() {
+    private File getAnnouncementResource() {
         return new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
-          File.separator + owner + File.separator + "banner.jpg");
+          File.separator + owner + File.separator + filePath);
     }
 
     private File getSingleClassResource() {

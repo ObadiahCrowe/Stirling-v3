@@ -13,8 +13,10 @@ import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -39,11 +41,15 @@ public class AnnouncementManager {
     }
 
     public String postAnnouncement(StirlingAccount account, UUID uuid, AnnouncementType type, AttachableResource bannerImage, String title,
-                                   String shortDesc, String content, String resources, String targetAudience, String tags) {
+                                   String shortDesc, String content, MultipartFile[] resources, String targetAudience, String tags) {
         if (!type.getAccountTypes().contains(account.getAccountType())) {
             StringBuilder valid = new StringBuilder();
             for (AccountType accountType : type.getAccountTypes()) {
-                valid.append(accountType.getFriendlyName()).append(", ");
+                if (type.getAccountTypes().size() >= 2) {
+                    valid.append(accountType.getFriendlyName()).append(", ");
+                } else {
+                    valid.append(accountType.getFriendlyName());
+                }
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(),
               "create announcements of this type", valid.toString()));
@@ -54,15 +60,6 @@ public class AnnouncementManager {
         while (tokenizer.hasMoreElements()) {
             audience.add(AccountType.valueOf(tokenizer.nextElement().toString()));
         }
-
-        List<AttachableResource> resourcesList = new ArrayList<>();
-        if (resources != null) {
-            StringTokenizer fileTokenizer = new StringTokenizer(resources, ",");
-            while (tokenizer.hasMoreElements()) {
-                resourcesList.add(new AttachableResource(account.getUuid(), fileTokenizer.nextElement().toString(), ARType.ANNOUNCEMENT));
-            }
-        }
-
         List<String> tagsList = new ArrayList<>();
         if (tags != null) {
             StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
@@ -71,11 +68,8 @@ public class AnnouncementManager {
             }
         }
 
-        StirlingAnnouncement announcement = new StirlingAnnouncement(account, uuid, title, shortDesc, type, bannerImage,
-          content, resourcesList, audience, tagsList);
-
         File file = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
-          File.separator + announcement.getUuid());
+          File.separator + uuid);
 
         if (!file.exists()) {
             file.mkdir();
@@ -85,6 +79,20 @@ public class AnnouncementManager {
                 resFile.mkdir();
             }
         }
+
+        List<AttachableResource> resourcesList = new ArrayList<>();
+        for (MultipartFile f : resources) {
+            File res = new File(file, f.getOriginalFilename());
+            try {
+                f.transferTo(res);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            resourcesList.add(new AttachableResource(uuid, f.getOriginalFilename(), ARType.ANNOUNCEMENT));
+        }
+
+        StirlingAnnouncement announcement = new StirlingAnnouncement(account, uuid, title, shortDesc, type, bannerImage,
+          content, resourcesList, audience, tagsList);
 
         announcementDAO.save(announcement);
 
