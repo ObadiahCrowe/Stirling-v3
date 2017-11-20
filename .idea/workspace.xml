@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/StirlingAnnouncement.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/StirlingAnnouncement.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AnnouncementAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AnnouncementAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ImportAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/InfoAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/InfoAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/debug/DebugAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/debug/DebugAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/pod/laptop/enums/LaptopStatus.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/pod/laptop/enums/LaptopStatus.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/pod/laptop/scrapers/ReimageScraper.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/pod/laptop/scrapers/ReimageScraper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -54,36 +48,26 @@
       <file leaf-file-name="AnnouncementAPI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AnnouncementAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="78" column="68" lean-forward="true" selection-start-line="78" selection-start-column="68" selection-end-line="78" selection-end-column="68" />
+            <state relative-caret-position="0">
+              <caret line="99" column="116" lean-forward="false" selection-start-line="99" selection-start-column="116" selection-end-line="99" selection-end-column="116" />
               <folding>
                 <element signature="method#deleteAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
                 <element signature="method#getAnnouncements#0;class#AnnouncementAPI#0" expanded="false" />
-                <element signature="e#13340#13341#0" expanded="true" />
-                <element signature="e#13365#13366#0" expanded="true" />
-                <element signature="e#13570#13571#0" expanded="true" />
-                <element signature="e#13595#13596#0" expanded="true" />
-                <element signature="e#13806#13807#0" expanded="true" />
-                <element signature="e#13831#13832#0" expanded="true" />
-                <element signature="e#14045#14046#0" expanded="true" />
-                <element signature="e#14070#14071#0" expanded="true" />
-                <element signature="e#14290#14291#0" expanded="true" />
-                <element signature="e#14315#14316#0" expanded="true" />
-                <element signature="e#14545#14546#0" expanded="true" />
-                <element signature="e#14570#14571#0" expanded="true" />
-                <element signature="e#14775#14776#0" expanded="true" />
-                <element signature="e#14800#14801#0" expanded="true" />
+                <element signature="e#13764#13765#0" expanded="true" />
+                <element signature="e#13789#13790#0" expanded="true" />
+                <element signature="e#13992#13993#0" expanded="true" />
+                <element signature="e#14017#14018#0" expanded="true" />
+                <element signature="e#14226#14227#0" expanded="true" />
+                <element signature="e#14251#14252#0" expanded="true" />
+                <element signature="e#14463#14464#0" expanded="true" />
+                <element signature="e#14488#14489#0" expanded="true" />
+                <element signature="e#14706#14707#0" expanded="true" />
+                <element signature="e#14731#14732#0" expanded="true" />
+                <element signature="e#14959#14960#0" expanded="true" />
+                <element signature="e#14984#14985#0" expanded="true" />
+                <element signature="e#15187#15188#0" expanded="true" />
+                <element signature="e#15212#15213#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MsgTemplate.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="362">
-              <caret line="27" column="92" lean-forward="false" selection-start-line="27" selection-start-column="92" selection-end-line="27" selection-end-column="92" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -747,14 +731,7 @@
       <workItem from="1511082890623" duration="1468000" />
       <workItem from="1511086944280" duration="3297000" />
       <workItem from="1511142184455" duration="1277000" />
-      <workItem from="1511145277753" duration="8849000" />
-    </task>
-    <task id="LOCAL-00090" summary="Class calls">
-      <created>1507812399961</created>
-      <option name="number" value="00090" />
-      <option name="presentableId" value="LOCAL-00090" />
-      <option name="project" value="LOCAL" />
-      <updated>1507812399961</updated>
+      <workItem from="1511145277753" duration="9073000" />
     </task>
     <task id="LOCAL-00091" summary="Legit fucktons of class shit">
       <created>1507894607979</created>
@@ -1092,11 +1069,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511152428785</updated>
     </task>
-    <option name="localTasksCounter" value="139" />
+    <task id="LOCAL-00139" summary="Announcement and other api stuff">
+      <created>1511157509452</created>
+      <option name="number" value="00139" />
+      <option name="presentableId" value="LOCAL-00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1511157509452</updated>
+    </task>
+    <option name="localTasksCounter" value="140" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="452479000" />
+    <option name="totallyTimeSpent" value="452703000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="35" y="22" width="1645" height="1028" extended-state="6" />
@@ -1142,7 +1126,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixing more daymap shit" />
     <MESSAGE value="Finalising daymap scrapers" />
     <MESSAGE value="Fixed daymap.. scrapers.. aha you can never fix daymap" />
     <MESSAGE value="Fixing more daymap stuff and added @CallableAPI to the Import APIs" />
@@ -1167,7 +1150,8 @@
     <MESSAGE value="Sorting out Spring upload limitations" />
     <MESSAGE value="Fixed announcement tagging and increase upload limit" />
     <MESSAGE value="Info API, announcement fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Info API, announcement fixes" />
+    <MESSAGE value="Announcement and other api stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Announcement and other api stuff" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1527,14 +1511,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="27" column="92" lean-forward="false" selection-start-line="27" selection-start-column="92" selection-end-line="27" selection-end-column="92" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/StirlingAnnouncement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -1543,27 +1519,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="193" column="66" lean-forward="false" selection-start-line="193" selection-start-column="66" selection-end-line="193" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AnnouncementAPI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="78" column="68" lean-forward="true" selection-start-line="78" selection-start-column="68" selection-end-line="78" selection-end-column="68" />
+        <state relative-caret-position="0">
+          <caret line="99" column="116" lean-forward="false" selection-start-line="99" selection-start-column="116" selection-end-line="99" selection-end-column="116" />
           <folding>
             <element signature="method#deleteAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
             <element signature="method#getAnnouncements#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="e#13340#13341#0" expanded="true" />
-            <element signature="e#13365#13366#0" expanded="true" />
-            <element signature="e#13570#13571#0" expanded="true" />
-            <element signature="e#13595#13596#0" expanded="true" />
-            <element signature="e#13806#13807#0" expanded="true" />
-            <element signature="e#13831#13832#0" expanded="true" />
-            <element signature="e#14045#14046#0" expanded="true" />
-            <element signature="e#14070#14071#0" expanded="true" />
-            <element signature="e#14290#14291#0" expanded="true" />
-            <element signature="e#14315#14316#0" expanded="true" />
-            <element signature="e#14545#14546#0" expanded="true" />
-            <element signature="e#14570#14571#0" expanded="true" />
-            <element signature="e#14775#14776#0" expanded="true" />
-            <element signature="e#14800#14801#0" expanded="true" />
+            <element signature="e#13764#13765#0" expanded="true" />
+            <element signature="e#13789#13790#0" expanded="true" />
+            <element signature="e#13992#13993#0" expanded="true" />
+            <element signature="e#14017#14018#0" expanded="true" />
+            <element signature="e#14226#14227#0" expanded="true" />
+            <element signature="e#14251#14252#0" expanded="true" />
+            <element signature="e#14463#14464#0" expanded="true" />
+            <element signature="e#14488#14489#0" expanded="true" />
+            <element signature="e#14706#14707#0" expanded="true" />
+            <element signature="e#14731#14732#0" expanded="true" />
+            <element signature="e#14959#14960#0" expanded="true" />
+            <element signature="e#14984#14985#0" expanded="true" />
+            <element signature="e#15187#15188#0" expanded="true" />
+            <element signature="e#15212#15213#0" expanded="true" />
           </folding>
         </state>
       </provider>

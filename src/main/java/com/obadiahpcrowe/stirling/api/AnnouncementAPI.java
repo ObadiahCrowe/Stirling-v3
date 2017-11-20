@@ -76,7 +76,17 @@ public class AnnouncementAPI implements APIController {
         UUID uuid = UUID.randomUUID();
         File out = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
           File.separator + uuid);
-        File banner = new File(out + File.separator + "banner.jpg");
+
+        String ext = "";
+        if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg")) {
+            ext = ".jpg";
+        } else if (file.getOriginalFilename().endsWith(".png")) {
+            ext = ".png";
+        } else {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".jpg or .png"));
+        }
+
+        File banner = new File(out + File.separator + "banner" + ext);
         try {
             if (!out.exists()) {
                 out.mkdir();
@@ -87,7 +97,7 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "creating the announcement"));
         }
 
-        return manager.postAnnouncement(account, uuid, announcementType, new AttachableResource(uuid, "banner.jpg", ARType.ANNOUNCEMENT),
+        return manager.postAnnouncement(account, uuid, announcementType, new AttachableResource(uuid, "banner" + ext, ARType.ANNOUNCEMENT),
           title, desc, content, files, targetAudiences, tags);
     }
 
