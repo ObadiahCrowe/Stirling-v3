@@ -60,10 +60,11 @@ public class AnnouncementManager {
         while (tokenizer.hasMoreElements()) {
             audience.add(AccountType.valueOf(tokenizer.nextElement().toString()));
         }
+
         List<String> tagsList = new ArrayList<>();
         if (tags != null) {
             StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
-            while (tokenizer.hasMoreElements()) {
+            while (tagTokenizer.hasMoreElements()) {
                 tagsList.add(tagTokenizer.nextElement().toString());
             }
         }
