@@ -46,6 +46,7 @@ public enum MsgTemplate {
     NOTE_DELETED(MsgResponse.SUCCESS, "The note, {0}, has been deleted!", 1),
     NOTE_EDITED(MsgResponse.SUCCESS, "The note, {0}, has been edited!", 1),
     NOTE_DOES_NOT_EXIST(MsgResponse.SUCCESS, "The note, with the id: {0}, does not exist!", 1),
+    NOT_OWNER_OF_NOTE(MsgResponse.USER_ERROR, "You are not the owner of this note!", 0),
 
     SCHOOL_SIGN_IN(MsgResponse.SUCCESS, "You have signed into school with the following reason: {0}!", 1),
     SCHOOL_SIGN_OUT(MsgResponse.SUCCESS, "You have signed out of school with the following reason: {0}!", 1),

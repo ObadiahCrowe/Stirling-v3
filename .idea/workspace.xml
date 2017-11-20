@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/obj/StirlingNote.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/StirlingNote.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/FeedbackAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/FeedbackAPI.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/NoteDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/NoteDAOImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/interfaces/NoteDAO.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/interfaces/NoteDAO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -22,22 +28,101 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FeedbackAPI.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/FeedbackAPI.java">
+      <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="33" column="52" lean-forward="false" selection-start-line="33" selection-start-column="52" selection-end-line="33" selection-end-column="52" />
+            <state relative-caret-position="-11">
+              <caret line="51" column="47" lean-forward="true" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FeedbackType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/feedback/enums/FeedbackType.java">
+      <file leaf-file-name="SignInAPI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SignInAPI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="168">
-              <caret line="12" column="12" lean-forward="false" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+              <caret line="26" column="13" lean-forward="false" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClassesAPI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="905">
+              <caret line="183" column="5" lean-forward="false" selection-start-line="183" selection-start-column="5" selection-end-line="183" selection-end-column="5" />
+              <folding>
+                <element signature="method#getClassList#0;class#ClassesAPI#0" expanded="false" />
+                <element signature="method#deleteClass#0;class#ClassesAPI#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CloudAPI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/CloudAPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="818">
+              <caret line="85" column="67" lean-forward="true" selection-start-line="85" selection-start-column="67" selection-end-line="85" selection-end-column="67" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AttachableResource.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="139">
+              <caret line="26" column="11" lean-forward="false" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AnnouncementAPI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AnnouncementAPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="448" column="0" lean-forward="false" selection-start-line="448" selection-start-column="0" selection-end-line="485" selection-end-column="9" />
+              <folding>
+                <element signature="method#createAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#deleteAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#getAnnouncementBanner#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#getAnnouncementResource#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#getAnnouncements#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#updateTitle#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#updateDesc#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#updateType#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#updateBanner#0;class#AnnouncementAPI#0" expanded="false" />
+                <element signature="method#updateContent#0;class#AnnouncementAPI#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NotesAPI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="705">
+              <caret line="90" column="34" lean-forward="false" selection-start-line="90" selection-start-column="34" selection-end-line="90" selection-end-column="34" />
+              <folding>
+                <element signature="method#getAllNotes#0;class#NotesAPI#0" expanded="false" />
+                <element signature="method#setTitle#0;class#NotesAPI#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NoteManager.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="675">
+              <caret line="87" column="9" lean-forward="false" selection-start-line="87" selection-start-column="9" selection-end-line="87" selection-end-column="9" />
+              <folding>
+                <element signature="method#deleteNote#0;class#NoteManager#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -103,9 +188,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/obj/StirlingLesson.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/GoogleTranslateToken.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/localisation/translation/TranslateToken.kt" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/atar/AtarResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilMap.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/atar/AggregateGrade.java" />
@@ -121,7 +203,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassIdentifier.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/ARType.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
@@ -134,7 +215,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/debug/DebugAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/pod/laptop/enums/LaptopStatus.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/pod/laptop/scrapers/ReimageScraper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/atar/Grade.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/accounts/StirlingAccount.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/modules/events/EventManager.java" />
@@ -154,6 +234,11 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/atar/AtarCalculator.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/FeedbackAPI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/StirlingNote.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java" />
       </list>
     </option>
   </component>
@@ -264,25 +349,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="stirling" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Stirling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="feedback" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Stirling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="feedback" type="462c0819:PsiDirectoryNode" />
-              <item name="enums" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -678,14 +744,7 @@
       <workItem from="1511082890623" duration="1468000" />
       <workItem from="1511086944280" duration="3297000" />
       <workItem from="1511142184455" duration="1277000" />
-      <workItem from="1511145277753" duration="13272000" />
-    </task>
-    <task id="LOCAL-00095" summary="Actual Stirling related class stuff is now sorta done.">
-      <created>1508152009733</created>
-      <option name="number" value="00095" />
-      <option name="presentableId" value="LOCAL-00095" />
-      <option name="project" value="LOCAL" />
-      <updated>1508152009733</updated>
+      <workItem from="1511145277753" duration="15447000" />
     </task>
     <task id="LOCAL-00096" summary="Lesson stuff works!!">
       <created>1508159267607</created>
@@ -1023,11 +1082,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511161239457</updated>
     </task>
-    <option name="localTasksCounter" value="144" />
+    <task id="LOCAL-00144" summary="Finalising feedback api">
+      <created>1511164419699</created>
+      <option name="number" value="00144" />
+      <option name="presentableId" value="LOCAL-00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1511164419700</updated>
+    </task>
+    <option name="localTasksCounter" value="145" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="456902000" />
+    <option name="totallyTimeSpent" value="459077000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="35" y="22" width="1645" height="1028" extended-state="6" />
@@ -1073,7 +1139,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Google Classroom imports" />
     <MESSAGE value="Patches to gclassroom and daymap importing" />
     <MESSAGE value="Importing gclassroom" />
     <MESSAGE value="Beginning moodle scrapers" />
@@ -1098,7 +1163,8 @@
     <MESSAGE value="Finalising announcement apis" />
     <MESSAGE value="Large cleanup and some sace apis" />
     <MESSAGE value="Atar stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="Atar stuff" />
+    <MESSAGE value="Finalising feedback api" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalising feedback api" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1110,55 +1176,11 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/database/dao/interfaces/ClassesDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="29" column="40" lean-forward="false" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassIdentifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="21" column="35" lean-forward="false" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/enums/LessonTimeSlot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="17" column="12" lean-forward="false" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14">
-          <caret line="64" column="18" lean-forward="false" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/StirlingClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
           <caret line="41" column="84" lean-forward="false" selection-start-line="41" selection-start-column="84" selection-end-line="41" selection-end-column="84" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1722">
-          <caret line="183" column="5" lean-forward="false" selection-start-line="183" selection-start-column="5" selection-end-line="183" selection-end-column="5" />
-          <folding>
-            <element signature="method#getClassList#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#deleteClass#0;class#ClassesAPI#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1197,14 +1219,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="23" column="31" lean-forward="false" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="40" column="16" lean-forward="false" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -1281,22 +1295,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/CloudAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="818">
-          <caret line="85" column="67" lean-forward="true" selection-start-line="85" selection-start-column="67" selection-end-line="85" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="123" column="4" lean-forward="false" selection-start-line="123" selection-start-column="4" selection-end-line="123" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/accounts/enums/AccountType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="322">
@@ -1318,16 +1316,6 @@
         <state relative-caret-position="247">
           <caret line="266" column="52" lean-forward="true" selection-start-line="266" selection-start-column="52" selection-end-line="266" selection-end-column="52" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="95" column="52" lean-forward="false" selection-start-line="95" selection-start-column="52" selection-end-line="95" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1388,25 +1376,6 @@
         <state relative-caret-position="378">
           <caret line="46" column="56" lean-forward="false" selection-start-line="46" selection-start-column="56" selection-end-line="46" selection-end-column="56" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AnnouncementAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="553" column="53" lean-forward="false" selection-start-line="553" selection-start-column="53" selection-end-line="553" selection-end-column="53" />
-          <folding>
-            <element signature="method#createAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#deleteAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#getAnnouncementBanner#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#getAnnouncementResource#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#getAnnouncements#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#updateTitle#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#updateDesc#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#updateType#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#updateBanner#0;class#AnnouncementAPI#0" expanded="false" />
-            <element signature="method#updateContent#0;class#AnnouncementAPI#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1546,6 +1515,105 @@
         <state relative-caret-position="94">
           <caret line="33" column="52" lean-forward="false" selection-start-line="33" selection-start-column="52" selection-end-line="33" selection-end-column="52" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SignInAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="26" column="13" lean-forward="false" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="905">
+          <caret line="183" column="5" lean-forward="false" selection-start-line="183" selection-start-column="5" selection-end-line="183" selection-end-column="5" />
+          <folding>
+            <element signature="method#getClassList#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#deleteClass#0;class#ClassesAPI#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/CloudAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="818">
+          <caret line="85" column="67" lean-forward="true" selection-start-line="85" selection-start-column="67" selection-end-line="85" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/resources/AttachableResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="26" column="11" lean-forward="false" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-11">
+          <caret line="51" column="47" lean-forward="true" selection-start-line="51" selection-start-column="47" selection-end-line="51" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/AnnouncementAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="448" column="0" lean-forward="false" selection-start-line="448" selection-start-column="0" selection-end-line="485" selection-end-column="9" />
+          <folding>
+            <element signature="method#createAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#deleteAnnouncement#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#getAnnouncementBanner#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#getAnnouncementResource#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#getAnnouncements#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#updateTitle#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#updateDesc#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#updateType#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#updateBanner#0;class#AnnouncementAPI#0" expanded="false" />
+            <element signature="method#updateContent#0;class#AnnouncementAPI#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/StirlingNote.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="44" column="50" lean-forward="false" selection-start-line="44" selection-start-column="50" selection-end-line="44" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="48" column="88" lean-forward="false" selection-start-line="48" selection-start-column="88" selection-end-line="48" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/NotesAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="705">
+          <caret line="90" column="34" lean-forward="false" selection-start-line="90" selection-start-column="34" selection-end-line="90" selection-end-column="34" />
+          <folding>
+            <element signature="method#getAllNotes#0;class#NotesAPI#0" expanded="false" />
+            <element signature="method#setTitle#0;class#NotesAPI#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/NoteManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="87" column="9" lean-forward="false" selection-start-line="87" selection-start-column="9" selection-end-line="87" selection-end-column="9" />
+          <folding>
+            <element signature="method#deleteNote#0;class#NoteManager#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

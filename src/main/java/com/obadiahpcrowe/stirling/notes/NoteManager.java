@@ -1,14 +1,12 @@
 package com.obadiahpcrowe.stirling.notes;
 
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.cloud.CloudManager;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.NoteDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.NoteDAO;
-import com.obadiahpcrowe.stirling.notes.obj.StirlingNote;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
+import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -46,6 +44,10 @@ public class NoteManager {
         }
 
         StirlingNote note = getNote(uuid);
+        if (!note.getOwner().equals(account.getAccountName())) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOT_OWNER_OF_NOTE, account.getLocale()));
+        }
+
         noteDAO.delete(note);
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DELETED, account.getLocale(), note.getTitle()));
     }
@@ -58,58 +60,18 @@ public class NoteManager {
         return noteDAO.getAll(account);
     }
 
-    public String attachFiles(StirlingAccount account, UUID uuid, List<AttachableResource> resources) {
-        if (!noteExists(uuid)) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
-        }
-
-        StirlingNote note = getNote(uuid);
-        List<AttachableResource> res = Lists.newArrayList();
-
-        try {
-            res.addAll(note.getResources());
-            res.addAll(resources);
-        } catch (NullPointerException e) {
-        }
-
-        updateField(note, "resources", res);
-        return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
-    }
-
-    public String removeFiles(StirlingAccount account, UUID uuid, List<UUID> resourceUuids) {
-        if (!noteExists(uuid)) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
-        }
-
-        StirlingNote note = getNote(uuid);
-        List<AttachableResource> resources = Lists.newArrayList();
-
-        try {
-            resources.addAll(note.getResources());
-        } catch (NullPointerException e) {
-        }
-
-        resourceUuids.forEach(u -> {
-            resources.forEach(res -> {
-                if (res.getResUuid().equals(u)) {
-                    resources.remove(res);
-                    CloudManager.getInstance().removeFile(res.getFilePath(), res.getOwner());
-                }
-            });
-        });
-
-        updateField(note, "resources", resources);
-        return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
-    }
-
     public String editTitle(StirlingAccount account, UUID uuid, String title) {
         if (!noteExists(uuid)) {
             return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
         }
 
         StirlingNote note = getNote(uuid);
+        if (!note.getOwner().equals(account.getAccountName())) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOT_OWNER_OF_NOTE, account.getLocale()));
+        }
 
         updateField(note, "title", title);
+        updateField(note, "editDateTime", StirlingDate.getNow());
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
     }
 
@@ -119,8 +81,12 @@ public class NoteManager {
         }
 
         StirlingNote note = getNote(uuid);
+        if (!note.getOwner().equals(account.getAccountName())) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.NOT_OWNER_OF_NOTE, account.getLocale()));
+        }
 
         updateField(note, "content", content);
+        updateField(note, "editDateTime", StirlingDate.getNow());
         return gson.toJson(new StirlingMsg(MsgTemplate.NOTE_EDITED, account.getLocale(), note.getTitle()));
     }
 

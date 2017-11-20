@@ -1,7 +1,7 @@
 package com.obadiahpcrowe.stirling.database.dao.interfaces;
 
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.notes.obj.StirlingNote;
+import com.obadiahpcrowe.stirling.notes.StirlingNote;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.dao.DAO;
 

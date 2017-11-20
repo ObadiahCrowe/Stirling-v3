@@ -59,17 +59,14 @@ public class Stirling {
         APIManager.getInstance().registerDefaultCalls(
           new AccountAPI(),
           new AnnouncementAPI(),
-          //new CalendarAPI(),
-          new ClassesAPI(),
-          new CloudAPI(),
+          new ClassesAPI(), //
+          new CloudAPI(), //
           new FeedbackAPI(),
           new ImportAPI(),
           new InfoAPI(),
           new NotesAPI(),
           new SaceAPI(),
-          //new SessionAPI(),
-          new SignInAPI(),
-          new SurveyAPI()
+          new SignInAPI()
         );
 
         // Only for development builds.
