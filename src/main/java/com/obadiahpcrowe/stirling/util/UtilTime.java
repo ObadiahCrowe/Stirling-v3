@@ -14,8 +14,6 @@ import org.joda.time.format.DateTimeFormatter;
 public class UtilTime {
 
     private static UtilTime instance;
-    private DateTime now = DateTime.now();
-    private DateTime dt = new DateTime();
 
     public String getDayOfWeek(String date) {
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
@@ -24,19 +22,23 @@ public class UtilTime {
     }
 
     public String getLogTime() {
+        DateTime now = DateTime.now();
         return now.getDayOfMonth() + "/" + now.getMonthOfYear() + "/" + now.getYear() + " at " + now.getHourOfDay() + ":" +
           now.getMinuteOfHour() + "." + now.getSecondOfMinute();
     }
 
     public String getLogDate() {
+        DateTime now = DateTime.now();
         return now.getDayOfMonth() + "." + now.getMonthOfYear() + "." + now.getYear();
     }
 
     public String getFriendlyDate() {
+        DateTime now = DateTime.now();
         return now.getDayOfMonth() + "/" + now.getMonthOfYear() + "/" + now.getYear();
     }
 
     public String getFriendlyTime() {
+        DateTime now = DateTime.now();
         String ampm = "am";
         int hour = now.getHourOfDay();
         if (hour >= 13) {
