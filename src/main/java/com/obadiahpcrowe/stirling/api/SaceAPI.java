@@ -115,7 +115,7 @@ public class SaceAPI implements APIController {
         List<Grade> grades = Lists.newArrayList();
         gradeList.forEach(g -> {
             try {
-                grades.add(Grade.getGradeFromText(g));
+                grades.add(Grade.getGradeFromText(g.toUpperCase()));
             } catch (IllegalArgumentException e) {
                 return;
             }

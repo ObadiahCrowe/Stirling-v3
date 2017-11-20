@@ -50,7 +50,7 @@ public class AtarCalculator {
 
         finalGrade = finalGrade + rp;
 
-        String responseMsg = "";
+        final String responseMsg = "Calculate your ATAR from your aggregate here: http://www.satac.edu.au/documents/2016_sace-ntcet_uni_agg_atar_conversion_table.pdf";
 
         return new AtarResponse(0, finalGrade, responseMsg);
     }

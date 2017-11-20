@@ -49,7 +49,7 @@ public class FeedbackAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        FeedbackType type = null;
+        FeedbackType type;
         try {
             type = FeedbackType.valueOf(rawType.toUpperCase());
         } catch (IllegalArgumentException e) {
@@ -97,7 +97,7 @@ public class FeedbackAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        UUID uuid = null;
+        UUID uuid;
         try {
             uuid = UUID.fromString(rawUuid);
         } catch (IllegalArgumentException e) {
