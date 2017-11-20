@@ -53,9 +53,9 @@ public class NotesAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
+        CloudManager.getInstance().uploadFiles(account, resources);
         List<AttachableResource> res = Lists.newArrayList();
         for (MultipartFile file : resources) {
-            CloudManager.getInstance().uploadFile(account, file);
             res.add(new AttachableResource(account.getUuid(), file.getOriginalFilename()));
         }
 
@@ -174,9 +174,9 @@ public class NotesAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
         }
 
+        CloudManager.getInstance().uploadFiles(account, resources);
         List<AttachableResource> res = Lists.newArrayList();
         for (MultipartFile file : resources) {
-            CloudManager.getInstance().uploadFile(account, file);
             res.add(new AttachableResource(account.getUuid(), file.getOriginalFilename()));
         }
 

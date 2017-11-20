@@ -41,6 +41,7 @@ public enum MsgTemplate {
 
     CLOUD_STORAGE_FULL(MsgResponse.USER_ERROR, "Your cloud storage is full!", 0),
     CLOUD_FILE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The file, {0}, does not exist!", 1),
+    CLOUD_ACCOUNT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "Your cloud account does not exist!", 0),
 
     NOTE_CREATED(MsgResponse.SUCCESS, "The note, {0}, has been created!", 1),
     NOTE_DELETED(MsgResponse.SUCCESS, "The note, {0}, has been deleted!", 1),
@@ -141,6 +142,7 @@ public enum MsgTemplate {
     FILE_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The file, {0}, already exists!", 1),
     FILE_DELETED(MsgResponse.SUCCESS, "The file, {0}, has been deleted!", 1),
     FILE_MOVED(MsgResponse.SUCCESS, "The file, {0}, has been moved!", 1),
+    FILES_UPLOADED(MsgResponse.SUCCESS, "You have uploaded {0} files successfully!", 1),
 
     FOLDER_ALREADY_EXISTS(MsgResponse.USER_ERROR, "The folder, {0}, already exists!", 1),
     FOLDER_CREATED(MsgResponse.SUCCESS, "The folder, {0}, has been created!", 1),
