@@ -101,7 +101,7 @@ public class AccountAPI implements APIController {
     @RequestMapping(value = "/stirling/v3/accounts/update/locale", method = RequestMethod.GET)
     public String updateLocale(@RequestParam("accountName") String accountName,
                                @RequestParam("password") String password,
-                               @RequestParam("locale") String locale) {
+                               @RequestParam("locale") String rawLocale) {
         StirlingAccount account = accountManager.getAccount(accountName);
         if (account == null) {
             return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
@@ -111,10 +111,11 @@ public class AccountAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
+        StirlingLocale locale;
         try {
-            locale = StirlingLocale.valueOf(locale).toString();
+            locale = StirlingLocale.valueOf(rawLocale.toUpperCase());
         } catch (IllegalArgumentException e) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), locale, "locale"));
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawLocale, "locale"));
         }
 
         accountManager.updateField(account, "locale", locale);

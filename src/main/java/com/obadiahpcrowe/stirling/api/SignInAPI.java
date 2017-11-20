@@ -45,9 +45,9 @@ public class SignInAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        SignInReason reason = null;
+        SignInReason reason;
         try {
-            reason = SignInReason.valueOf(rawReason);
+            reason = SignInReason.valueOf(rawReason.toUpperCase());
         } catch (IllegalArgumentException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawReason, "reason"));
         }
@@ -70,9 +70,9 @@ public class SignInAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
-        SignOutReason reason = null;
+        SignOutReason reason;
         try {
-            reason = SignOutReason.valueOf(rawReason);
+            reason = SignOutReason.valueOf(rawReason.toUpperCase());
         } catch (IllegalArgumentException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawReason, "reason"));
         }
