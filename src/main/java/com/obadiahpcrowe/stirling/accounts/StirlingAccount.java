@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.accounts;
 
+import com.google.common.collect.Lists;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
@@ -13,7 +14,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,7 +66,7 @@ public class StirlingAccount {
         this.password = BCrypt.hashpw(password, salt);
         this.salt = salt;
         this.calendar = null;
-        this.stirlingClasses = new ArrayList<>();
+        this.stirlingClasses = Lists.newArrayList();
         this.bannerImage = new AttachableResource(this.uuid, "banner.jpg");
         this.avatarImage = new AttachableResource(this.uuid, "avatar.png");
     }

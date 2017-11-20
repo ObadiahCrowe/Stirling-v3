@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.api;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
@@ -29,7 +30,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -474,7 +474,7 @@ public class AnnouncementAPI implements APIController {
             file.mkdir();
         }
 
-        List<AttachableResource> resourcesList = new ArrayList<>();
+        List<AttachableResource> resourcesList = Lists.newArrayList();
         for (MultipartFile f : resources) {
             File res = new File(file, f.getOriginalFilename());
             try {
@@ -513,7 +513,7 @@ public class AnnouncementAPI implements APIController {
         }
 
         StringTokenizer tokenizer = new StringTokenizer(rawAudiences, ",");
-        List<AccountType> audience = new ArrayList<>();
+        List<AccountType> audience = Lists.newArrayList();
         while (tokenizer.hasMoreElements()) {
             audience.add(AccountType.valueOf(tokenizer.nextElement().toString().toUpperCase()));
         }
@@ -551,7 +551,7 @@ public class AnnouncementAPI implements APIController {
         }
 
 
-        List<String> tagsList = new ArrayList<>();
+        List<String> tagsList = Lists.newArrayList();
         if (tags != null) {
             StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
             while (tagTokenizer.hasMoreElements()) {

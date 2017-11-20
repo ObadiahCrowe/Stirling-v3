@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.announcements;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -59,12 +59,12 @@ public class AnnouncementManager {
         }
 
         StringTokenizer tokenizer = new StringTokenizer(targetAudience, ",");
-        List<AccountType> audience = new ArrayList<>();
+        List<AccountType> audience = Lists.newArrayList();
         while (tokenizer.hasMoreElements()) {
             audience.add(AccountType.valueOf(tokenizer.nextElement().toString().toUpperCase()));
         }
 
-        List<String> tagsList = new ArrayList<>();
+        List<String> tagsList = Lists.newArrayList();
         if (tags != null) {
             StringTokenizer tagTokenizer = new StringTokenizer(tags, ",");
             while (tagTokenizer.hasMoreElements()) {
@@ -79,7 +79,7 @@ public class AnnouncementManager {
             file.mkdir();
         }
 
-        List<AttachableResource> resourcesList = new ArrayList<>();
+        List<AttachableResource> resourcesList = Lists.newArrayList();
         for (MultipartFile f : resources) {
             File res = new File(file, f.getOriginalFilename());
             try {

@@ -1,10 +1,10 @@
 package com.obadiahpcrowe.stirling.modules.events;
 
+import com.google.common.collect.Lists;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +17,11 @@ import java.util.List;
 public class EventManager {
 
     private static EventManager instance;
-    private List<Class<? extends EventListener>> listeners = new ArrayList<>();
+    private List<Class<? extends EventListener>> listeners;
+
+    private EventManager() {
+        this.listeners = Lists.newArrayList();
+    }
 
     public void init() {
         ModuleManager.getInstance().getModules().forEach(module -> listeners.addAll(module.getListeners()));

@@ -58,7 +58,7 @@ public class AccountManager {
                 accountDAO.save(account);
 
                 // Disabled until I unfuck it.
-                //CalendarManager.getInstance().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", new ArrayList<>());
+                //CalendarManager.getInstance().createCalendar(account.getUuid(), account.getDisplayName() + "'s Calendar", "", Lists.newArrayList());
 
                 UtilFile.getInstance().createUserFiles(account.getUuid());
 

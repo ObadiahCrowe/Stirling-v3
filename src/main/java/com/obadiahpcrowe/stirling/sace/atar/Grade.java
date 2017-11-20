@@ -2,6 +2,9 @@ package com.obadiahpcrowe.stirling.sace.atar;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Created by: Obadiah Crowe (St1rling)
  * Creation Date / Time: 11/11/17 at 5:34 PM
@@ -38,5 +41,16 @@ public enum Grade {
     Grade(String friendlyGrade, int value) {
         this.friendlyGrade = friendlyGrade;
         this.value = value;
+    }
+
+    public static Grade getGradeFromText(String grade) {
+        CompletableFuture<Grade> future = new CompletableFuture<>();
+        Arrays.asList(Grade.values()).forEach(g -> {
+            if (g.getFriendlyGrade().equalsIgnoreCase(grade)) {
+                future.complete(g);
+            }
+        });
+
+        return future.getNow(null);
     }
 }

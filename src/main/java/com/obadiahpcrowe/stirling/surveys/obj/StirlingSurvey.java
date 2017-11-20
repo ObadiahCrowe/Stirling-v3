@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.surveys.obj;
 
+import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import lombok.Getter;
@@ -8,7 +9,9 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -34,6 +37,7 @@ public class StirlingSurvey {
     private List<SurveyQuestion> surveyQuestions;
     private Map<UUID, List<SurveyQuestion>> completedResponses;
 
+    @Deprecated
     public StirlingSurvey() {}
 
     public StirlingSurvey(StirlingAccount account, String title, String desc, List<AccountType> targetAudience,
@@ -44,6 +48,6 @@ public class StirlingSurvey {
         this.desc = desc;
         this.targetAudiences = targetAudience;
         this.surveyQuestions = questions;
-        this.completedResponses = new HashMap<>();
+        this.completedResponses = Maps.newHashMap();
     }
 }

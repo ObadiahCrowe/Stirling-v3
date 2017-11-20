@@ -1,5 +1,7 @@
 package com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.obj;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.calendar.obj.CalendarEntry;
 import com.obadiahpcrowe.stirling.pod.tutorsINACTIVE.enums.TutorSpeciality;
@@ -10,7 +12,9 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -41,7 +45,7 @@ public class StirlingTutor {
         this.displayName = AccountManager.getInstance().getAccount(uuid).getDisplayName();
         this.uuid = uuid;
         this.specialities = tutorSpecialities;
-        this.tutorAssignments = new ArrayList<>();
-        this.tutorRequests = new HashMap<>();
+        this.tutorAssignments = Lists.newArrayList();
+        this.tutorRequests = Maps.newHashMap();
     }
 }

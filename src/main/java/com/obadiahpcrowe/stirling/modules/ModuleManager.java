@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.modules;
 
+import com.google.common.collect.Lists;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.interfaces.StirlingModule;
 import com.obadiahpcrowe.stirling.util.UtilFile;
@@ -13,7 +14,6 @@ import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Manifest;
 
@@ -28,8 +28,12 @@ import java.util.jar.Manifest;
 public class ModuleManager {
 
     private static ModuleManager instance;
-    private List<StirlingModule> modules = new ArrayList<>();
+    private List<StirlingModule> modules;
     private UtilLog utilLog = UtilLog.getInstance();
+
+    private ModuleManager() {
+        this.modules = Lists.newArrayList();
+    }
 
     public void registerModules() {
         try {

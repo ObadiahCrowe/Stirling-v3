@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.session;
 
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.redis.RedisCall;
@@ -8,7 +9,6 @@ import com.obadiahpcrowe.stirling.redis.enums.RedisHeader;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +25,11 @@ public class SessionManager {
     private static SessionManager instance;
     private RedisManager redisManager = RedisManager.getInstance();
     private Gson gson = new Gson();
-    private Map<String, UUID> sessioners = new HashMap<>();
+    private Map<String, UUID> sessioners;
+
+    private SessionManager() {
+        this.sessioners = Maps.newHashMap();
+    }
 
     public String createSession(StirlingAccount account) {
         if (!sessionExists(account)) {

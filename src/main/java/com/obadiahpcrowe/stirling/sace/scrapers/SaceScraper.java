@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.calendar.obj.CalendarEntry;
 import com.obadiahpcrowe.stirling.sace.obj.SaceCompletion;
@@ -14,7 +15,6 @@ import com.obadiahpcrowe.stirling.sace.obj.SaceUser;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +47,7 @@ public class SaceScraper {
         HtmlPage results = client.getPage("https://apps.sace.sa.edu.au/students-online/results.do");
         HtmlDivision div = (HtmlDivision) results.getByXPath("//*[@id=\"main\"]/div[2]/div[7]").get(0);
 
-        List<SaceResult> resultList = new ArrayList<>();
+        List<SaceResult> resultList = Lists.newArrayList();
         for (DomElement element : div.getChildElements()) {
             if (element.getAttribute("class").equalsIgnoreCase("saceResult")) {
                 for (DomElement e : element.getChildElements()) {
@@ -85,7 +85,7 @@ public class SaceScraper {
 
         login = button.click();
 
-        List<SaceCompletion> completions = new ArrayList<>();
+        List<SaceCompletion> completions = Lists.newArrayList();
         HtmlPage results = client.getPage("https://apps.sace.sa.edu.au/students-online/checker.do");
         HtmlTable table = (HtmlTable) results.getByXPath("//*[@id=\"printWrapper\"]/div[1]/table").get(0);
         for (DomElement element : table.getChildElements()) {

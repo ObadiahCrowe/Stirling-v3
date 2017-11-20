@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.api;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.Stirling;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +43,7 @@ public class InfoAPI implements APIController {
     @CallableAPI(fields = "")
     @RequestMapping(value = "/stirling/v3/loadedModules", method = RequestMethod.GET)
     public String getLoadedModules() {
-        List<String> moduleNames = new ArrayList<>();
+        List<String> moduleNames = Lists.newArrayList();
         ModuleManager.getInstance().getModules().forEach(module -> moduleNames.add(module.getName()));
         return gson.toJson(moduleNames);
     }

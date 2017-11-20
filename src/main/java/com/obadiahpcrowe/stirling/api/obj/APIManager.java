@@ -1,5 +1,7 @@
 package com.obadiahpcrowe.stirling.api.obj;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,8 +21,13 @@ import java.util.*;
 public class APIManager {
 
     private static APIManager instance;
-    private List<StirlingAPI> apis = new ArrayList<>();
-    private Map<StirlingAPI, Map<Class, Method>> unregisteredApis = new HashMap<>();
+    private List<StirlingAPI> apis;
+    private Map<StirlingAPI, Map<Class, Method>> unregisteredApis;
+
+    private APIManager() {
+        apis = Lists.newArrayList();
+        unregisteredApis = Maps.newHashMap();
+    }
 
     public void registerDefaultCalls(APIController... apis) {
         for (APIController api : apis) {
@@ -34,7 +41,7 @@ public class APIManager {
 
     public String handleWildCall(String var1, String var2) {
         // TODO: 9/9/17 check if method has values
-        Map<UUID, String> output = new HashMap<>();
+        Map<UUID, String> output = Maps.newHashMap();
         UUID uuid = UUID.randomUUID();
         unregisteredApis.forEach((key, value) -> value.forEach((key1, value1) -> {
             try {
@@ -49,8 +56,8 @@ public class APIManager {
     public void registerCall(Class clazz, boolean registered) {
         for (Method method : clazz.getDeclaredMethods()) {
             if ((method.getAnnotation(RequestMapping.class) != null) && (method.getAnnotation(CallableAPI.class) != null)) {
-                List<String> paramNames = new ArrayList<>();
-                List<String> paramValues = new ArrayList<>();
+                List<String> paramNames = Lists.newArrayList();
+                List<String> paramValues = Lists.newArrayList();
 
                 CallableAPI callableAPI = method.getAnnotation(CallableAPI.class);
                 paramNames.addAll(Arrays.asList(callableAPI.fields()));
@@ -91,7 +98,7 @@ public class APIManager {
                     returned = "Image";
                 }
 
-                Map<String, String> params = new HashMap<>();
+                Map<String, String> params = Maps.newHashMap();
                 try {
                     for (int i = 0; i < paramNames.size(); i++) {
                         params.put(paramNames.get(i), paramValues.get(i));

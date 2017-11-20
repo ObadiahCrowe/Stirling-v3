@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.database.dao;
 
+import com.google.common.collect.Lists;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.SurveyDAO;
@@ -10,7 +11,8 @@ import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -36,7 +38,7 @@ public class SurveyDAOImpl extends BasicDAO<StirlingSurvey, ObjectId> implements
     @Override
     public List<StirlingSurvey> getByCompletion(StirlingAccount account) {
         List<StirlingSurvey> query = createQuery().asList();
-        List<StirlingSurvey> finalSurveys = new ArrayList<>();
+        List<StirlingSurvey> finalSurveys = Lists.newArrayList();
 
         query.forEach(survey -> {
             if (survey.getCompletedResponses().containsKey(account.getUuid())) {
@@ -50,7 +52,7 @@ public class SurveyDAOImpl extends BasicDAO<StirlingSurvey, ObjectId> implements
     @Override
     public List<StirlingSurvey> getByUnCompleted(StirlingAccount account) {
         List<StirlingSurvey> query = createQuery().asList();
-        List<StirlingSurvey> finalSurveys = new ArrayList<>();
+        List<StirlingSurvey> finalSurveys = Lists.newArrayList();
 
         query.forEach(survey -> {
             if (!survey.getCompletedResponses().containsKey(account.getUuid())) {

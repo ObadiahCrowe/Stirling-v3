@@ -1,5 +1,6 @@
 package com.obadiahpcrowe.stirling.api;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
@@ -7,12 +8,17 @@ import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.sace.SaceManager;
+import com.obadiahpcrowe.stirling.sace.atar.AtarCalculator;
+import com.obadiahpcrowe.stirling.sace.atar.Grade;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -92,5 +98,36 @@ public class SaceAPI implements APIController {
         }
 
         return saceManager.getSaceCompletion(account);
+    }
+
+    @CallableAPI(fields = {"grades", "rpGrade"})
+    @RequestMapping(value = "/stirling/v3/sace/get/aggregate", method = RequestMethod.GET)
+    public String getSaceAggregate(String rawGrades, String rawGrade) {
+
+        List<String> gradeList = Lists.newArrayList();
+        if (rawGrades != null) {
+            StringTokenizer tagTokenizer = new StringTokenizer(rawGrades, ",");
+            while (tagTokenizer.hasMoreElements()) {
+                gradeList.add(tagTokenizer.nextElement().toString().trim().replace(" ", ""));
+            }
+        }
+
+        List<Grade> grades = Lists.newArrayList();
+        gradeList.forEach(g -> {
+            try {
+                grades.add(Grade.getGradeFromText(g));
+            } catch (IllegalArgumentException e) {
+                return;
+            }
+        });
+
+        Grade rpGrade;
+        try {
+            rpGrade = Grade.getGradeFromText(rawGrade);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, StirlingLocale.ENGLISH, rawGrade, "rpGrade"));
+        }
+
+        return gson.toJson(AtarCalculator.getInstance().calculateAtar(grades, rpGrade));
     }
 }

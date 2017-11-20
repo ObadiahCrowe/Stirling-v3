@@ -6,7 +6,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
@@ -179,7 +178,7 @@ public class UtilFile {
     }
 
     public List<File> getAllFiles(File directory) {
-        List<File> files = new ArrayList<>();
+        List<File> files = Lists.newArrayList();
         try {
             for (File file : directory.listFiles()) {
                 if (file.isDirectory()) {
