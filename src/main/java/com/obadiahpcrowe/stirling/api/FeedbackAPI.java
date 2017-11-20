@@ -83,30 +83,6 @@ public class FeedbackAPI implements APIController {
         return feedbackManager.deleteFeedback(account, uuid);
     }
 
-    @CallableAPI(fields = {"accountName", "password", "uuid"})
-    @RequestMapping(value = "/stirling/v3/feedback/get", method = RequestMethod.GET)
-    public String getFeedback(@RequestParam("accountName") String accountName,
-                              @RequestParam("password") String password,
-                              @RequestParam("uuid") String rawUuid) {
-        StirlingAccount account = accountManager.getAccount(accountName);
-        if (account == null) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
-        }
-
-        if (!accountManager.validCredentials(accountName, password)) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
-        }
-
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(rawUuid);
-        } catch (IllegalArgumentException e) {
-            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), "uuid", rawUuid));
-        }
-
-        return LocalisationManager.getInstance().translate(gson.toJson(feedbackManager.getFeedback(account, uuid)), account.getLocale());
-    }
-
     @CallableAPI(fields = {"accountName", "password"})
     @RequestMapping(value = "/stirling/v3/feedback/getAll", method = RequestMethod.GET)
     public String getAllFeedback(@RequestParam("accountName") String accountName,
