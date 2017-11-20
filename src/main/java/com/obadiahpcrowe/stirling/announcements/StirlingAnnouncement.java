@@ -29,7 +29,7 @@ public class StirlingAnnouncement {
     private ObjectId id;
 
     private String title;
-    private String shortDesc;
+    private String desc;
     private String poster;
     private AnnouncementType type;
     private AttachableResource bannerImage;
@@ -44,12 +44,12 @@ public class StirlingAnnouncement {
     @Deprecated
     public StirlingAnnouncement() {}
 
-    public StirlingAnnouncement(StirlingAccount account, UUID uuid, String title, String shortDesc, AnnouncementType announcementType,
+    public StirlingAnnouncement(StirlingAccount account, UUID uuid, String title, String desc, AnnouncementType announcementType,
                                 AttachableResource bannerImage, String content, List<AttachableResource> resources,
                                 List<AccountType> targetAudience, List<String> tags) {
         StirlingDate date = new StirlingDate(UtilTime.getInstance().getFriendlyDate(), UtilTime.getInstance().getFriendlyTime());
         this.title = title;
-        this.shortDesc = shortDesc;
+        this.desc = desc;
         this.poster = account.getAccountName();
         this.type = announcementType;
         this.bannerImage = bannerImage;

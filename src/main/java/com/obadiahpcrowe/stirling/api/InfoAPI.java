@@ -44,7 +44,7 @@ public class InfoAPI implements APIController {
     @RequestMapping(value = "/stirling/v3/loadedModules", method = RequestMethod.GET)
     public String getLoadedModules() {
         List<String> moduleNames = new ArrayList<>();
-        ModuleManager.getInstance().getModules().stream().forEach(module -> moduleNames.add(module.getName()));
+        ModuleManager.getInstance().getModules().forEach(module -> moduleNames.add(module.getName()));
         return gson.toJson(moduleNames);
     }
 

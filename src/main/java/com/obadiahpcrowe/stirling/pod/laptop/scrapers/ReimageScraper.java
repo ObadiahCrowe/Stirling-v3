@@ -6,8 +6,8 @@ import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
 import com.google.gson.Gson;
-import com.obadiahpcrowe.stirling.pod.laptop.obj.ReimageLaptop;
 import com.obadiahpcrowe.stirling.pod.laptop.enums.LaptopStatus;
+import com.obadiahpcrowe.stirling.pod.laptop.obj.ReimageLaptop;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class ReimageScraper {
                 String rawStatus = e.getChildNodes().get(1).getTextContent();
                 String stage = e.getChildNodes().get(2).getTextContent();
                 int percentage = Integer.valueOf(e.getChildNodes().get(3).getTextContent());
-                LaptopStatus status = null;
+                LaptopStatus status;
 
                 if (rawStatus.contains("Completed")) {
                     status = LaptopStatus.COMPLETED;
@@ -46,10 +46,14 @@ public class ReimageScraper {
                     status = LaptopStatus.ACTIVE;
                 } else if (rawStatus.contains("Failed")) {
                     status = LaptopStatus.FAILED;
+                } else {
+                    status = LaptopStatus.NOT_REIMAGING;
                 }
 
                 if (name.contains(laptopName)) {
                     laptop = new ReimageLaptop(name, status, stage, percentage);
+                } else {
+                    laptop = new ReimageLaptop(laptopName, LaptopStatus.NOT_REIMAGING, "Not re-imaging", 100);
                 }
             }
         }

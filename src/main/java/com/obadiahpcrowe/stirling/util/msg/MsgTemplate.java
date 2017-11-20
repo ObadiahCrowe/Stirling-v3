@@ -25,6 +25,7 @@ public enum MsgTemplate {
     ANNOUNCEMENT_DELETED(MsgResponse.SUCCESS, "The announcement, {0}, has been deleted!", 1),
     ANNOUNCEMENT_EDITED(MsgResponse.SUCCESS, "The announcement, {0}, has been edited!", 1),
     ANNOUNCEMENT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The announcement, {0}, does not exist!", 1),
+    ANNOUNCEMENT_UPDATED(MsgResponse.SUCCESS, "You have updated this announcement's {0}!", 1),
 
     CALENDAR_ALREADY_EXISTS(MsgResponse.USER_ERROR, "Your calendar already exists!", 0),
     CALENDAR_TITLE_CHANGED(MsgResponse.SUCCESS, "You have changed this calendar's title to: {0}!", 1),
@@ -195,7 +196,9 @@ public enum MsgTemplate {
     IMPORT_CREDS_INVALID(MsgResponse.USER_ERROR, "You credentials for {0} are invalid!", 1),
     IMPORT_CANNOT_REFRESH_TOKEN(MsgResponse.STIRLING_ERROR, "Stirling could not refresh your Google access token. Does it still have access?", 0),
     IMPORT_REFRESH_INVALID(MsgResponse.STIRLING_ERROR, "Your refresh token has expired!", 0),
-    IMPORT_CANNOT_VERIFY(MsgResponse.USER_ERROR, "We are unable to verify your {0} credentials!", 1);
+    IMPORT_CANNOT_VERIFY(MsgResponse.USER_ERROR, "We are unable to verify your {0} credentials!", 1),
+
+    RESOURCE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The resource, {0}, does not exist!", 1);
 
     private MsgResponse response;
     private String message;

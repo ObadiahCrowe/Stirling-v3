@@ -12,9 +12,10 @@ import lombok.Getter;
 @Getter
 public enum LaptopStatus {
 
-    COMPLETED("Finished reimaging"),
-    ACTIVE("Actively reimaging"),
-    FAILED("Reimaging failed");
+    COMPLETED("Finished re-imaging"),
+    ACTIVE("Actively re-imaging"),
+    FAILED("Reimaging failed"),
+    NOT_REIMAGING("Not re-imaging");
 
     private String outputName;
 
