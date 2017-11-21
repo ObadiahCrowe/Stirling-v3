@@ -86,6 +86,10 @@ public class APIManager {
                         continue;
                     }
 
+                    if (name.contains("com.obadiahpcrowe.stirling.accounts.enums.AccountType")) {
+                        name = "AccounType";
+                    }
+
                     paramValues.add(name);
                 }
 
