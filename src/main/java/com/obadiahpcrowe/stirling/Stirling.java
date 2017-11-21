@@ -31,10 +31,7 @@ public class Stirling {
     @Getter
     private StirlingVersion version = new StirlingVersion(VersionType.RELEASE, 3.0, 0);
 
-    // TODO: 17/10/17 Add map null checks
-    // TODO: 21/11/17 Finish fleshing out classes api
-
-    // AFTER RELEASE
+    // v3.1 onwards
     // TODO: 17/10/17 Generate report, aggregate, and predicted grades from Stirling results
     // TODO: 27/10/17 Junit
 
