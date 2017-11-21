@@ -33,13 +33,12 @@ public class Stirling {
     private StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
 
     // TODO: 17/10/17 Add map null checks
-    // TODO: 17/10/17 Add user linkers to class through their import account. On init class, check user import account then readd.
-    // TODO: 17/10/17 Scrape every morning
-    // TODO: 27/10/17 Junit
+    // TODO: 21/11/17 Finish fleshing out classes api
 
     // AFTER RELEASE
-    // TODO: 17/10/17 Generate report and predicted grades from Stirling results
+    // TODO: 17/10/17 Generate report, aggregate, and predicted grades from Stirling results
     // TODO: 16/11/17 Moodle workbooks maybe
+    // TODO: 27/10/17 Junit
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
@@ -59,8 +58,8 @@ public class Stirling {
         APIManager.getInstance().registerDefaultCalls(
           new AccountAPI(),
           new AnnouncementAPI(),
-          new ClassesAPI(), //
-          new CloudAPI(), //
+          new ClassesAPI(),
+          new CloudAPI(),
           new FeedbackAPI(),
           new ImportAPI(),
           new InfoAPI(),

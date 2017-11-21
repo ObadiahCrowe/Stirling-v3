@@ -27,4 +27,26 @@ public class StirlingDate {
     public static StirlingDate getNow() {
         return new StirlingDate(UtilTime.getInstance().getFriendlyDate(), UtilTime.getInstance().getFriendlyTime());
     }
+
+    public static StirlingDate parse(String rawDate) {
+        String[] parts = rawDate.split("/");
+
+        String day = parts[0];
+        String month = parts[1];
+        String year = "";
+
+        if (parts[2].equalsIgnoreCase("17")) {
+            year = "2017";
+        }
+
+        if (parts[2].equalsIgnoreCase("18")) {
+            year = "2018";
+        }
+
+        if (year.equalsIgnoreCase("")) {
+            return null;
+        }
+
+        return new StirlingDate(day + "/" + month + "/" + year, UtilTime.getInstance().getFriendlyTime());
+    }
 }

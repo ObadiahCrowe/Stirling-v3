@@ -83,7 +83,7 @@ public class ClassManager {
         if (classExists(classUuid)) {
             StirlingClass clazz = getByUuid(classUuid);
 
-            if (clazz.getStudents().contains(account.getUuid())) {
+            if (clazz.getMembers().containsKey(account.getUuid().toString())) {
                 return CalendarManager.getInstance().getCalendar(clazz.getUuid());
             }
             return null;
@@ -91,12 +91,55 @@ public class ClassManager {
         return null;
     }
 
+    public List<StirlingLesson> getDailyClasses(StirlingAccount account, StirlingDate date) {
+        List<StirlingClass> classes = getAllClasses(account);
+
+        List<StirlingLesson> lessons = Lists.newArrayList();
+        classes.forEach(c -> {
+            CompletableFuture<StirlingPostable> homework = new CompletableFuture<>();
+            CompletableFuture<StirlingPostable> classNote = new CompletableFuture<>();
+
+            try {
+                c.getHomework().forEach(hw -> {
+                    if (hw.getPostDateTime().getDate().equalsIgnoreCase(date.getDate())) {
+                        homework.complete(hw);
+                    }
+                });
+            } catch (NullPointerException ignored) {
+            }
+
+            try {
+                c.getClassNotes().forEach(cn -> {
+                    if (cn.getPostDateTime().getDate().equalsIgnoreCase(date.getDate())) {
+                        classNote.complete(cn);
+                    }
+                });
+            } catch (NullPointerException ignored) {
+            }
+
+            c.getLessons().forEach(l -> {
+                if (l.getStartDateTime().getDate().equalsIgnoreCase(date.getDate())) {
+                    l.setHomework(homework.getNow(null));
+                    l.setClassNote(classNote.getNow(null));
+                    lessons.add(l);
+                }
+            });
+        });
+
+        return lessons;
+    }
+
     public String deleteClass(StirlingAccount account, UUID classUuid) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
-                if (clazz.getOwners().contains(account.getAccountName())) {
+                if (clazz.getOwners().contains(account.getAccountName()) || account.getAccountType().getAccessLevel() > AccountType.ADMINISTRATOR.getAccessLevel()) {
                     classesDAO.delete(clazz);
+
+                    UtilFile.getInstance().deleteDirectory(new File(UtilFile.getInstance().getStorageLoc() +
+                      File.separator + "Classes" + File.separator + classUuid.toString()));
+                    CalendarManager.getInstance().deleteCalendar(classUuid);
+
                     return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DELETED, account.getLocale(), clazz.getName()));
                 }
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_NOT_OWNER, account.getLocale()));
@@ -104,62 +147,6 @@ public class ClassManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete classes", "TEACHER"));
-    }
-
-    public String addClassesToAccount(StirlingAccount account, UUID... classUuids) {
-        List<StirlingClass> classes = Lists.newArrayList();
-        for (UUID uuid : classUuids) {
-            if (classExists(uuid)) {
-                try {
-                    classes.addAll(account.getStirlingClasses());
-                } catch (NullPointerException ignored) {
-                }
-
-                CompletableFuture<Boolean> exists = new CompletableFuture<>();
-
-                classes.forEach(c -> {
-                    if (c.getUuid().equals(uuid)) {
-                        exists.complete(true);
-                    }
-                });
-
-                if (!exists.getNow(false)) {
-                    classes.add(getByUuid(uuid));
-                }
-            } else {
-                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), uuid.toString()));
-            }
-        }
-
-        AccountManager.getInstance().updateField(account, "stirlingClasses", classes);
-        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_STUDENT_ADDED, account.getLocale(), "multiple classes", account.getAccountName()));
-    }
-
-    public String addClassToAccount(StirlingAccount account, UUID classUuid) {
-        if (classExists(classUuid)) {
-            List<StirlingClass> classes = Lists.newArrayList();
-            try {
-                classes.addAll(account.getStirlingClasses());
-            } catch (NullPointerException ignored) {
-            }
-
-            CompletableFuture<Boolean> exists = new CompletableFuture<>();
-
-            classes.forEach(c -> {
-                if (c.getUuid().equals(classUuid)) {
-                    exists.complete(true);
-                }
-            });
-
-            if (!exists.getNow(false)) {
-                classes.add(getByUuid(classUuid));
-            }
-
-            AccountManager.getInstance().updateField(account, "stirlingClasses", classes);
-            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_STUDENT_ADDED, account.getLocale(),
-              account.getAccountName(), classUuid.toString()));
-        }
-        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
     }
 
     public StirlingClass getByUuid(UUID classUuid) {
@@ -173,7 +160,7 @@ public class ClassManager {
     public List<StirlingClass> getAllClasses(StirlingAccount account) {
         List<StirlingClass> classes = Lists.newArrayList();
         classesDAO.getAllClasses().forEach(c -> {
-            if (c.getStudents().contains(account.getUuid())) {
+            if (c.getMembers().containsKey(account.getUuid().toString())) {
                 classes.add(c);
             }
         });

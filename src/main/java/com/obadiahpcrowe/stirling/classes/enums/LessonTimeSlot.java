@@ -20,9 +20,7 @@ public enum LessonTimeSlot {
     TIMESLOT_0(0,
       new SlotData("Monday", "8:45", "8:55"),
       new SlotData("Wednesday", "9:50", "10:00"),
-      new SlotData("Friday", "8:45", "8:55"),
-      new SlotData("Tuesday", "11:15", "12:05"),
-      new SlotData("Thursday", "12:30", "13:20")),
+      new SlotData("Friday", "8:45", "8:55")),
     TIMESLOT_1(1,
       new SlotData("Monday", "8:55", "9:50"),
       new SlotData("Tuesday", "12:05", "13:20"),
@@ -53,7 +51,10 @@ public enum LessonTimeSlot {
       new SlotData("Friday", "14:05", "15:25")),
     TIMESLOT_8(8,
       new SlotData("Tuesday", "15:35", "17:15"),
-      new SlotData("Thursday", "15:35", "17:15"));
+      new SlotData("Thursday", "15:35", "17:15")),
+    TIMESLOT_9(9,
+      new SlotData("Tuesday", "11:15", "12:05"),
+      new SlotData("Thursday", "12:30", "13:20"));
 
     /*
      * 0 = Cyan

@@ -9,6 +9,7 @@ import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
+import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapClass;
 import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
@@ -26,6 +27,7 @@ import com.obadiahpcrowe.stirling.database.dao.interfaces.ImportDAO;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.UtilFile;
+import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
@@ -225,7 +227,8 @@ public class ImportManager {
                         stirlingClass = importDaymapCourse(account, c);
                     }
 
-                    classManager.addClassToAccount(account, stirlingClass.getUuid());
+                    Thread importThread = new Thread(() -> importDaymapCourse(account, c));
+                    importThread.start();
 
                     List<UUID> students = Lists.newArrayList();
                     try {
@@ -238,17 +241,16 @@ public class ImportManager {
                         classManager.updateField(stirlingClass, "students", students);
                     }
 
-                    List<StirlingClass> classList = Lists.newArrayList();
+                    Map<UUID, ClassRole> members = Maps.newHashMap();
                     try {
-                        classList.addAll(account.getStirlingClasses());
+                        members.putAll(stirlingClass.getMembers());
                     } catch (NullPointerException ignored) {
                     }
 
-                    if (!classList.contains(stirlingClass)) {
-                        classList.add(stirlingClass);
+                    if (!members.containsKey(account.getUuid())) {
+                        members.put(account.getUuid(), ClassRole.STUDENT);
+                        classManager.updateField(stirlingClass, "members", members);
                     }
-
-                    accountManager.updateField(account, "stirlingClasses", classList);
                 });
                 t.start();
             });
@@ -362,6 +364,7 @@ public class ImportManager {
                 }
             });
 
+            UtilLog.getInstance().log("Adding notes to the daymap course: " + courseId + "!");
             mgr.updateField(clazz, "classNotes", classNotes);
         }
     }
@@ -383,6 +386,7 @@ public class ImportManager {
                 }
             });
 
+            UtilLog.getInstance().log("Adding homework to the daymap course: " + courseId + "!");
             mgr.updateField(clazz, "homework", hwList);
         }
     }
@@ -411,6 +415,7 @@ public class ImportManager {
                 }
             });
 
+            UtilLog.getInstance().log("Adding resources to the daymap course: " + courseId + "!");
             mgr.updateField(clazz, "resources", resourceList);
         }
     }

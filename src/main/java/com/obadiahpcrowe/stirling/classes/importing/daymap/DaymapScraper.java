@@ -16,6 +16,7 @@ import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingResult;
 import com.obadiahpcrowe.stirling.exceptions.FuckDaymapException;
+import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
@@ -473,9 +474,7 @@ public class DaymapScraper {
 
                                     ClassManager classManager = ClassManager.getInstance();
                                     StirlingClass stirlingClass = classManager.getByOwner(clazz.getId());
-                                    AttachableResource resource = new AttachableResource(stirlingClass.getUuid(),
-                                      UtilFile.getInstance().getStorageLoc() + File.separator + stirlingClass.getUuid() +
-                                        File.separator + "Resources" + File.separator + n.trim());
+                                    AttachableResource resource = new AttachableResource(stirlingClass.getUuid(), n.trim(), ARType.CLASS);
 
                                     CompletableFuture<Boolean> contains = new CompletableFuture<>();
                                     resList.forEach(res -> {
