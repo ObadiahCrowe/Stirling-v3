@@ -479,7 +479,6 @@ public class ClassesAPI implements APIController {
                 response.flushBuffer();
                 return gson.toJson(new StirlingMsg(MsgTemplate.DOWNLOADING_FILE, account.getLocale(), file.getName()));
             } catch (IOException e) {
-                e.printStackTrace();
                 return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "downloading the file"));
             }
         }
