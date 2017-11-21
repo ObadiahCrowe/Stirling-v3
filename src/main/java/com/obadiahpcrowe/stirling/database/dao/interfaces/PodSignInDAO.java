@@ -19,4 +19,6 @@ public interface PodSignInDAO extends DAO<PodUser, ObjectId> {
     PodUser getByUuid(UUID uuid);
 
     List<PodUser> getByStudentId(int studentId);
+
+    void updateField(PodUser user, String field, Object value);
 }

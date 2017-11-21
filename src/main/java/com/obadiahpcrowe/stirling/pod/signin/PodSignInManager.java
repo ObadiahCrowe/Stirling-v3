@@ -38,9 +38,9 @@ public class PodSignInManager {
         if (!studentIdExists(account)) {
             podSignInDAO.save(podUser);
         } else {
-            podSignInDAO.delete(getPodUser(account));
-            podSignInDAO.save(podUser);
+            podSignInDAO.updateField(getPodUser(account), "studentId", studentId);
         }
+
         return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_ID_ADDED, account.getLocale(), account.getDisplayName(),
           String.valueOf(studentId)));
     }
@@ -66,9 +66,7 @@ public class PodSignInManager {
         if (studentIdExists(account)) {
             PodUser podUser = getPodUser(account).setSignInOptions(line, assigningTeacher, reason);
 
-            podSignInDAO.delete(podUser);
-            podUser.setSignedIn(true);
-            podSignInDAO.save(podUser);
+            podSignInDAO.updateField(podUser, "signedIn", true);
 
             try {
                 PodScraper.getInstance().signIn(podUser.getStudentId(), line, assigningTeacher, reason);

@@ -3,7 +3,6 @@ package com.obadiahpcrowe.stirling.pod.signin.obj;
 import com.obadiahpcrowe.stirling.pod.signin.enums.PodLine;
 import com.obadiahpcrowe.stirling.pod.signin.enums.PodReason;
 import lombok.Getter;
-import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -26,7 +25,7 @@ public class PodUser {
 
     private UUID uuid;
     private int studentId;
-    private @Setter boolean signedIn;
+    private boolean signedIn;
     private String assigningTeacher;
     private PodLine line;
     private PodReason reason;
