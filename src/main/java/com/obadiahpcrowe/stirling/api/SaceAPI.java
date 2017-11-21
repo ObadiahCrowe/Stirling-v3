@@ -102,7 +102,8 @@ public class SaceAPI implements APIController {
 
     @CallableAPI(fields = {"grades", "rpGrade"})
     @RequestMapping(value = "/stirling/v3/sace/get/aggregate", method = RequestMethod.GET)
-    public String getSaceAggregate(String rawGrades, String rawGrade) {
+    public String getSaceAggregate(@RequestParam("grades") String rawGrades,
+                                   @RequestParam("rpGrade") String rawGrade) {
 
         List<String> gradeList = Lists.newArrayList();
         if (rawGrades != null) {

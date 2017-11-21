@@ -3,15 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/accounts/StirlingAccount.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/accounts/StirlingAccount.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/enums/LessonTimeSlot.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/enums/LessonTimeSlot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingDate.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingDate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -30,7 +22,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Stirling.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="28">
@@ -42,11 +34,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="SaceAPI.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="457">
+              <caret line="105" column="75" lean-forward="false" selection-start-line="105" selection-start-column="75" selection-end-line="105" selection-end-column="75" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ClassesAPI.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="325">
-              <caret line="470" column="55" lean-forward="false" selection-start-line="470" selection-start-column="55" selection-end-line="470" selection-end-column="55" />
+              <caret line="471" column="55" lean-forward="false" selection-start-line="471" selection-start-column="55" selection-end-line="471" selection-end-column="55" />
               <folding>
                 <element signature="method#createClass#0;class#ClassesAPI#0" expanded="false" />
                 <element signature="method#getClassList#0;class#ClassesAPI#0" expanded="false" />
@@ -154,7 +156,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/announcements/AnnouncementManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/surveys/obj/StirlingSurvey.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/session/SessionManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/sace/atar/AtarCalculator.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/FeedbackAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/notes/StirlingNote.java" />
@@ -178,6 +179,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/Stirling.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java" />
       </list>
     </option>
   </component>
@@ -688,14 +690,7 @@
       <workItem from="1511175863642" duration="80000" />
       <workItem from="1511182453690" duration="12000" />
       <workItem from="1511183041398" duration="1735000" />
-      <workItem from="1511221143793" duration="8249000" />
-    </task>
-    <task id="LOCAL-00100" summary="APIs and class stuff">
-      <created>1508323648176</created>
-      <option name="number" value="00100" />
-      <option name="presentableId" value="LOCAL-00100" />
-      <option name="project" value="LOCAL" />
-      <updated>1508323648177</updated>
+      <workItem from="1511221143793" duration="8354000" />
     </task>
     <task id="LOCAL-00101" summary="Unfucked notes.">
       <created>1508886738792</created>
@@ -1033,11 +1028,18 @@
       <option name="project" value="LOCAL" />
       <updated>1511171428292</updated>
     </task>
-    <option name="localTasksCounter" value="149" />
+    <task id="LOCAL-00149" summary="Class APIs and lots of fixes">
+      <created>1511229655222</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1511229655225</updated>
+    </task>
+    <option name="localTasksCounter" value="150" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="473072000" />
+    <option name="totallyTimeSpent" value="473177000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="35" y="22" width="1645" height="1028" extended-state="6" />
@@ -1083,7 +1085,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Atar calculations" />
     <MESSAGE value="Tweaks across the board" />
     <MESSAGE value="Finalising import credential apis" />
     <MESSAGE value="Lots of Moodle stuff" />
@@ -1108,7 +1109,8 @@
     <MESSAGE value="Finalised note APIs, fixed retarded bug" />
     <MESSAGE value="Signin API finished and amended locale setting in account api" />
     <MESSAGE value="Cloud rework completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cloud rework completed" />
+    <MESSAGE value="Class APIs and lots of fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Class APIs and lots of fixes" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1185,13 +1187,6 @@
         <state relative-caret-position="585">
           <caret line="100" column="63" lean-forward="false" selection-start-line="100" selection-start-column="63" selection-end-line="100" selection-end-column="63" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="625">
-          <caret line="117" column="65" lean-forward="false" selection-start-line="117" selection-start-column="65" selection-end-line="117" selection-end-column="65" />
         </state>
       </provider>
     </entry>
@@ -1412,8 +1407,8 @@
           <folding>
             <element signature="method#getClassTimetable#0;class#ClassManager#0" expanded="false" />
             <element signature="method#deleteClass#0;class#ClassManager#0" expanded="false" />
-            <element signature="e#6792#6793#0" expanded="true" />
-            <element signature="e#6846#6847#0" expanded="true" />
+            <element signature="e#6818#6819#0" expanded="true" />
+            <element signature="e#6872#6873#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1504,7 +1499,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="325">
-          <caret line="470" column="55" lean-forward="false" selection-start-line="470" selection-start-column="55" selection-end-line="470" selection-end-column="55" />
+          <caret line="471" column="55" lean-forward="false" selection-start-line="471" selection-start-column="55" selection-end-line="471" selection-end-column="55" />
           <folding>
             <element signature="method#createClass#0;class#ClassesAPI#0" expanded="false" />
             <element signature="method#getClassList#0;class#ClassesAPI#0" expanded="false" />
@@ -1530,6 +1525,14 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/SaceAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="105" column="75" lean-forward="false" selection-start-line="105" selection-start-column="75" selection-end-line="105" selection-end-column="75" />
+          <folding />
         </state>
       </provider>
     </entry>
