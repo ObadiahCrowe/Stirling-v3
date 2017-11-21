@@ -50,8 +50,6 @@ public class UtilFile {
 
         try {
             copyInternalFile("client_secret.json", home);
-            copyInternalFile("Translator.zip", home);
-            extractZip(new File(home + File.separator + "Translator.zip"), home);
         } catch (IOException e) {
             e.printStackTrace();
         }

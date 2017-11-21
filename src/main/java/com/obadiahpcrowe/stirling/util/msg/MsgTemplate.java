@@ -201,7 +201,9 @@ public enum MsgTemplate {
     IMPORT_REFRESH_INVALID(MsgResponse.STIRLING_ERROR, "Your refresh token has expired!", 0),
     IMPORT_CANNOT_VERIFY(MsgResponse.USER_ERROR, "We are unable to verify your {0} credentials!", 1),
 
-    RESOURCE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The resource, {0}, does not exist!", 1);
+    RESOURCE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The resource, {0}, does not exist!", 1),
+
+    TRANSLATION_FAILED(MsgResponse.STIRLING_ERROR, "Translation failed. Reverting to English until this is fixed. Sorry for the inconvenience.", 0);
 
     private MsgResponse response;
     private String message;
