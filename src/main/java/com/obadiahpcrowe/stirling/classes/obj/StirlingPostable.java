@@ -43,4 +43,21 @@ public class StirlingPostable {
         this.postDateTime = StirlingDate.getNow();
         this.resources = resources;
     }
+
+    public StirlingPostable(String title, String content, List<AttachableResource> resources, StirlingDate dateTime) {
+        this.uuid = UUID.randomUUID();
+        this.title = title;
+        this.content = content;
+        this.postDateTime = dateTime;
+        this.resources = resources;
+    }
+
+    public StirlingPostable(UUID sectionUuid, String title, String content, List<AttachableResource> resources, StirlingDate dateTime) {
+        this.uuid = UUID.randomUUID();
+        this.title = title;
+        this.content = content;
+        this.sectionUuid = sectionUuid;
+        this.postDateTime = dateTime;
+        this.resources = resources;
+    }
 }

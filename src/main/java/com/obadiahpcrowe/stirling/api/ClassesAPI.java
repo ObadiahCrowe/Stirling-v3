@@ -517,6 +517,36 @@ public class ClassesAPI implements APIController {
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/get/catchups", method = RequestMethod.GET)
+    public String getCatchups(@RequestParam("accountName") String accountName,
+                              @RequestParam("password") String password,
+                              @RequestParam("classUuid") String rawUuid) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "classUuid"));
+        }
+
+        StirlingClass stirlingClass = classManager.getByUuid(uuid);
+
+        if (stirlingClass == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), rawUuid));
+        }
+
+        return LocalisationManager.getInstance().translate(gson.toJson(stirlingClass.getCatchups()), account.getLocale());
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
     @RequestMapping(value = "/stirling/v3/classes/get/students", method = RequestMethod.GET)
     public String getStudents(@RequestParam("accountName") String accountName,
                               @RequestParam("password") String password,

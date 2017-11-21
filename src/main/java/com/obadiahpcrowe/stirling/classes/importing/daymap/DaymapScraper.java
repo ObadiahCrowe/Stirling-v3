@@ -21,6 +21,7 @@ import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.StirlingWebClient;
 import com.obadiahpcrowe.stirling.util.UtilFile;
+import com.obadiahpcrowe.stirling.util.UtilTime;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -419,12 +420,17 @@ public class DaymapScraper {
                                     String onClick = e.getLastElementChild().getAttribute("onclick")
                                       .replace("DMU.ViewPlan(", "").replace(");;", "");
 
+                                    String rawDate = e.getLastElementChild().getFirstElementChild().getTextContent();
+                                    rawDate = rawDate.split("2017")[0];
+
+                                    StirlingDate date = new StirlingDate(rawDate + "2017", UtilTime.getInstance().getFriendlyTime());
+
                                     try {
                                         HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/DayMap/curriculum/plan.aspx?id=" + onClick);
                                         HtmlDivision div = (HtmlDivision) resPage.getByXPath("//*[@class=\"lpAll\"]").get(0);
 
                                         StirlingPostable postable = new StirlingPostable(t,
-                                          div.getTextContent().replace("\\u00a0", ""), Lists.newArrayList());
+                                          div.getTextContent().replace("\\u00a0", ""), Lists.newArrayList(), date);
 
                                         if (type.equals("Class Note")) {
                                             noteList.add(postable);
@@ -442,8 +448,28 @@ public class DaymapScraper {
                                         HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/daymap/coms/Message.aspx?ID=" + onClick);
                                         HtmlDivision div = (HtmlDivision) resPage.getByXPath("//*[@id=\"msgBody\"]").get(0);
 
-                                        noteList.add(new StirlingPostable(t, div.getTextContent().replace("\\u00a0", ""),
-                                          Lists.newArrayList()));
+                                        CompletableFuture<String> rawDate = new CompletableFuture<>();
+                                        HtmlDivision header = (HtmlDivision) resPage.getByXPath("//*[@id=\"ctl00_cp_divMsg\"]/div[1]/div[1]").get(0);
+                                        header.getChildElements().forEach(c -> {
+                                            if (c.getAttribute("class").contains("msgSentOn")) {
+                                                rawDate.complete(c.getTextContent());
+                                            }
+                                        });
+
+                                        String date = rawDate.getNow(null);
+                                        if (date == null) {
+                                            noteList.add(new StirlingPostable(t, div.getTextContent().replace("\\u00a0", ""),
+                                              Lists.newArrayList()));
+                                            return;
+                                        } else {
+                                            String[] parts = date.split("2017 ");
+                                            date = parts[0];
+                                            date = date.split("posted ")[1];
+
+                                            StirlingDate d = new StirlingDate(date + "2017", parts[1]);
+                                            noteList.add(new StirlingPostable(t, div.getTextContent().replace("\\u00a0", ""),
+                                              Lists.newArrayList(), d));
+                                        }
                                     } catch (IOException e1) {
                                         e1.printStackTrace();
                                     }
