@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 /**
  * Created by: Obadiah Crowe (St1rling)
@@ -164,11 +166,11 @@ public class AccountAPI implements APIController {
             File out = new File(UtilFile.getInstance().getUserFolder(account.getUuid()) + File.separator +
               "Images" + File.separator + "avatar.png");
 
-            if (file.getOriginalFilename().endsWith(".png")) {
+            if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg") || file.getOriginalFilename().endsWith(".png")) {
                 file.transferTo(out);
                 return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(), "avatar", file.getOriginalFilename()));
             }
-            return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".png"));
+            return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".png, .jpg, or .jpeg"));
         } catch (IOException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "updating your avatar"));
         }
@@ -192,11 +194,11 @@ public class AccountAPI implements APIController {
             File out = new File(UtilFile.getInstance().getUserFolder(account.getUuid()) + File.separator +
               "Images" + File.separator + "banner.jpg");
 
-            if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg")) {
+            if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg") || file.getOriginalFilename().endsWith(".png")) {
                 file.transferTo(out);
                 return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(), "banner", file.getOriginalFilename()));
             }
-            return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".jpg"));
+            return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".png, .jpg, or .jpeg"));
         } catch (IOException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "updating your banner"));
         }
@@ -252,29 +254,36 @@ public class AccountAPI implements APIController {
 
     @CallableAPI(fields = { "accountName", "password" })
     @RequestMapping(value = "/stirling/v3/accounts/get/avatar", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getAvatar(@RequestParam("accountName") String accountName,
-                            @RequestParam("password") String password) {
+    public String getAvatar(@RequestParam("accountName") String accountName,
+                            @RequestParam("password") String password,
+                            HttpServletResponse response) {
         StirlingAccount account = accountManager.getAccount(accountName);
         if (account == null) {
-            return null;
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
         }
 
         if (!accountManager.validCredentials(accountName, password)) {
-            return null;
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
         }
 
+        File file = account.getAvatarImage().getFile();
         try {
-            InputStream inputStream = new FileInputStream(account.getAvatarImage().getFile());
-            return IOUtils.toByteArray(inputStream);
+            InputStream in = new FileInputStream(file);
+            response.setContentType(Files.probeContentType(file.toPath()));
+
+            IOUtils.copy(in, response.getOutputStream());
+            response.flushBuffer();
+            return gson.toJson(new StirlingMsg(MsgTemplate.DOWNLOADING_FILE, account.getLocale(), file.getName()));
         } catch (IOException e) {
-            return null;
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "fetching your avatar"));
         }
     }
 
     @CallableAPI(fields = { "accountName", "password" })
     @RequestMapping(value = "/stirling/v3/accounts/get/banner", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getBanner(@RequestParam("accountName") String accountName,
-                            @RequestParam("password") String password) {
+    public String getBanner(@RequestParam("accountName") String accountName,
+                            @RequestParam("password") String password,
+                            HttpServletResponse response) {
         StirlingAccount account = accountManager.getAccount(accountName);
         if (account == null) {
             return null;
@@ -284,11 +293,16 @@ public class AccountAPI implements APIController {
             return null;
         }
 
+        File file = account.getBannerImage().getFile();
         try {
-            InputStream inputStream = new FileInputStream(account.getBannerImage().getFile());
-            return IOUtils.toByteArray(inputStream);
+            InputStream in = new FileInputStream(file);
+            response.setContentType(Files.probeContentType(file.toPath()));
+
+            IOUtils.copy(in, response.getOutputStream());
+            response.flushBuffer();
+            return gson.toJson(new StirlingMsg(MsgTemplate.DOWNLOADING_FILE, account.getLocale(), file.getName()));
         } catch (IOException e) {
-            return null;
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "fetching your banner"));
         }
     }
 
