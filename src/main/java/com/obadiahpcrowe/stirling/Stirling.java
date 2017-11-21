@@ -1,7 +1,6 @@
 package com.obadiahpcrowe.stirling;
 
 import com.obadiahpcrowe.stirling.api.*;
-import com.obadiahpcrowe.stirling.api.debug.DebugAPI;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
@@ -30,14 +29,13 @@ public class Stirling {
     private static Stirling instance;
 
     @Getter
-    private StirlingVersion version = new StirlingVersion(VersionType.DEVELOPMENT_BUILD, 3.0, 0);
+    private StirlingVersion version = new StirlingVersion(VersionType.RELEASE, 3.0, 0);
 
     // TODO: 17/10/17 Add map null checks
     // TODO: 21/11/17 Finish fleshing out classes api
 
     // AFTER RELEASE
     // TODO: 17/10/17 Generate report, aggregate, and predicted grades from Stirling results
-    // TODO: 16/11/17 Moodle workbooks maybe
     // TODO: 27/10/17 Junit
 
     public static void main(String[] args) {
@@ -67,11 +65,6 @@ public class Stirling {
           new SaceAPI(),
           new SignInAPI()
         );
-
-        // Only for development builds.
-        if (getInstance().getVersion().getType() == VersionType.DEVELOPMENT_BUILD) {
-            APIManager.getInstance().registerCall(DebugAPI.class, true);
-        }
 
         utilLog.log("Loading modules..");
         ModuleManager.getInstance().registerModules();
