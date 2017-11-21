@@ -13,10 +13,10 @@ import lombok.Getter;
 public class IdResult {
 
     private String[] srclangs;
-    private int[] srclangs_confidences;
+    private double[] srclangs_confidences;
     private String[] extended_srclangs;
 
-    public IdResult(String[] srclangs, int[] srclangs_confidences, String[] extended_srclangs) {
+    public IdResult(String[] srclangs, double[] srclangs_confidences, String[] extended_srclangs) {
         this.srclangs = srclangs;
         this.srclangs_confidences = srclangs_confidences;
         this.extended_srclangs = extended_srclangs;

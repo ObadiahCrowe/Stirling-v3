@@ -16,10 +16,10 @@ public class TranslateResponse {
 
     private List<TranslateSentence> sentences;
     private String src;
-    private int confidence;
+    private double confidence;
     private IdResult id_result;
 
-    public TranslateResponse(List<TranslateSentence> sentences, String src, int confidence, IdResult id_result) {
+    public TranslateResponse(List<TranslateSentence> sentences, String src, double confidence, IdResult id_result) {
         this.sentences = sentences;
         this.src = src;
         this.confidence = confidence;
