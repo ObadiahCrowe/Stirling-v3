@@ -116,7 +116,7 @@ public class SaceAPI implements APIController {
         List<Grade> grades = Lists.newArrayList();
         gradeList.forEach(g -> {
             try {
-                grades.add(Grade.getGradeFromText(g.toUpperCase()));
+                grades.add(Grade.valueOf(g.toUpperCase()));
             } catch (IllegalArgumentException e) {
                 return;
             }
@@ -124,7 +124,7 @@ public class SaceAPI implements APIController {
 
         Grade rpGrade;
         try {
-            rpGrade = Grade.getGradeFromText(rawGrade);
+            rpGrade = Grade.valueOf(rawGrade.toUpperCase());
         } catch (IllegalArgumentException e) {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, StirlingLocale.ENGLISH, rawGrade, "rpGrade"));
         }
