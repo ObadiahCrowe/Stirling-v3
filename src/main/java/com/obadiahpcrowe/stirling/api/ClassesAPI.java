@@ -605,4 +605,79 @@ public class ClassesAPI implements APIController {
 
         return LocalisationManager.getInstance().translate(gson.toJson(stirlingClass.getTeachers()), account.getLocale());
     }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/get/assignments", method = RequestMethod.GET)
+    public String getAssignments(@RequestParam("accountName") String accountName,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("classUuid") String rawUuid,
+                                 @RequestParam(value = "studentUuid", required = false) String studentId) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/get/results", method = RequestMethod.GET)
+    public String getResults(@RequestParam("accountName") String accountName,
+                             @RequestParam("password") String password,
+                             @RequestParam("classUuid") String rawUuid,
+                             @RequestParam(value = "studentUuid", required = false) String studentId) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/get/progressMarkers", method = RequestMethod.GET)
+    public String getProgressMarkers(@RequestParam("accountName") String accountName,
+                                     @RequestParam("password") String password,
+                                     @RequestParam("classUuid") String rawUuid,
+                                     @RequestParam(value = "studentUuid", required = false) String studentId) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/update/owners", method = RequestMethod.GET)
+    public String updateOwners(@RequestParam("accountName") String accountName,
+                               @RequestParam("password") String password,
+                               @RequestParam("classUuid") String rawUuid) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/update/name", method = RequestMethod.GET)
+    public String updateName(@RequestParam("accountName") String accountName,
+                             @RequestParam("password") String password,
+                             @RequestParam("classUuid") String rawUuid) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/update/desc", method = RequestMethod.GET)
+    public String updateDesc(@RequestParam("accountName") String accountName,
+                             @RequestParam("password") String password,
+                             @RequestParam("classUuid") String rawUuid) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/update/room", method = RequestMethod.GET)
+    public String updateRoom(@RequestParam("accountName") String accountName,
+                             @RequestParam("password") String password,
+                             @RequestParam("classUuid") String rawUuid) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/update/students", method = RequestMethod.GET)
+    public String updateStudents(@RequestParam("accountName") String accountName,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("classUuid") String rawUuid) {
+        return "";
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/update/teachers", method = RequestMethod.GET)
+    public String updateTeachers(@RequestParam("accountName") String accountName,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("classUuid") String rawUuid) {
+        return "";
+    }
 }
