@@ -52,7 +52,7 @@ public class ClassesAPI implements APIController {
 
     private AccountManager accountManager = AccountManager.getInstance();
     private ClassManager classManager = ClassManager.getInstance();
-    private final String CALL_DISABLED = "This API call is undergoing rigorous testing before becoming a beta API. Please wait a while.";
+    private final String CALL_DISABLED = "This API call is undergoing rigorous testing before becoming a beta API. Please remain patient.";
     private Gson gson = new Gson();
     private ImportManager importManager = ImportManager.getInstance();
 
@@ -612,7 +612,7 @@ public class ClassesAPI implements APIController {
                                  @RequestParam("password") String password,
                                  @RequestParam("classUuid") String rawUuid,
                                  @RequestParam(value = "studentUuid", required = false) String studentId) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
@@ -621,7 +621,7 @@ public class ClassesAPI implements APIController {
                              @RequestParam("password") String password,
                              @RequestParam("classUuid") String rawUuid,
                              @RequestParam(value = "studentUuid", required = false) String studentId) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
@@ -630,7 +630,7 @@ public class ClassesAPI implements APIController {
                                      @RequestParam("password") String password,
                                      @RequestParam("classUuid") String rawUuid,
                                      @RequestParam(value = "studentUuid", required = false) String studentId) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -638,7 +638,7 @@ public class ClassesAPI implements APIController {
     public String updateOwners(@RequestParam("accountName") String accountName,
                                @RequestParam("password") String password,
                                @RequestParam("classUuid") String rawUuid) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -646,7 +646,7 @@ public class ClassesAPI implements APIController {
     public String updateName(@RequestParam("accountName") String accountName,
                              @RequestParam("password") String password,
                              @RequestParam("classUuid") String rawUuid) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -654,7 +654,7 @@ public class ClassesAPI implements APIController {
     public String updateDesc(@RequestParam("accountName") String accountName,
                              @RequestParam("password") String password,
                              @RequestParam("classUuid") String rawUuid) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -662,7 +662,7 @@ public class ClassesAPI implements APIController {
     public String updateRoom(@RequestParam("accountName") String accountName,
                              @RequestParam("password") String password,
                              @RequestParam("classUuid") String rawUuid) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -670,7 +670,7 @@ public class ClassesAPI implements APIController {
     public String updateStudents(@RequestParam("accountName") String accountName,
                                  @RequestParam("password") String password,
                                  @RequestParam("classUuid") String rawUuid) {
-        return "";
+        return CALL_DISABLED;
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -678,6 +678,6 @@ public class ClassesAPI implements APIController {
     public String updateTeachers(@RequestParam("accountName") String accountName,
                                  @RequestParam("password") String password,
                                  @RequestParam("classUuid") String rawUuid) {
-        return "";
+        return CALL_DISABLED;
     }
 }
