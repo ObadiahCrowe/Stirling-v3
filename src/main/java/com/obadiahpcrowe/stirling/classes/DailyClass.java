@@ -21,6 +21,7 @@ public class DailyClass {
     private String className;
     private UUID classUuid;
     private String teacher;
+    private String room;
     private StirlingDate startTime;
     private StirlingDate endTime;
     private StirlingPostable classNote;
@@ -33,9 +34,14 @@ public class DailyClass {
         this.classUuid = classUuid;
 
         try {
+            this.room = stirlingClass.getRoom();
+        } catch (NullPointerException ignored) {
+        }
+
+        try {
             this.teacher = AccountManager.getInstance().getAccount(stirlingClass.getTeachers().get(0)).getAccountName();
         } catch (NullPointerException ignored) {
-            this.teacher = "";
+            this.teacher = stirlingClass.getOwners().get(1);
         }
 
         this.startTime = startTime;
