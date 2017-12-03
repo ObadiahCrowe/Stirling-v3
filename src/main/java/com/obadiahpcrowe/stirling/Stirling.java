@@ -35,6 +35,8 @@ public class Stirling {
     // TODO: 17/10/17 Generate report, aggregate, and predicted grades from Stirling results
     // TODO: 27/10/17 Junit
 
+    // TODO: 2/12/17 create daily classes object that uses the actual class uuid rather than a lesson uuid
+
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
         System.out.println("Initialising Stirling..");

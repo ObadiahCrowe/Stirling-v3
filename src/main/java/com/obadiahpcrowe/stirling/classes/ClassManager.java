@@ -91,42 +91,20 @@ public class ClassManager {
         return null;
     }
 
-    public List<StirlingLesson> getDailyClasses(StirlingAccount account, StirlingDate date) {
+    public List<DailyClass> getDailyClasses(StirlingAccount account, StirlingDate date) {
         List<StirlingClass> classes = getAllClasses(account);
 
-        List<StirlingLesson> lessons = Lists.newArrayList();
-        classes.forEach(c -> {
-            CompletableFuture<StirlingPostable> homework = new CompletableFuture<>();
-            CompletableFuture<StirlingPostable> classNote = new CompletableFuture<>();
-
-            try {
-                c.getHomework().forEach(hw -> {
-                    if (hw.getPostDateTime().getDate().equalsIgnoreCase(date.getDate())) {
-                        homework.complete(hw);
-                    }
-                });
-            } catch (NullPointerException ignored) {
+        Map<UUID, StirlingLesson> lessons = Maps.newHashMap();
+        classes.forEach(c -> c.getLessons().forEach(l -> {
+            if (l.getStartDateTime().getDate().equalsIgnoreCase(date.getDate())) {
+                lessons.put(c.getUuid(), l);
             }
+        }));
 
-            try {
-                c.getClassNotes().forEach(cn -> {
-                    if (cn.getPostDateTime().getDate().equalsIgnoreCase(date.getDate())) {
-                        classNote.complete(cn);
-                    }
-                });
-            } catch (NullPointerException ignored) {
-            }
+        List<DailyClass> dailyClasses = Lists.newArrayList();
+        lessons.forEach((u, l) -> dailyClasses.add(new DailyClass(account.getUuid(), u, l.getStartDateTime(), l.getEndDateTime())));
 
-            c.getLessons().forEach(l -> {
-                if (l.getStartDateTime().getDate().equalsIgnoreCase(date.getDate())) {
-                    l.setHomework(homework.getNow(null));
-                    l.setClassNote(classNote.getNow(null));
-                    lessons.add(l);
-                }
-            });
-        });
-
-        return lessons;
+        return dailyClasses;
     }
 
     public String deleteClass(StirlingAccount account, UUID classUuid) {

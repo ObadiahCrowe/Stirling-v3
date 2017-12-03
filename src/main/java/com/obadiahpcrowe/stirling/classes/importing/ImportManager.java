@@ -217,43 +217,46 @@ public class ImportManager {
 
     public void importAllDaymap(StirlingAccount account) {
         if (credentialsExist(account, ImportSource.DAYMAP)) {
-            List<ImportableClass> classes = getDaymapCourses(account);
-            classes.forEach(c -> {
-                Thread t = new Thread(() -> {
-                    StirlingClass stirlingClass;
-                    if (classManager.classExists(c.getClassName())) {
-                        stirlingClass = classManager.getByOwner(c.getId());
-                    } else {
-                        stirlingClass = importDaymapCourse(account, c);
-                    }
+            Thread j = new Thread(() -> {
+                List<ImportableClass> classes = getDaymapCourses(account);
+                classes.forEach(c -> {
+                    Thread t = new Thread(() -> {
+                        StirlingClass stirlingClass;
+                        if (classManager.classExists(c.getClassName())) {
+                            stirlingClass = classManager.getByOwner(c.getId());
+                        } else {
+                            stirlingClass = importDaymapCourse(account, c);
+                        }
 
-                    Thread importThread = new Thread(() -> importDaymapCourse(account, c));
-                    importThread.start();
+                        Thread importThread = new Thread(() -> importDaymapCourse(account, c));
+                        importThread.start();
 
-                    List<UUID> students = Lists.newArrayList();
-                    try {
-                        students.addAll(stirlingClass.getStudents());
-                    } catch (NullPointerException ignored) {
-                    }
+                        List<UUID> students = Lists.newArrayList();
+                        try {
+                            students.addAll(stirlingClass.getStudents());
+                        } catch (NullPointerException ignored) {
+                        }
 
-                    if (!students.contains(account.getUuid())) {
-                        students.add(account.getUuid());
-                        classManager.updateField(stirlingClass, "students", students);
-                    }
+                        if (!students.contains(account.getUuid())) {
+                            students.add(account.getUuid());
+                            classManager.updateField(stirlingClass, "students", students);
+                        }
 
-                    Map<UUID, ClassRole> members = Maps.newHashMap();
-                    try {
-                        members.putAll(stirlingClass.getMembers());
-                    } catch (NullPointerException ignored) {
-                    }
+                        Map<UUID, ClassRole> members = Maps.newHashMap();
+                        try {
+                            members.putAll(stirlingClass.getMembers());
+                        } catch (NullPointerException ignored) {
+                        }
 
-                    if (!members.containsKey(account.getUuid())) {
-                        members.put(account.getUuid(), ClassRole.STUDENT);
-                        classManager.updateField(stirlingClass, "members", members);
-                    }
+                        if (!members.containsKey(account.getUuid())) {
+                            members.put(account.getUuid(), ClassRole.STUDENT);
+                            classManager.updateField(stirlingClass, "members", members);
+                        }
+                    });
+                    t.start();
                 });
-                t.start();
             });
+            j.start();
         }
     }
 
