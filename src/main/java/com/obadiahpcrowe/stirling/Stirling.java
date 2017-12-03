@@ -29,7 +29,7 @@ public class Stirling {
     private static Stirling instance;
 
     @Getter
-    private StirlingVersion version = new StirlingVersion(VersionType.RELEASE, 3.0, 0);
+    private StirlingVersion version = new StirlingVersion(VersionType.RELEASE, 3.0);
 
     // v3.1 onwards
     // TODO: 17/10/17 Generate report, aggregate, and predicted grades from Stirling results

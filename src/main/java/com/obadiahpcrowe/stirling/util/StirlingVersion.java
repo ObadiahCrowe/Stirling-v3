@@ -15,11 +15,9 @@ public class StirlingVersion {
 
     private VersionType type;
     private double majorVersion;
-    private int minVersion;
 
-    public StirlingVersion(VersionType type, double majorVersion, int minVersion) {
+    public StirlingVersion(VersionType type, double majorVersion) {
         this.type = type;
         this.majorVersion = majorVersion;
-        this.minVersion = minVersion;
     }
 }
