@@ -40,19 +40,27 @@ public class DailyClass {
 
         this.startTime = startTime;
         this.endTime = endTime;
+
+        try {
+            stirlingClass.getClassNotes().forEach(n -> {
+                if (n.getPostDateTime().getDate().equalsIgnoreCase(startTime.getDate())) {
+                    this.classNote = n;
+                }
+            });
+        } catch (NullPointerException ignored) {
+        }
+
+        try {
+            stirlingClass.getHomework().forEach(hw -> {
+                if (hw.getPostDateTime().getDate().equalsIgnoreCase(startTime.getDate())) {
+                    this.homework = hw;
+                }
+            });
+        } catch (NullPointerException ignored) {
+        }
+
         stirlingClass.getLessons().forEach(l -> {
-            if (l.getStartDateTime().getDate().equalsIgnoreCase(startTime.getDate()) && l.getEndDateTime().getDate().equalsIgnoreCase(endTime.getDate())
-              && l.getStartDateTime().getTime().equalsIgnoreCase(startTime.getTime()) && l.getEndDateTime().getTime().equalsIgnoreCase(endTime.getTime())) {
-                try {
-                    this.classNote = l.getClassNote();
-                } catch (NullPointerException ignored) {
-                }
-
-                try {
-                    this.homework = l.getHomework();
-                } catch (NullPointerException ignored) {
-                }
-
+            if (l.getStartDateTime().getDate().equalsIgnoreCase(startTime.getDate())) {
                 try {
                     this.attendanceStatus = l.getStudentAttendance().get(accountUuid);
                 } catch (NullPointerException ignored) {
