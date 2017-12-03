@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.classes.importing.daymap;
 import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.enums.AssignmentType;
@@ -572,6 +573,9 @@ public class DaymapScraper {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        System.out.println(new Gson().toJson(daymapClass));
+        System.exit(0);
 
         ImportManager importManager = ImportManager.getInstance();
 

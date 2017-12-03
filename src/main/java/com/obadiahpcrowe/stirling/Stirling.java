@@ -1,7 +1,12 @@
 package com.obadiahpcrowe.stirling;
 
+import com.obadiahpcrowe.stirling.accounts.AccountManager;
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
+import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
+import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
+import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -13,7 +18,6 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -35,7 +39,7 @@ public class Stirling {
     // TODO: 17/10/17 Generate report, aggregate, and predicted grades from Stirling results
     // TODO: 27/10/17 Junit
 
-    // TODO: 2/12/17 create daily classes object that uses the actual class uuid rather than a lesson uuid
+    // TODO: 3/12/17 Fix daymap scrapers that use different user settings
 
     public static void main(String[] args) {
         UtilLog utilLog = UtilLog.getInstance();
@@ -81,7 +85,11 @@ public class Stirling {
         ModuleManager.getInstance().registerAPICalls();
 
         utilLog.log("Starting REST API service..");
-        SpringApplication.run(Stirling.class, args);
+        //SpringApplication.run(Stirling.class, args);
+
+        StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
+        ImportAccount importAccount = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance().getByUuid(account.getUuid());
+        DaymapScraper.getInstance().getFullCourse(importAccount, new ImportableClass("12 Legal StudiesF", "4103"), false);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
