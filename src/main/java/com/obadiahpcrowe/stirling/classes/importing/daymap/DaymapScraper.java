@@ -15,7 +15,7 @@ import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingResult;
-import com.obadiahpcrowe.stirling.exceptions.FuckDaymapException;
+import com.obadiahpcrowe.stirling.exceptions.DaymapException;
 import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
@@ -171,11 +171,11 @@ public class DaymapScraper {
 
         try {
             if (timeSlot.get() == null) {
-                throw new FuckDaymapException("Could not retrieve timeslot from DayMap! Cannot complete import!");
+                throw new DaymapException("Could not retrieve timeslot from DayMap! Cannot complete import!");
             }
         } catch (InterruptedException | ExecutionException e) {
             return null;
-        } catch (FuckDaymapException e) {
+        } catch (DaymapException e) {
             e.printStackTrace();
             return null;
         }
@@ -183,8 +183,8 @@ public class DaymapScraper {
         String dId = dataId.getNow("NO_ID");
         if (dId.equalsIgnoreCase("NO_ID")) {
             try {
-                throw new FuckDaymapException("Cloud not retrieve data-id from DayMap! Cannot complete import!");
-            } catch (FuckDaymapException e) {
+                throw new DaymapException("Cloud not retrieve data-id from DayMap! Cannot complete import!");
+            } catch (DaymapException e) {
                 e.printStackTrace();
             }
         }
@@ -491,8 +491,8 @@ public class DaymapScraper {
                                     String n = name.getNow(null);
                                     if (n == null) {
                                         try {
-                                            throw new FuckDaymapException("Resource name is null!");
-                                        } catch (FuckDaymapException e1) {
+                                            throw new DaymapException("Resource name is null!");
+                                        } catch (DaymapException e1) {
                                             e1.printStackTrace();
                                             return;
                                         }
@@ -580,6 +580,7 @@ public class DaymapScraper {
                 importManager.addNotesToDaymapClass(clazz.getId(), classNotes.get());
                 importManager.addHomeworkToDaymapClass(clazz.getId(), homework.get());
                 importManager.addResourcesToDaymapClass(clazz.getId(), resources.get());
+                ClassManager.getInstance().updateField(ClassManager.getInstance().getByOwner(clazz.getId()), "room", room.get());
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

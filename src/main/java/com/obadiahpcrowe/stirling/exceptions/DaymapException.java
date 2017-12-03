@@ -7,9 +7,9 @@ package com.obadiahpcrowe.stirling.exceptions;
  * Package: com.obadiahpcrowe.stirling.exceptions
  * Copyright (c) Obadiah Crowe 2017
  */
-public class FuckDaymapException extends Exception {
+public class DaymapException extends Exception {
 
-    public FuckDaymapException(String message) {
+    public DaymapException(String message) {
         super(message);
     }
 }
