@@ -362,7 +362,15 @@ public class ImportManager {
             }
 
             notes.forEach(note -> {
-                if (!classNotes.contains(note)) {
+                CompletableFuture<Boolean> contains = new CompletableFuture<>();
+                classNotes.forEach(n -> {
+                    if (n.getTitle().equals(note.getTitle()) &&
+                      n.getPostDateTime().getDate().equals(note.getPostDateTime().getDate())) {
+                        contains.complete(true);
+                    }
+                });
+
+                if (!contains.getNow(false)) {
                     classNotes.add(note);
                 }
             });
@@ -384,7 +392,15 @@ public class ImportManager {
             }
 
             homework.forEach(hw -> {
-                if (!hwList.contains(hw)) {
+                CompletableFuture<Boolean> contains = new CompletableFuture<>();
+                hwList.forEach(h -> {
+                    if (h.getTitle().equals(hw.getTitle()) &&
+                      h.getPostDateTime().getDate().equals(hw.getPostDateTime().getDate())) {
+                        contains.complete(true);
+                    }
+                });
+
+                if (!contains.getNow(false)) {
                     hwList.add(hw);
                 }
             });

@@ -31,7 +31,13 @@ public class DailyClass {
         StirlingClass stirlingClass = ClassManager.getInstance().getByUuid(classUuid);
         this.className = stirlingClass.getName();
         this.classUuid = classUuid;
-        this.teacher = AccountManager.getInstance().getAccount(stirlingClass.getTeachers().get(0)).getAccountName();
+
+        try {
+            this.teacher = AccountManager.getInstance().getAccount(stirlingClass.getTeachers().get(0)).getAccountName();
+        } catch (NullPointerException ignored) {
+            this.teacher = "";
+        }
+
         this.startTime = startTime;
         this.endTime = endTime;
         stirlingClass.getLessons().forEach(l -> {

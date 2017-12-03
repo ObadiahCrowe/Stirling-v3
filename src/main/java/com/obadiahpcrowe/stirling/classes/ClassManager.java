@@ -96,7 +96,7 @@ public class ClassManager {
 
         Map<UUID, StirlingLesson> lessons = Maps.newHashMap();
         classes.forEach(c -> c.getLessons().forEach(l -> {
-            if (l.getStartDateTime().getDate().equalsIgnoreCase(date.getDate())) {
+            if (l.getStartDateTime().getDate().contains(date.getDate())) {
                 lessons.put(c.getUuid(), l);
             }
         }));
