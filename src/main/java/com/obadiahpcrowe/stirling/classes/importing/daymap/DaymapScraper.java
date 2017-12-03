@@ -577,10 +577,20 @@ public class DaymapScraper {
 
         Thread addThread = new Thread(() -> {
             try {
+                StirlingClass stirlingClass = ClassManager.getInstance().getByOwner(clazz.getId());
+                List<String> owners = Lists.newArrayList();
+
+                try {
+                    owners.addAll(stirlingClass.getOwners());
+                    owners.add(teacher.get().trim());
+                } catch (NullPointerException ignored) {
+                }
+
                 importManager.addNotesToDaymapClass(clazz.getId(), classNotes.get());
                 importManager.addHomeworkToDaymapClass(clazz.getId(), homework.get());
                 importManager.addResourcesToDaymapClass(clazz.getId(), resources.get());
-                ClassManager.getInstance().updateField(ClassManager.getInstance().getByOwner(clazz.getId()), "room", room.get());
+                ClassManager.getInstance().updateField(stirlingClass, "room", room.get());
+                ClassManager.getInstance().updateField(stirlingClass, "owners", owners);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/exceptions/FuckDaymapException.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/exceptions/DaymapException.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -36,7 +34,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StirlingLesson.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="StirlingLesson.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/obj/StirlingLesson.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="182">
@@ -46,42 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClassesAPI.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="621" column="79" lean-forward="false" selection-start-line="621" selection-start-column="79" selection-end-line="621" selection-end-column="79" />
-              <folding>
-                <element signature="method#createClass#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#deleteClass#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#getName#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#getDesc#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#getRoom#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#getClassNotes#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#getHomework#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#getResources#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#downloadResource#0;class#ClassesAPI#0" expanded="false" />
-                <element signature="method#getCatchups#0;class#ClassesAPI#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="StirlingDate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingDate.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="364">
               <caret line="26" column="41" lean-forward="false" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DaymapScraper.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="571" column="63" lean-forward="true" selection-start-line="571" selection-start-column="63" selection-end-line="571" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -353,7 +320,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="exceptions" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -766,14 +733,7 @@
       <workItem from="1512214485599" duration="4171000" />
       <workItem from="1512270383153" duration="349000" />
       <workItem from="1512271042076" duration="2543000" />
-      <workItem from="1512279040087" duration="1208000" />
-    </task>
-    <task id="LOCAL-00115" summary="Fixed daymap.. scrapers.. aha you can never fix daymap">
-      <created>1509966224628</created>
-      <option name="number" value="00115" />
-      <option name="presentableId" value="LOCAL-00115" />
-      <option name="project" value="LOCAL" />
-      <updated>1509966224628</updated>
+      <workItem from="1512279040087" duration="1446000" />
     </task>
     <task id="LOCAL-00116" summary="Fixing more daymap stuff and added @CallableAPI to the Import APIs">
       <created>1510018088116</created>
@@ -1111,11 +1071,18 @@
       <option name="project" value="LOCAL" />
       <updated>1512273616669</updated>
     </task>
-    <option name="localTasksCounter" value="164" />
+    <task id="LOCAL-00164" summary="Fixes">
+      <created>1512280588590</created>
+      <option name="number" value="00164" />
+      <option name="presentableId" value="LOCAL-00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1512280588591</updated>
+    </task>
+    <option name="localTasksCounter" value="165" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="498880000" />
+    <option name="totallyTimeSpent" value="499118000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="992" extended-state="6" />
@@ -1163,7 +1130,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Announcement and other api stuff" />
     <MESSAGE value=".png compatibility in announcements" />
     <MESSAGE value="Finalising announcement apis" />
     <MESSAGE value="Large cleanup and some sace apis" />
@@ -1188,7 +1154,8 @@
     <MESSAGE value="New daily classes stuff and a few bugfixes" />
     <MESSAGE value="Fixing duplicate entry bug" />
     <MESSAGE value="More fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="More fixes" />
+    <MESSAGE value="Fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixes" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1493,14 +1460,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/obj/StirlingLesson.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="19" column="43" lean-forward="false" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/obj/StirlingSection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -1520,14 +1479,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="532">
           <caret line="53" column="25" lean-forward="false" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingDate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="26" column="41" lean-forward="false" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
           <folding />
         </state>
       </provider>
@@ -1553,25 +1504,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="621" column="79" lean-forward="false" selection-start-line="621" selection-start-column="79" selection-end-line="621" selection-end-column="79" />
-          <folding>
-            <element signature="method#createClass#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#deleteClass#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#getName#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#getDesc#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#getRoom#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#getClassNotes#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#getHomework#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#getResources#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#downloadResource#0;class#ClassesAPI#0" expanded="false" />
-            <element signature="method#getCatchups#0;class#ClassesAPI#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/obj/ImportableClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
@@ -1590,8 +1522,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="571" column="63" lean-forward="true" selection-start-line="571" selection-start-column="63" selection-end-line="571" selection-end-column="63" />
+        <state relative-caret-position="320">
+          <caret line="581" column="16" lean-forward="true" selection-start-line="581" selection-start-column="16" selection-end-line="581" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingDate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="26" column="41" lean-forward="false" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="624" column="79" lean-forward="false" selection-start-line="624" selection-start-column="79" selection-end-line="624" selection-end-column="79" />
+          <folding>
+            <element signature="method#createClass#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#deleteClass#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#getName#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#getDesc#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#getRoom#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#getClassNotes#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#getHomework#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#getResources#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#downloadResource#0;class#ClassesAPI#0" expanded="false" />
+            <element signature="method#getCatchups#0;class#ClassesAPI#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/obj/StirlingLesson.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="19" column="43" lean-forward="false" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
           <folding />
         </state>
       </provider>
