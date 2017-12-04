@@ -39,14 +39,9 @@ public class UtilTime {
 
     public String getFriendlyTime() {
         DateTime now = DateTime.now();
-        String ampm = "am";
         int hour = now.getHourOfDay();
-        if (hour >= 13) {
-            hour = hour - 12;
-            ampm = "pm";
-        }
 
-        String minStr = "";
+        String minStr;
         int min = now.getMinuteOfHour();
         if (min < 10) {
             minStr = "0" + String.valueOf(min);
@@ -54,7 +49,7 @@ public class UtilTime {
             minStr = String.valueOf(min);
         }
 
-        return hour + ":" + minStr + " " + ampm.toUpperCase();
+        return hour + ":" + minStr;
     }
 
     public static UtilTime getInstance() {
