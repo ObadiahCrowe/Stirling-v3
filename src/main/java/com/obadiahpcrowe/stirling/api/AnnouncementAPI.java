@@ -49,7 +49,7 @@ public class AnnouncementAPI implements APIController {
     private AnnouncementManager manager = AnnouncementManager.getInstance();
     private AccountManager accountManager = AccountManager.getInstance();
 
-    @CallableAPI(fields = { "accountName", "password", "type", "image", "title", "desc", "content", "resourceNames", "targetAudiences", "tags" })
+    @CallableAPI(fields = {"accountName", "password", "type", "image", "title", "desc", "content", "resources", "targetAudiences", "tags"})
     @RequestMapping(value = "/stirling/v3/announcements/create", method = RequestMethod.POST)
     public String createAnnouncement(@RequestParam("accountName") String accountName,
                                      @RequestParam("password") String password,
