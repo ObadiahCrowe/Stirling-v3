@@ -18,10 +18,7 @@ import com.obadiahpcrowe.stirling.classes.obj.StirlingResult;
 import com.obadiahpcrowe.stirling.exceptions.DaymapException;
 import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
-import com.obadiahpcrowe.stirling.util.StirlingDate;
-import com.obadiahpcrowe.stirling.util.StirlingWebClient;
-import com.obadiahpcrowe.stirling.util.UtilFile;
-import com.obadiahpcrowe.stirling.util.UtilTime;
+import com.obadiahpcrowe.stirling.util.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -585,7 +582,7 @@ public class DaymapScraper {
 
         DaymapClass daymapClass = null;
         try {
-            daymapClass = new DaymapClass(clazz, timeSlot.get(), room.get(), teacher.get().trim(),
+            daymapClass = new DaymapClass(clazz, timeSlot.get(), room.get(), NameFormatter.formatName(teacher.get().trim()),
               classNotes.get(), homework.get(), resources.get(), assignments.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

@@ -200,7 +200,7 @@ public class UtilFile {
                   "Roaming" + File.separator + "Stirling");
                 break;
             case LINUX:
-                home = new File("." + File.separator + "Stirling");
+                home = new File(userHome + File.separator + "Stirling");
                 break;
         }
         return home;

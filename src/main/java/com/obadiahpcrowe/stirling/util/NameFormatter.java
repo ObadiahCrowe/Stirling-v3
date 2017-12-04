@@ -10,7 +10,13 @@ package com.obadiahpcrowe.stirling.util;
 public class NameFormatter {
 
     public static String formatName(String name) {
-        // TODO: 4/12/17 this
-        return name;
+        String[] nameParts = name.split(" ");
+
+        StringBuilder builder = new StringBuilder();
+        for (String part : nameParts) {
+            builder.append(part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase() + " ");
+        }
+
+        return builder.toString();
     }
 }

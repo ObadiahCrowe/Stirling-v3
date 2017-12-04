@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.classes;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
+import com.obadiahpcrowe.stirling.util.NameFormatter;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
 
@@ -39,7 +40,7 @@ public class DailyClass {
         }
 
         try {
-            this.teacher = AccountManager.getInstance().getAccount(stirlingClass.getTeachers().get(0)).getAccountName();
+            this.teacher = NameFormatter.formatName(AccountManager.getInstance().getAccount(stirlingClass.getTeachers().get(0)).getAccountName());
         } catch (NullPointerException ignored) {
             this.teacher = stirlingClass.getOwners().get(1);
         }

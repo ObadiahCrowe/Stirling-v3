@@ -77,6 +77,19 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), type, "type"));
         }
 
+        if (!announcementType.getAccountTypes().contains(account.getAccountType())) {
+            StringBuilder valid = new StringBuilder();
+            for (AccountType accountType : announcementType.getAccountTypes()) {
+                if (announcementType.getAccountTypes().size() >= 2) {
+                    valid.append(accountType.getFriendlyName()).append(", ");
+                } else {
+                    valid.append(accountType.getFriendlyName());
+                }
+            }
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(),
+              "create announcements of this type", valid.toString()));
+        }
+
         UUID uuid = UUID.randomUUID();
         File out = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
           File.separator + uuid);
