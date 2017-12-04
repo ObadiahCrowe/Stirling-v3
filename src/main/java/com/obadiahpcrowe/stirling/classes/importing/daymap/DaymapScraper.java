@@ -18,7 +18,12 @@ import com.obadiahpcrowe.stirling.classes.obj.StirlingResult;
 import com.obadiahpcrowe.stirling.exceptions.DaymapException;
 import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
-import com.obadiahpcrowe.stirling.util.*;
+import com.obadiahpcrowe.stirling.util.StirlingDate;
+import com.obadiahpcrowe.stirling.util.StirlingWebClient;
+import com.obadiahpcrowe.stirling.util.UtilFile;
+import com.obadiahpcrowe.stirling.util.UtilTime;
+import com.obadiahpcrowe.stirling.util.formatting.DateFormatter;
+import com.obadiahpcrowe.stirling.util.formatting.NameFormatter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -481,7 +486,7 @@ public class DaymapScraper {
                                             date = parts[0];
                                             date = date.split("posted ")[1];
 
-                                            StirlingDate d = new StirlingDate(date + "2017", parts[1]);
+                                            StirlingDate d = new StirlingDate(date + "2017", DateFormatter.formatTime(parts[1]));
                                             noteList.add(new StirlingPostable(t, div.getTextContent().replace("\\u00a0", ""),
                                               Lists.newArrayList(), d));
                                         }

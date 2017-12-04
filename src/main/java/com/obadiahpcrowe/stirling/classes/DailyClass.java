@@ -3,8 +3,8 @@ package com.obadiahpcrowe.stirling.classes;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
-import com.obadiahpcrowe.stirling.util.NameFormatter;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
+import com.obadiahpcrowe.stirling.util.formatting.NameFormatter;
 import lombok.Getter;
 
 import java.util.UUID;

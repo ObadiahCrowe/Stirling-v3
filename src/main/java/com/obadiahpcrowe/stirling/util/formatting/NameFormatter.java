@@ -1,10 +1,10 @@
-package com.obadiahpcrowe.stirling.util;
+package com.obadiahpcrowe.stirling.util.formatting;
 
 /**
  * Created by: Obadiah Crowe
  * Creation Date / Time: 4/12/17 at 1:34 PM
  * Project: Stirling-v3
- * Package: com.obadiahpcrowe.stirling.util
+ * Package: com.obadiahpcrowe.stirling.util.formatting
  * Copyright (c) Obadiah Crowe 2017
  */
 public class NameFormatter {
