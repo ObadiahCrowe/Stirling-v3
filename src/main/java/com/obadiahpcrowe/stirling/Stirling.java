@@ -89,7 +89,7 @@ public class Stirling {
 
         StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
         ImportAccount importAccount = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance().getByUuid(account.getUuid());
-        DaymapScraper.getInstance().getFullCourse(importAccount, new ImportableClass("12 Legal StudiesF", "4103"), false);
+        DaymapScraper.getInstance().getFullCourse(importAccount, new ImportableClass("12 EnglishFB", "3755"), false);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");

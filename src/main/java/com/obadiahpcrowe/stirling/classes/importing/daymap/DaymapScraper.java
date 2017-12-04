@@ -426,8 +426,26 @@ public class DaymapScraper {
 
                                     StirlingDate date = new StirlingDate(rawDate + "2017", UtilTime.getInstance().getFriendlyTime());
 
+                                    CompletableFuture<String> click = new CompletableFuture<>();
+                                    if (onClick.equalsIgnoreCase("")) {
+                                        System.out.println(e.asXml());
+                                        e.getLastElementChild().getChildElements().forEach(e1 -> {
+                                            if (e1.getAttribute("class").equalsIgnoreCase("lpTitle")) {
+                                                click.complete(e1.getFirstElementChild().getAttribute("href")
+                                                  .replace("javascript:DMU.ViewPlan(", "").replace(");", ""));
+                                            }
+                                        });
+                                    } else {
+                                        click.complete(onClick);
+                                    }
+
+                                    String fClick = click.getNow("");
+                                    if (fClick.equalsIgnoreCase("")) {
+                                        return;
+                                    }
+
                                     try {
-                                        HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/DayMap/curriculum/plan.aspx?id=" + onClick);
+                                        HtmlPage resPage = intClient.getPage("https://daymap.gihs.sa.edu.au/DayMap/curriculum/plan.aspx?id=" + fClick);
                                         HtmlDivision div = (HtmlDivision) resPage.getByXPath("//*[@class=\"lpAll\"]").get(0);
 
                                         StirlingPostable postable = new StirlingPostable(t,
@@ -586,7 +604,9 @@ public class DaymapScraper {
 
                 try {
                     owners.addAll(stirlingClass.getOwners());
-                    owners.add(teacher.get().trim());
+                    if (!owners.contains(teacher.get().trim())) {
+                        owners.add(teacher.get().trim());
+                    }
                 } catch (NullPointerException ignored) {
                 }
 
