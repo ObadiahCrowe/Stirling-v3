@@ -93,6 +93,7 @@ public class AnnouncementAPI implements APIController {
         UUID uuid = UUID.randomUUID();
         File out = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Announcements" +
           File.separator + uuid);
+        out.mkdir();
 
         String ext;
         if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg")) {
@@ -103,14 +104,14 @@ public class AnnouncementAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".jpg or .png"));
         }
 
-        File banner = new File(out + File.separator + "banner" + ext);
         try {
-            if (!out.exists()) {
-                out.mkdir();
-            }
+            File banner = new File(out + File.separator + "banner" + ext);
+
+            System.out.println(banner.getPath());
 
             file.transferTo(banner);
         } catch (IOException e) {
+            e.printStackTrace();
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "creating the announcement"));
         }
 
