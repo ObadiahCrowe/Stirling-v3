@@ -72,6 +72,13 @@ public class ClassManager {
 
                 generateCalendarLessons(clazz.getUuid(), timeSlot, ClassLength.SEMESTER);
 
+                try {
+                    UtilFile.getInstance().copyInternalFile("banner.jpg", new File(UtilFile.getInstance().getStorageLoc() +
+                      File.separator + "Classes" + File.separator + clazz.getUuid()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_CREATED, account.getLocale(), name));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ALREADY_EXISTS, account.getLocale(), name));

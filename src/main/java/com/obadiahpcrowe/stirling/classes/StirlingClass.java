@@ -7,6 +7,8 @@ import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
+import com.obadiahpcrowe.stirling.resources.ARType;
+import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
@@ -37,6 +39,7 @@ public class StirlingClass {
     private String name;
     private String desc;
     private String room;
+    private AttachableResource classBanner;
 
     // For imports
     private Map<UUID, List<String>> studentImportHolders; // Account UUID, Course ID
@@ -71,6 +74,7 @@ public class StirlingClass {
         this.name = name;
         this.desc = desc;
         this.room = room;
+        this.classBanner = new AttachableResource(this.uuid, "banner.jpg", ARType.CLASS);
 
         this.members = new HashMap<UUID, ClassRole>() {{ put(account.getUuid(), ClassRole.TEACHER); }};
         this.students = Lists.newArrayList();

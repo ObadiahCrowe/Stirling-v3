@@ -168,7 +168,7 @@ public class AccountAPI implements APIController {
 
             if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg") || file.getOriginalFilename().endsWith(".png")) {
                 file.transferTo(out);
-                return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(), "avatar", file.getOriginalFilename()));
+                return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(), "avatar", account.getAccountName()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".png, .jpg, or .jpeg"));
         } catch (IOException e) {
@@ -196,7 +196,7 @@ public class AccountAPI implements APIController {
 
             if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg") || file.getOriginalFilename().endsWith(".png")) {
                 file.transferTo(out);
-                return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(), "banner", file.getOriginalFilename()));
+                return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_FIELD_EDITED, account.getLocale(), "banner", account.getAccountName()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".png, .jpg, or .jpeg"));
         } catch (IOException e) {

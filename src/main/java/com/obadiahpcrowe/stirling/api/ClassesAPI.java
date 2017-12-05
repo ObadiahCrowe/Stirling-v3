@@ -251,6 +251,47 @@ public class ClassesAPI implements APIController {
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
+    @RequestMapping(value = "/stirling/v3/classes/get/banner", method = RequestMethod.GET)
+    public String getBanner(@RequestParam("accountName") String accountName,
+                            @RequestParam("password") String password,
+                            @RequestParam("classUuid") String rawUuid,
+                            HttpServletResponse response) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "classUuid"));
+        }
+
+        StirlingClass stirlingClass = classManager.getByUuid(uuid);
+
+        if (stirlingClass == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), rawUuid));
+        }
+
+        File file = stirlingClass.getClassBanner().getFile();
+        try {
+            InputStream in = new FileInputStream(file);
+            response.setContentType(Files.probeContentType(file.toPath()));
+
+            IOUtils.copy(in, response.getOutputStream());
+            response.flushBuffer();
+            return gson.toJson(new StirlingMsg(MsgTemplate.DOWNLOADING_FILE, account.getLocale(), file.getName()));
+        } catch (IOException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "fetching the class banner"));
+        }
+    }
+
+    @CallableAPI(fields = {"accountName", "password", "classUuid"})
     @RequestMapping(value = "/stirling/v3/classes/get/notes", method = RequestMethod.GET)
     public String getClassNotes(@RequestParam("accountName") String accountName,
                                 @RequestParam("password") String password,

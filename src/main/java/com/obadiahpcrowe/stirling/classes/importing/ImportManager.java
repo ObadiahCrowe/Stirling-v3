@@ -177,8 +177,10 @@ public class ImportManager {
                         importAllMoodle(account);
                         break;
                 }
+                return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
             }
-            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
+
+            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_CREDS_INVALID, account.getLocale(), source.getFriendlyName()));
         }
 
         // Add account then import
@@ -206,9 +208,10 @@ public class ImportManager {
                     importAllMoodle(account);
                     break;
             }
+            return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
         }
 
-        return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_ACCOUNT_CREDS_SET, account.getLocale(), source.getFriendlyName()));
+        return gson.toJson(new StirlingMsg(MsgTemplate.IMPORT_CREDS_INVALID, account.getLocale(), source.getFriendlyName()));
     }
 
     public String addGoogleImportCode(StirlingAccount account, String authCode) {

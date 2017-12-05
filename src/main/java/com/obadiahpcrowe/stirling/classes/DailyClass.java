@@ -42,7 +42,7 @@ public class DailyClass {
         try {
             this.teacher = NameFormatter.formatName(AccountManager.getInstance().getAccount(stirlingClass.getTeachers().get(0)).getAccountName());
         } catch (NullPointerException ignored) {
-            this.teacher = stirlingClass.getOwners().get(1);
+            this.teacher = NameFormatter.formatName(stirlingClass.getOwners().get(1));
         }
 
         this.startTime = startTime;

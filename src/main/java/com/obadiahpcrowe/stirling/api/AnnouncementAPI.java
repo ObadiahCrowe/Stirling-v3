@@ -106,11 +106,9 @@ public class AnnouncementAPI implements APIController {
 
         try {
             File banner = new File(out + File.separator + "banner" + ext);
-
-            System.out.println(banner.getPath());
-
             file.transferTo(banner);
         } catch (IOException e) {
+            // I don't fucking know
             e.printStackTrace();
             return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "creating the announcement"));
         }

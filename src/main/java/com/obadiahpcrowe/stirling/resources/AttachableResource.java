@@ -51,6 +51,10 @@ public class AttachableResource {
             return getSingleClassResource();
         }
 
+        if (arType == ARType.CLASS_BANNER) {
+            return getClassBanner();
+        }
+
         if (filePath.equalsIgnoreCase("avatar.png")) {
             return getAvatar();
         }
@@ -83,5 +87,10 @@ public class AttachableResource {
     private File getClassResource() {
         return new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Classes" + File.separator +
           owner.toString() + File.separator + "Resources" + File.separator + filePath);
+    }
+
+    private File getClassBanner() {
+        return new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Classes" + File.separator + owner.toString() +
+          File.separator + "banner.jpg");
     }
 }
