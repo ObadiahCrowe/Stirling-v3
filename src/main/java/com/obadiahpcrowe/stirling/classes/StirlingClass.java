@@ -3,6 +3,7 @@ package com.obadiahpcrowe.stirling.classes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
@@ -13,6 +14,7 @@ import lombok.Getter;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Reference;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.UUID;
 public class StirlingClass {
 
     @Id
-    private ObjectId objectId;
+    private ObjectId id;
 
     // General
     private UUID uuid;
@@ -61,8 +63,9 @@ public class StirlingClass {
     private List<StirlingResource> resources;
 
     // Results
-    private Map<UUID, List<StirlingAssignment>> studentAssignments;
-    private Map<UUID, List<StirlingResult>> studentResults; // TODO: 26/9/17 Generate report and stuff from these results.
+    @Reference
+    private Map<UUID, List<StirlingAssignment>> studentAssignments; // TODO: 26/9/17 Generate report and stuff from these results.
+
     private Map<UUID, List<ProgressMarker>> progressMarkers;
 
     @Deprecated
@@ -89,7 +92,6 @@ public class StirlingClass {
         this.resources = Lists.newArrayList();
 
         this.studentAssignments = Maps.newHashMap();
-        this.studentResults = Maps.newHashMap();
         this.progressMarkers = Maps.newHashMap();
     }
 
@@ -116,7 +118,6 @@ public class StirlingClass {
         this.resources = Lists.newArrayList();
 
         this.studentAssignments = Maps.newHashMap();
-        this.studentResults = Maps.newHashMap();
         this.progressMarkers = Maps.newHashMap();
     }
 }

@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
+import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.*;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
@@ -56,7 +57,8 @@ public class ClassManager {
     private ClassesDAO classesDAO;
     private Gson gson;
 
-    public ClassManager() {
+
+    private ClassManager() {
         this.morphiaService = new MorphiaService();
         this.classesDAO = new ClassesDAOImpl(StirlingClass.class, morphiaService.getDatastore());
         this.gson = new Gson();
@@ -360,6 +362,7 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "remove catchup modules", "TEACHER"));
     }
 
+    // TODO: 7/12/17 unfuck
     public String createAssignment(StirlingAccount account, UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
                                    StirlingDate dueDate, int maxMarks, double weighting) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -497,7 +500,6 @@ public class ClassManager {
                 List<UUID> students = Lists.newArrayList(clazz.getStudents());
                 Map<UUID, ClassRole> roles = Maps.newHashMap(clazz.getMembers());
                 Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());
-                Map<UUID, List<StirlingResult>> results = Maps.newHashMap(clazz.getStudentResults());
                 Map<UUID, List<ProgressMarker>> progressMarkers = Maps.newHashMap(clazz.getProgressMarkers());
 
                 for (UUID uuid : studentUuids) {
@@ -513,10 +515,6 @@ public class ClassManager {
                         assignments.remove(uuid);
                     }
 
-                    if (results.containsKey(uuid)) {
-                        results.remove(uuid);
-                    }
-
                     if (progressMarkers.containsKey(uuid)) {
                         progressMarkers.remove(uuid);
                     }
@@ -525,7 +523,6 @@ public class ClassManager {
                 classesDAO.updateField(clazz, "students", students);
                 classesDAO.updateField(clazz, "members", roles);
                 classesDAO.updateField(clazz, "studentAssignments", assignments);
-                classesDAO.updateField(clazz, "studentResults", results);
                 classesDAO.updateField(clazz, "progressMarkers", progressMarkers);
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_MULTIPLE_STUDENTS_REMOVED, account.getLocale(), clazz.getName()));
             }
@@ -789,6 +786,7 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "upload an assignment", "STUDENT"));
     }
 
+    // TODO: 7/12/17 unfuck
     public String markAssignment(StirlingAccount account, UUID classUuid, UUID assignmentUuid, UUID studentUuid,
                                  int receivedMarks, String grade, double weighting, String comments) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -806,7 +804,8 @@ public class ClassManager {
                     list.forEach(ass -> {
                         if (ass.getUuid().equals(assignmentUuid)) {
                             list.remove(ass);
-                            ass.setResult(new StirlingResult(receivedMarks, ass.getResult().getMaxMarks(), grade, weighting, comments));
+                            ass.
+                            (new StirlingResult(receivedMarks, ass.getResult().getMaxMarks(), grade, weighting, comments));
                             future.complete(ass);
                         }
                     });

@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
+import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
@@ -439,6 +440,46 @@ public class ImportManager {
 
             UtilLog.getInstance().log("Adding resources to the daymap course: " + courseId + "!");
             mgr.updateField(clazz, "resources", resourceList);
+        }
+    }
+
+    public void addAssignmentsToDaymapClass(String courseId, UUID studentUuid, List<StirlingAssignment> assignments) {
+        ClassManager classManager = ClassManager.getInstance();
+        if (classManager.getByOwner(courseId) != null) {
+            StirlingClass stirlingClass = classManager.getByOwner(courseId);
+            List<StirlingAssignment> assignmentList = Lists.newArrayList();
+
+            try {
+                assignmentList.addAll(stirlingClass.getStudentAssignments().get(studentUuid));
+            } catch (NullPointerException ignored) {
+            }
+
+            assignments.forEach(a -> {
+                CompletableFuture<Boolean> contains = new CompletableFuture<>();
+                assignmentList.forEach(as -> {
+                    if (as.getTitle().equalsIgnoreCase(a.getTitle()) &&
+                      as.getAssignedDateTime().getDate().equalsIgnoreCase(a.getAssignedDateTime().getDate()) &&
+                      as.getAssignedDateTime().getTime().equalsIgnoreCase(a.getAssignedDateTime().getTime())) {
+                        contains.complete(true);
+                    }
+
+                    if (!contains.getNow(false)) {
+                        assignmentList.add(a);
+                    }
+                });
+            });
+
+            Map<UUID, List<StirlingAssignment>> assMap = Maps.newHashMap();
+
+            try {
+                assMap.putAll(stirlingClass.getStudentAssignments());
+            } catch (NullPointerException ignored) {
+            }
+
+            assMap.replace(studentUuid, assignmentList);
+
+            UtilLog.getInstance().log("Adding assignments to the daymap course: " + courseId + "!");
+            classManager.updateField(stirlingClass, "studentAssignments", assMap);
         }
     }
 

@@ -2,7 +2,6 @@ package com.obadiahpcrowe.stirling.classes.importing.daymap;
 
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
-import com.obadiahpcrowe.stirling.classes.obj.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingLesson;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
@@ -29,14 +28,13 @@ public class DaymapClass extends ImportableClass {
     private List<StirlingPostable> classNotes;
     private List<StirlingPostable> homework;
     private List<AttachableResource> resources;
-    private List<StirlingAssignment> assignments;
 
     @Deprecated
     public DaymapClass() {
     }
 
     public DaymapClass(ImportableClass clazz, LessonTimeSlot slot, String room, String teacher, List<StirlingPostable> classNotes,
-                       List<StirlingPostable> homework, List<AttachableResource> resources, List<StirlingAssignment> assignments) {
+                       List<StirlingPostable> homework, List<AttachableResource> resources) {
         super(clazz.getClassName(), clazz.getId());
         this.slot = slot;
         this.room = room;
@@ -44,11 +42,10 @@ public class DaymapClass extends ImportableClass {
         this.classNotes = classNotes;
         this.homework = homework;
         this.resources = resources;
-        this.assignments = assignments;
     }
 
     public DaymapClass(String id, String name, LessonTimeSlot slot, String room, String teacher, List<StirlingPostable> classNotes,
-                       List<StirlingPostable> homework, List<AttachableResource> resources, List<StirlingAssignment> assignments) {
+                       List<StirlingPostable> homework, List<AttachableResource> resources) {
         super(name, id);
         this.slot = slot;
         this.room = room;
@@ -56,6 +53,5 @@ public class DaymapClass extends ImportableClass {
         this.classNotes = classNotes;
         this.homework = homework;
         this.resources = resources;
-        this.assignments = assignments;
     }
 }
