@@ -10,15 +10,22 @@ import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.classes.ClassIdentifier;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentAccount;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentManager;
+import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
+import com.obadiahpcrowe.stirling.classes.obj.ProgressMarker;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingPostable;
 import com.obadiahpcrowe.stirling.classes.obj.StirlingSection;
+import com.obadiahpcrowe.stirling.classes.progress.MarkerManager;
+import com.obadiahpcrowe.stirling.classes.progress.ProgressAccount;
 import com.obadiahpcrowe.stirling.localisation.LocalisationManager;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
+import com.obadiahpcrowe.stirling.util.formatting.NameFormatter;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.apache.commons.io.IOUtils;
@@ -187,7 +194,7 @@ public class ClassesAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), rawUuid));
         }
 
-        return stirlingClass.getName();
+        return LocalisationManager.getInstance().translate(stirlingClass.getName(), account.getLocale());
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -217,7 +224,7 @@ public class ClassesAPI implements APIController {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), rawUuid));
         }
 
-        return stirlingClass.getRoom();
+        return LocalisationManager.getInstance().translate(stirlingClass.getRoom(), account.getLocale());
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -627,7 +634,12 @@ public class ClassesAPI implements APIController {
         } catch (NullPointerException ignored) {
         }
 
-        return LocalisationManager.getInstance().translate(gson.toJson(students), account.getLocale());
+        List<String> studentNames = Lists.newArrayList();
+        students.forEach(u -> {
+            studentNames.add(NameFormatter.formatName(AccountManager.getInstance().getAccount(u).getDisplayName()));
+        });
+
+        return LocalisationManager.getInstance().translate(gson.toJson(studentNames), account.getLocale());
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
@@ -663,7 +675,10 @@ public class ClassesAPI implements APIController {
         } catch (NullPointerException ignored) {
         }
 
-        return LocalisationManager.getInstance().translate(gson.toJson(teachers), account.getLocale());
+        List<String> teacherNames = Lists.newArrayList();
+        teachers.forEach(u -> teacherNames.add(NameFormatter.formatName(AccountManager.getInstance().getAccount(u).getDisplayName())));
+
+        return LocalisationManager.getInstance().translate(gson.toJson(teacherNames), account.getLocale());
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
@@ -672,16 +687,38 @@ public class ClassesAPI implements APIController {
                                  @RequestParam("password") String password,
                                  @RequestParam("classUuid") String rawUuid,
                                  @RequestParam(value = "studentUuid", required = false) String studentId) {
-        return CALL_DISABLED;
-    }
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
 
-    @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
-    @RequestMapping(value = "/stirling/v3/classes/get/results", method = RequestMethod.GET)
-    public String getResults(@RequestParam("accountName") String accountName,
-                             @RequestParam("password") String password,
-                             @RequestParam("classUuid") String rawUuid,
-                             @RequestParam(value = "studentUuid", required = false) String studentId) {
-        return CALL_DISABLED;
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "classUuid"));
+        }
+
+        AssignmentAccount assignmentAccount = AssignmentManager.getInstance().getByUuid(account.getUuid());
+        List<StirlingAssignment> assignments = Lists.newArrayList();
+
+        try {
+            assignments.addAll(assignmentAccount.getAssignments());
+        } catch (NullPointerException ignored) {
+        }
+
+        List<StirlingAssignment> finalAsses = Lists.newArrayList();
+        assignments.forEach(a -> {
+            if (a.getClassUuid().equals(uuid)) {
+                finalAsses.add(a);
+            }
+        });
+
+        return LocalisationManager.getInstance().translate(gson.toJson(finalAsses), account.getLocale());
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid", "studentUuid"})
@@ -690,7 +727,38 @@ public class ClassesAPI implements APIController {
                                      @RequestParam("password") String password,
                                      @RequestParam("classUuid") String rawUuid,
                                      @RequestParam(value = "studentUuid", required = false) String studentId) {
-        return CALL_DISABLED;
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "classUuid"));
+        }
+
+        ProgressAccount progressAccount = MarkerManager.getInstance().getByUuid(account.getUuid());
+        List<ProgressMarker> progressMarkers = Lists.newArrayList();
+
+        try {
+            progressMarkers.addAll(progressAccount.getProgressMarkers());
+        } catch (NullPointerException ignored) {
+        }
+
+        List<ProgressMarker> finalMarkers = Lists.newArrayList();
+        progressMarkers.forEach(m -> {
+            if (m.getClassUuid().equals(uuid)) {
+                finalMarkers.add(m);
+            }
+        });
+
+        return LocalisationManager.getInstance().translate(gson.toJson(finalMarkers), account.getLocale());
     }
 
     @CallableAPI(fields = {"accountName", "password", "classUuid"})
