@@ -18,6 +18,7 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -83,11 +84,11 @@ public class Stirling {
         ModuleManager.getInstance().registerAPICalls();
 
         utilLog.log("Starting REST API service..");
-        //SpringApplication.run(Stirling.class, args);
+        SpringApplication.run(Stirling.class, args);
 
         StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
         ImportAccount importAccount = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance().getByUuid(account.getUuid());
-        DaymapScraper.getInstance().getFullCourse(importAccount, new ImportableClass("12 Legal StudiesF", "4103"), false);
+        DaymapScraper.getInstance().getFullCourse(importAccount, new ImportableClass("12 EnglishFB", "3755"), false);
         /*
         ClassManager.getInstance().getAllClasses(account).forEach(c -> {
             c.getStudentResults().get(account.getUuid()).forEach(r -> {

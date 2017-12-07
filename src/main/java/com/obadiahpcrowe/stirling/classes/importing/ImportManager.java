@@ -445,6 +445,12 @@ public class ImportManager {
     }
 
     public void addAssignmentsToDaymapClass(String courseId, UUID studentUuid, List<StirlingAssignment> assignments) {
+        assignments.forEach(a -> {
+            System.out.println(a.getTitle());
+        });
+
+        System.exit(0);
+
         ClassManager classManager = ClassManager.getInstance();
         if (classManager.getByOwner(courseId) != null) {
             StirlingClass stirlingClass = classManager.getByOwner(courseId);

@@ -6,9 +6,7 @@ import com.obadiahpcrowe.stirling.classes.obj.StirlingResult;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import lombok.Getter;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,33 +19,41 @@ import java.util.UUID;
  * Copyright (c) Obadiah Crowe 2017
  */
 @Getter
-@Entity("assignments")
 public class StirlingAssignment {
-
-    @Id
-    private ObjectId id;
 
     private UUID uuid;
     private UUID classUuid;
-    private UUID assignee;
+
+    @Setter
     private String title;
+
+    @Setter
     private String desc;
+
+    @Setter
     private StirlingResult result;
+
+    @Setter
     private boolean formative;
+
+    @Setter
     private AssignmentType type;
     private StirlingDate assignedDateTime;
+
+    @Setter
     private StirlingDate dueDateTime;
+
+    @Setter
     private List<AttachableResource> submittedFiles;
 
     @Deprecated
     public StirlingAssignment() {
     }
 
-    public StirlingAssignment(UUID assignee, UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
+    public StirlingAssignment(UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
                               StirlingResult result, StirlingDate dueDateTime) {
         this.uuid = UUID.randomUUID();
         this.classUuid = classUuid;
-        this.assignee = assignee;
         this.title = title;
         this.desc = desc;
         this.type = type;

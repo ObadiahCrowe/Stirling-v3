@@ -3,7 +3,7 @@ package com.obadiahpcrowe.stirling.classes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
-import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentAccount;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
@@ -64,7 +64,7 @@ public class StirlingClass {
 
     // Results
     @Reference
-    private Map<UUID, List<StirlingAssignment>> studentAssignments; // TODO: 26/9/17 Generate report and stuff from these results.
+    private List<AssignmentAccount> studentAssignments; // TODO: 26/9/17 Generate report and stuff from these results.
 
     private Map<UUID, List<ProgressMarker>> progressMarkers;
 
@@ -91,7 +91,7 @@ public class StirlingClass {
         this.homework = Lists.newArrayList();
         this.resources = Lists.newArrayList();
 
-        this.studentAssignments = Maps.newHashMap();
+        this.studentAssignments = Lists.newArrayList();
         this.progressMarkers = Maps.newHashMap();
     }
 
@@ -117,7 +117,7 @@ public class StirlingClass {
         this.homework = Lists.newArrayList();
         this.resources = Lists.newArrayList();
 
-        this.studentAssignments = Maps.newHashMap();
+        this.studentAssignments = Lists.newArrayList();
         this.progressMarkers = Maps.newHashMap();
     }
 }

@@ -188,7 +188,14 @@ public class DaymapScraper {
                 throw new DaymapException("Cloud not retrieve data-id from DayMap! Cannot complete import!");
             } catch (DaymapException e) {
                 e.printStackTrace();
+                return null;
             }
+        }
+
+        try {
+            ImportManager.getInstance().createClassFromDaymap(clazz.getId(), clazz.getClassName(), room.get(), timeSlot.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
 
         Thread teacherThread = new Thread(() -> {
@@ -203,12 +210,6 @@ public class DaymapScraper {
             }
         });
         teacherThread.start();
-
-        try {
-            ImportManager.getInstance().createClassFromDaymap(clazz.getId(), clazz.getClassName(), room.get(), timeSlot.get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
 
         Thread assessmentThread = new Thread(() -> {
             final WebClient client = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
@@ -595,10 +596,10 @@ public class DaymapScraper {
         }
 
         ImportManager importManager = ImportManager.getInstance();
-
         Thread addThread = new Thread(() -> {
             try {
                 StirlingClass stirlingClass = ClassManager.getInstance().getByOwner(clazz.getId());
+
                 List<String> owners = Lists.newArrayList();
 
                 try {
@@ -607,6 +608,7 @@ public class DaymapScraper {
                         owners.add(teacher.get().trim());
                     }
                 } catch (NullPointerException ignored) {
+                    ignored.printStackTrace();
                 }
 
                 importManager.addNotesToDaymapClass(clazz.getId(), classNotes.get());

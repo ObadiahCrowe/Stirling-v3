@@ -1,10 +1,9 @@
 package com.obadiahpcrowe.stirling.database.dao.interfaces;
 
-import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentAccount;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.dao.DAO;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -14,13 +13,9 @@ import java.util.UUID;
  * Package: com.obadiahpcrowe.stirling.database.dao.interfaces
  * Copyright (c) Obadiah Crowe 2017
  */
-public interface AssignmentDAO extends DAO<StirlingAssignment, ObjectId> {
+public interface AssignmentDAO extends DAO<AssignmentAccount, ObjectId> {
 
-    StirlingAssignment getByUuid(UUID uuid);
-
-    List<StirlingAssignment> getByAssignee(UUID uuid);
-
-    List<StirlingAssignment> getByClass(UUID uuid);
+    AssignmentAccount getByUuid(UUID uuid);
 
     void updateField(UUID uuid, String field, Object value);
 }
