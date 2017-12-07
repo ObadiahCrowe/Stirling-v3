@@ -205,7 +205,7 @@ public enum MsgTemplate {
 
     TRANSLATION_FAILED(MsgResponse.STIRLING_ERROR, "Translation failed. Reverting to English until this is fixed. Sorry for the inconvenience.", 0),
 
-    ASSIGNMENT_ACCOUNT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "Your assignment account does not exist!", 0);
+    ASSIGNMENT_ACCOUNT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "This assignment account does not exist!", 0);
 
     private MsgResponse response;
     private String message;

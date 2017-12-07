@@ -56,8 +56,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class ClassManager {
 
-    // TODO: 16/10/17 if contains for all maps. fml.
-
     private static ClassManager instance;
 
     private MorphiaService morphiaService;
@@ -858,8 +856,6 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "upload an assignment", "STUDENT"));
     }
 
-    // TODO: 7/12/17 unfuck
-    /*
     public String markAssignment(StirlingAccount account, UUID classUuid, UUID assignmentUuid, UUID studentUuid,
                                  int receivedMarks, String grade, double weighting, String comments) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -870,36 +866,56 @@ public class ClassManager {
                     return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
                 }
 
-                Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());
-                if (assignments.containsKey(studentUuid)) {
-                    List<StirlingAssignment> list = assignments.get(studentUuid);
-                    CompletableFuture<StirlingAssignment> future = new CompletableFuture<>();
-                    list.forEach(ass -> {
-                        if (ass.getUuid().equals(assignmentUuid)) {
-                            list.remove(ass);
-                            ass.
-                            (new StirlingResult(receivedMarks, ass.getResult().getMaxMarks(), grade, weighting, comments));
-                            future.complete(ass);
-                        }
-                    });
-
-                    try {
-                        list.add(future.get());
-                        assignments.replace(studentUuid, list);
-                    } catch (InterruptedException | ExecutionException e) {
-                        UtilLog.getInstance().log(e.getMessage());
-                        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_DOES_NOT_EXIST, account.getLocale(), assignmentUuid.toString()));
-                    }
+                List<AssignmentAccount> assignmentAccounts = Lists.newArrayList();
+                try {
+                    assignmentAccounts.addAll(clazz.getStudentAssignments());
+                } catch (NullPointerException ignored) {
                 }
 
-                classesDAO.updateField(clazz, "studentAssignments", assignments);
+                CompletableFuture<AssignmentAccount> future = new CompletableFuture<>();
+                assignmentAccounts.forEach(a -> {
+                    if (a.getUuid().equals(studentUuid)) {
+                        future.complete(a);
+                    }
+                });
+
+                AssignmentAccount assignmentAccount = future.getNow(null);
+                if (assignmentAccount == null) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.ASSIGNMENT_ACCOUNT_DOES_NOT_EXIST, account.getLocale()));
+                }
+
+                List<StirlingAssignment> assignmentList = Lists.newArrayList();
+                try {
+                    assignmentList.addAll(assignmentAccount.getAssignments());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<StirlingAssignment> assFuture = new CompletableFuture<>();
+                assignmentList.forEach(a -> {
+                    if (a.getClassUuid().equals(classUuid)) {
+                        if (a.getUuid().equals(assignmentUuid)) {
+                            assFuture.complete(a);
+                        }
+                    }
+                });
+
+                StirlingAssignment assignment = assFuture.getNow(null);
+                if (assignment == null) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_DOES_NOT_EXIST, account.getLocale(), assignmentUuid.toString()));
+                }
+
+                assignmentList.remove(assignment);
+                assignment.setResult(new StirlingResult(receivedMarks, assignment.getResult().getMaxMarks(), grade, weighting, comments));
+                assignmentList.add(assignment);
+
+                AssignmentManager.getInstance().updateField(studentUuid, "assignments", assignmentList);
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_MARKED, account.getLocale(),
                   AccountManager.getInstance().getAccount(studentUuid).getDisplayName()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "mark an assignment", "TEACHER"));
-    }*/
+    }
 
     public String assignProgressMarker(StirlingAccount account, UUID classUuid, UUID studentUuid, String name, String desc) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -948,7 +964,6 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "assign a progress marker", "TEACHER"));
     }
 
-    /*
     public String removeProgressMarker(StirlingAccount account, UUID classUuid, UUID studentUuid, UUID markerUuid) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (classExists(classUuid)) {
@@ -958,37 +973,53 @@ public class ClassManager {
                     return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
                 }
 
-                Map<UUID, List<ProgressMarker>> markerMap = Maps.newHashMap();
+                List<ProgressAccount> progressAccounts = Lists.newArrayList();
                 try {
-                    markerMap.putAll(clazz.getProgressMarkers());
+                    progressAccounts.addAll(clazz.getProgressMarkers());
                 } catch (NullPointerException ignored) {
                 }
 
-                if (!markerMap.containsKey(studentUuid)) {
-                    markerMap.put(studentUuid, Lists.newArrayList());
-                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_PROGRESS_MARKER_DOES_NOT_EXIST, account.getLocale()));
-                }
-
-                List<ProgressMarker> markers = Lists.newArrayList(markerMap.get(studentUuid));
-                markers.forEach(marker -> {
-                    if (marker.getUuid().equals(markerUuid)) {
-                        markers.remove(marker);
+                CompletableFuture<ProgressAccount> future = new CompletableFuture<>();
+                progressAccounts.forEach(p -> {
+                    if (p.getUuid().equals(studentUuid)) {
+                        future.complete(p);
                     }
                 });
 
-                if (markers.size() == markerMap.get(studentUuid).size()) {
+                ProgressAccount progressAccount = future.getNow(null);
+                if (progressAccount == null) {
                     return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_PROGRESS_MARKER_DOES_NOT_EXIST, account.getLocale()));
                 }
 
-                markerMap.replace(studentUuid, markers);
-                classesDAO.updateField(clazz, "progressMarkers", markerMap);
+                List<ProgressMarker> progressMarkers = Lists.newArrayList();
+                try {
+                    progressMarkers.addAll(progressAccount.getProgressMarkers());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<ProgressMarker> removableMarker = new CompletableFuture<>();
+                progressMarkers.forEach(m -> {
+                    if (m.getClassUuid().equals(classUuid)) {
+                        if (m.getUuid().equals(markerUuid)) {
+                            removableMarker.complete(m);
+                        }
+                    }
+                });
+
+                ProgressMarker marker = removableMarker.getNow(null);
+                if (marker == null) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_PROGRESS_MARKER_DOES_NOT_EXIST, account.getLocale()));
+                }
+
+                progressMarkers.remove(marker);
+                MarkerManager.getInstance().updateField(account.getUuid(), "progressMarkers", progressMarkers);
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_PROGRESS_MARKED_REMOVED, account.getLocale(),
                   AccountManager.getInstance().getAccount(studentUuid).getDisplayName()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "remove a progress marker", "TEACHER"));
-    }*/
+    }
 
     public String setStudentAttendance(StirlingAccount account, UUID classUuid, UUID lessonUuid, UUID studentUuid, AttendanceStatus status) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
