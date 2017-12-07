@@ -34,6 +34,7 @@ import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -350,6 +351,13 @@ public class ImportManager {
             mgr.saveClass(clazz);
 
             mgr.generateCalendarLessons(clazz.getUuid(), slot, ClassLength.SEMESTER);
+
+            try {
+                UtilFile.getInstance().copyInternalFile("banner.jpg", new File(UtilFile.getInstance().getStorageLoc() +
+                  File.separator + "Classes" + File.separator + clazz.getUuid()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_CREATED, StirlingLocale.ENGLISH, courseName));
         }
