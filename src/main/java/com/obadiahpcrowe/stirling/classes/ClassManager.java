@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentAccount;
 import com.obadiahpcrowe.stirling.classes.assignments.AssignmentManager;
 import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.*;
@@ -15,6 +16,8 @@ import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
+import com.obadiahpcrowe.stirling.classes.progress.MarkerManager;
+import com.obadiahpcrowe.stirling.classes.progress.ProgressAccount;
 import com.obadiahpcrowe.stirling.classes.terms.TermLength;
 import com.obadiahpcrowe.stirling.classes.terms.TermManager;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
@@ -439,23 +442,32 @@ public class ClassManager {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
-                Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());
-                CompletableFuture<String> assignmentName = new CompletableFuture<>();
+                List<AssignmentAccount> assignmentAccounts = Lists.newArrayList();
 
-                clazz.getStudentAssignments().forEach((u, a) -> {
-                    a.forEach(assignment -> {
-                        if (assignment.getUuid().equals(assignmentUuid)) {
-                            assignmentName.complete(assignment.getTitle());
-                            assignments.forEach((c, b) -> {
-                                if (b.contains(assignment)) {
-                                    b.remove(assignment);
-                                }
-                            });
+                try {
+                    assignmentAccounts.addAll(clazz.getStudentAssignments());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<String> assignmentName = new CompletableFuture<>();
+                assignmentAccounts.forEach(a -> {
+                    List<StirlingAssignment> assignments = Lists.newArrayList();
+
+                    try {
+                        assignments.addAll(a.getAssignments());
+                    } catch (NullPointerException ignored) {
+                    }
+
+                    assignments.forEach(a1 -> {
+                        if (a1.getUuid().equals(assignmentUuid)) {
+                            assignments.remove(a1);
+                            assignmentName.complete(a1.getTitle());
                         }
                     });
+
+                    AssignmentManager.getInstance().updateField(account.getUuid(), "assignments", assignments);
                 });
 
-                classesDAO.updateField(clazz, "studentAssignments", assignments);
                 try {
                     return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_REMOVED_ALL, account.getLocale(), assignmentName.get()));
                 } catch (InterruptedException | ExecutionException e) {
@@ -510,10 +522,30 @@ public class ClassManager {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
 
-                List<UUID> students = Lists.newArrayList(clazz.getStudents());
-                Map<UUID, ClassRole> roles = Maps.newHashMap(clazz.getMembers());
-                Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());
-                Map<UUID, List<ProgressMarker>> progressMarkers = Maps.newHashMap(clazz.getProgressMarkers());
+                List<UUID> students = Lists.newArrayList();
+                Map<UUID, ClassRole> roles = Maps.newHashMap();
+                List<AssignmentAccount> assignments = Lists.newArrayList();
+                List<ProgressAccount> progressMarkers = Lists.newArrayList();
+
+                try {
+                    students.addAll(clazz.getStudents());
+                } catch (NullPointerException ignored) {
+                }
+
+                try {
+                    roles.putAll(clazz.getMembers());
+                } catch (NullPointerException ignored) {
+                }
+
+                try {
+                    assignments.addAll(clazz.getStudentAssignments());
+                } catch (NullPointerException ignored) {
+                }
+
+                try {
+                    progressMarkers.addAll(clazz.getProgressMarkers());
+                } catch (NullPointerException ignored) {
+                }
 
                 for (UUID uuid : studentUuids) {
                     if (students.contains(uuid)) {
@@ -524,13 +556,17 @@ public class ClassManager {
                         roles.remove(uuid);
                     }
 
-                    if (assignments.containsKey(uuid)) {
-                        assignments.remove(uuid);
-                    }
+                    assignments.forEach(a -> {
+                        if (a.getUuid().equals(uuid)) {
+                            assignments.remove(a);
+                        }
+                    });
 
-                    if (progressMarkers.containsKey(uuid)) {
-                        progressMarkers.remove(uuid);
-                    }
+                    progressMarkers.forEach(p -> {
+                        if (p.getUuid().equals(uuid)) {
+                            progressMarkers.remove(p);
+                        }
+                    });
                 }
 
                 classesDAO.updateField(clazz, "students", students);
@@ -769,10 +805,32 @@ public class ClassManager {
                     return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
                 }
 
-                Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());
-                List<StirlingAssignment> userAssignments = assignments.get(account.getUuid());
-                CompletableFuture<StirlingAssignment> assignment = new CompletableFuture<>();
+                List<AssignmentAccount> assignmentAccounts = Lists.newArrayList();
 
+                try {
+                    assignmentAccounts.addAll(clazz.getStudentAssignments());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<AssignmentAccount> future = new CompletableFuture<>();
+                assignmentAccounts.forEach(a -> {
+                    if (a.getUuid().equals(account.getUuid())) {
+                        future.complete(a);
+                    }
+                });
+
+                AssignmentAccount assAccount = future.getNow(null);
+                if (assAccount == null) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.ASSIGNMENT_ACCOUNT_DOES_NOT_EXIST, account.getLocale()));
+                }
+
+                List<StirlingAssignment> userAssignments = Lists.newArrayList();
+                try {
+                    userAssignments.addAll(assAccount.getAssignments());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<StirlingAssignment> assignment = new CompletableFuture<>();
                 userAssignments.forEach(stirlingAssignment -> {
                     if (stirlingAssignment.getUuid().equals(assignmentUuid)) {
                         assignment.complete(stirlingAssignment);
@@ -780,19 +838,16 @@ public class ClassManager {
                     }
                 });
 
-                try {
-                    StirlingAssignment a = assignment.get();
-                    a.getSubmittedFiles().addAll(resources);
-
-                    userAssignments.add(a);
-
-                    assignments.replace(account.getUuid(), userAssignments);
-                    classesDAO.updateField(clazz, "studentAssignments", assignments);
-                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_SUBMITTED, account.getLocale(), assignment.get().getTitle()));
-                } catch (InterruptedException | ExecutionException e) {
-                    UtilLog.getInstance().log(e.getMessage());
+                StirlingAssignment a = assignment.getNow(null);
+                if (a == null) {
                     return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_DOES_NOT_EXIST, account.getLocale(), assignmentUuid.toString()));
                 }
+
+                a.getSubmittedFiles().addAll(resources);
+                userAssignments.add(a);
+
+                AssignmentManager.getInstance().updateField(account.getUuid(), "assignments", userAssignments);
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_SUBMITTED, account.getLocale(), a.getTitle()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
@@ -851,18 +906,36 @@ public class ClassManager {
                     return gson.toJson(new StirlingMsg(MsgTemplate.STUDENT_NOT_IN_CLASS, account.getLocale()));
                 }
 
-                Map<UUID, List<ProgressMarker>> progressMarkers = Maps.newHashMap(clazz.getProgressMarkers());
-
-                if (!progressMarkers.containsKey(studentUuid)) {
-                    progressMarkers.put(studentUuid, Lists.newArrayList());
+                List<ProgressAccount> progressAccounts = Lists.newArrayList();
+                try {
+                    progressAccounts.addAll(clazz.getProgressMarkers());
+                } catch (NullPointerException ignored) {
                 }
 
-                List<ProgressMarker> markers = progressMarkers.get(studentUuid);
-                markers.add(new ProgressMarker(name, desc, StirlingDate.getNow()));
+                CompletableFuture<ProgressAccount> future = new CompletableFuture<>();
+                progressAccounts.forEach(a -> {
+                    if (a.getUuid().equals(account.getUuid())) {
+                        future.complete(a);
+                    }
+                });
 
-                progressMarkers.replace(studentUuid, markers);
+                ProgressAccount progressAccount = future.getNow(null);
+                if (progressAccount == null) {
+                    progressAccount = new ProgressAccount(account.getUuid(), Lists.newArrayList(new ProgressMarker(name, classUuid, desc)));
+                    MarkerManager.getInstance().createProgressAccount(progressAccount);
+                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_PROGRESS_MARKER_ADDED, account.getLocale(),
+                      AccountManager.getInstance().getAccount(studentUuid).getDisplayName()));
+                }
 
-                classesDAO.updateField(clazz, "progressMarkers", progressMarkers);
+                List<ProgressMarker> progressMarkers = Lists.newArrayList();
+                try {
+                    progressMarkers.addAll(progressAccount.getProgressMarkers());
+                } catch (NullPointerException ignored) {
+                }
+
+                progressMarkers.add(new ProgressMarker(name, classUuid, desc));
+                MarkerManager.getInstance().updateField(progressAccount.getUuid(), "progressMarkers", progressMarkers);
+
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_PROGRESS_MARKER_ADDED, account.getLocale(),
                   AccountManager.getInstance().getAccount(studentUuid).getDisplayName()));
             }

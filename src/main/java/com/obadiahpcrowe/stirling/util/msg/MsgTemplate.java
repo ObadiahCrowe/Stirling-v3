@@ -203,7 +203,9 @@ public enum MsgTemplate {
 
     RESOURCE_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "The resource, {0}, does not exist!", 1),
 
-    TRANSLATION_FAILED(MsgResponse.STIRLING_ERROR, "Translation failed. Reverting to English until this is fixed. Sorry for the inconvenience.", 0);
+    TRANSLATION_FAILED(MsgResponse.STIRLING_ERROR, "Translation failed. Reverting to English until this is fixed. Sorry for the inconvenience.", 0),
+
+    ASSIGNMENT_ACCOUNT_DOES_NOT_EXIST(MsgResponse.USER_ERROR, "Your assignment account does not exist!", 0);
 
     private MsgResponse response;
     private String message;

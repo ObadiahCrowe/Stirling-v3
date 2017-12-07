@@ -121,4 +121,8 @@ public class AssignmentManager {
     public AssignmentAccount getByUuid(UUID uuid) {
         return assignmentDAO.getByUuid(uuid);
     }
+
+    public void updateField(UUID accountUuid, String field, Object value) {
+        assignmentDAO.updateField(accountUuid, field, value);
+    }
 }

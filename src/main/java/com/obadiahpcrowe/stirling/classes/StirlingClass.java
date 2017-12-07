@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
 import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.classes.obj.*;
+import com.obadiahpcrowe.stirling.classes.progress.ProgressAccount;
 import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import lombok.Getter;
@@ -66,7 +67,8 @@ public class StirlingClass {
     @Reference
     private List<AssignmentAccount> studentAssignments; // TODO: 26/9/17 Generate report and stuff from these results.
 
-    private Map<UUID, List<ProgressMarker>> progressMarkers;
+    @Reference
+    private List<ProgressAccount> progressMarkers;
 
     @Deprecated
     public StirlingClass() {}
@@ -92,7 +94,7 @@ public class StirlingClass {
         this.resources = Lists.newArrayList();
 
         this.studentAssignments = Lists.newArrayList();
-        this.progressMarkers = Maps.newHashMap();
+        this.progressMarkers = Lists.newArrayList();
     }
 
     public StirlingClass(String ownerId, String name, String desc, String room, LessonTimeSlot slot) {
@@ -118,6 +120,6 @@ public class StirlingClass {
         this.resources = Lists.newArrayList();
 
         this.studentAssignments = Lists.newArrayList();
-        this.progressMarkers = Maps.newHashMap();
+        this.progressMarkers = Lists.newArrayList();
     }
 }

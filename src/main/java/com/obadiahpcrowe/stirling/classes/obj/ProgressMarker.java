@@ -16,18 +16,21 @@ import java.util.UUID;
 public class ProgressMarker {
 
     private UUID uuid;
+    private UUID classUuid;
     private String name;
     private String desc;
     private StirlingDate assignedDate;
     private boolean isCompleted;
 
+    @Deprecated
     public ProgressMarker() {}
 
-    public ProgressMarker(String name, String desc, StirlingDate assignedDate) {
+    public ProgressMarker(String name, UUID classUuid, String desc) {
         this.uuid = UUID.randomUUID();
+        this.classUuid = classUuid;
         this.name = name;
         this.desc = desc;
-        this.assignedDate = assignedDate;
+        this.assignedDate = StirlingDate.getNow();
         this.isCompleted = false;
     }
 }
