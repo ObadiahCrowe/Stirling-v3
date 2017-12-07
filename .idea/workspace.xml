@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/daymap/DaymapScraper.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/DateFormatter.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/DateFormatter.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -52,13 +49,13 @@
       <file leaf-file-name="ImportManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="483" column="68" lean-forward="false" selection-start-line="483" selection-start-column="68" selection-end-line="483" selection-end-column="68" />
+            <state relative-caret-position="415">
+              <caret line="491" column="17" lean-forward="false" selection-start-line="491" selection-start-column="17" selection-end-line="491" selection-end-column="17" />
               <folding>
-                <element signature="e#20556#20557#0" expanded="true" />
-                <element signature="e#20611#20612#0" expanded="true" />
-                <element signature="e#20660#20661#0" expanded="true" />
-                <element signature="e#20708#20709#0" expanded="true" />
+                <element signature="e#20505#20506#0" expanded="true" />
+                <element signature="e#20560#20561#0" expanded="true" />
+                <element signature="e#20609#20610#0" expanded="true" />
+                <element signature="e#20657#20658#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -88,14 +85,14 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="673">
-              <caret line="439" column="7" lean-forward="false" selection-start-line="439" selection-start-column="7" selection-end-line="439" selection-end-column="7" />
+              <caret line="442" column="7" lean-forward="false" selection-start-line="442" selection-start-column="7" selection-end-line="442" selection-end-column="7" />
               <folding>
                 <element signature="method#removeAssignmentForAll#0;class#ClassManager#0" expanded="false" />
                 <element signature="method#removeStudents#0;class#ClassManager#0" expanded="false" />
-                <element signature="e#64332#64333#0" expanded="true" />
-                <element signature="e#64383#64384#0" expanded="true" />
-                <element signature="e#64652#64653#0" expanded="true" />
-                <element signature="e#64690#64691#0" expanded="true" />
+                <element signature="e#64531#64532#0" expanded="true" />
+                <element signature="e#64582#64583#0" expanded="true" />
+                <element signature="e#64851#64852#0" expanded="true" />
+                <element signature="e#64889#64890#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -777,14 +774,7 @@
       <workItem from="1512458951516" duration="60000" />
       <workItem from="1512617535097" duration="6126000" />
       <workItem from="1512623994244" duration="3544000" />
-      <workItem from="1512638128805" duration="3788000" />
-    </task>
-    <task id="LOCAL-00133" summary="Announcement fixes">
-      <created>1511142012319</created>
-      <option name="number" value="00133" />
-      <option name="presentableId" value="LOCAL-00133" />
-      <option name="project" value="LOCAL" />
-      <updated>1511142012320</updated>
+      <workItem from="1512638128805" duration="4135000" />
     </task>
     <task id="LOCAL-00134" summary="Announcement fixes">
       <created>1511142089488</created>
@@ -1122,11 +1112,18 @@
       <option name="project" value="LOCAL" />
       <updated>1512640247774</updated>
     </task>
-    <option name="localTasksCounter" value="182" />
+    <task id="LOCAL-00182" summary="Fixing most shit">
+      <created>1512643578623</created>
+      <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1512643578623</updated>
+    </task>
+    <option name="localTasksCounter" value="183" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="528681000" />
+    <option name="totallyTimeSpent" value="529028000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="992" extended-state="6" />
@@ -1174,7 +1171,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updating banner download system" />
     <MESSAGE value="New translation system, removed kotlin and old translator" />
     <MESSAGE value="Fixes to translation" />
     <MESSAGE value="Daymap scraper updates (now includes actual date for class posts" />
@@ -1199,7 +1195,8 @@
     <MESSAGE value="Updating to new assignment system" />
     <MESSAGE value="Fixing shit (and breaking it for now in this commit)" />
     <MESSAGE value="Moving progress markers over to the same type of system" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moving progress markers over to the same type of system" />
+    <MESSAGE value="Fixing most shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixing most shit" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1551,14 +1548,14 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/ClassManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="673">
-          <caret line="439" column="7" lean-forward="false" selection-start-line="439" selection-start-column="7" selection-end-line="439" selection-end-column="7" />
+          <caret line="442" column="7" lean-forward="false" selection-start-line="442" selection-start-column="7" selection-end-line="442" selection-end-column="7" />
           <folding>
             <element signature="method#removeAssignmentForAll#0;class#ClassManager#0" expanded="false" />
             <element signature="method#removeStudents#0;class#ClassManager#0" expanded="false" />
-            <element signature="e#64332#64333#0" expanded="true" />
-            <element signature="e#64383#64384#0" expanded="true" />
-            <element signature="e#64652#64653#0" expanded="true" />
-            <element signature="e#64690#64691#0" expanded="true" />
+            <element signature="e#64531#64532#0" expanded="true" />
+            <element signature="e#64582#64583#0" expanded="true" />
+            <element signature="e#64851#64852#0" expanded="true" />
+            <element signature="e#64889#64890#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1622,13 +1619,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/importing/ImportManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="483" column="68" lean-forward="false" selection-start-line="483" selection-start-column="68" selection-end-line="483" selection-end-column="68" />
+        <state relative-caret-position="415">
+          <caret line="491" column="17" lean-forward="false" selection-start-line="491" selection-start-column="17" selection-end-line="491" selection-end-column="17" />
           <folding>
-            <element signature="e#20556#20557#0" expanded="true" />
-            <element signature="e#20611#20612#0" expanded="true" />
-            <element signature="e#20660#20661#0" expanded="true" />
-            <element signature="e#20708#20709#0" expanded="true" />
+            <element signature="e#20505#20506#0" expanded="true" />
+            <element signature="e#20560#20561#0" expanded="true" />
+            <element signature="e#20609#20610#0" expanded="true" />
+            <element signature="e#20657#20658#0" expanded="true" />
           </folding>
         </state>
       </provider>

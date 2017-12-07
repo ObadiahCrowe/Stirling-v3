@@ -463,7 +463,6 @@ public class ImportManager {
                 }
             });
 
-            // TODO: 7/12/17 create the account
             AssignmentAccount assAccount = future.getNow(null);
             if (assAccount == null) {
                 assignments.forEach(a -> AssignmentManager.getInstance().addAssignment(studentUuid, a));
@@ -485,12 +484,12 @@ public class ImportManager {
                     if (as.getTitle().equalsIgnoreCase(a.getTitle())) {
                         contains.complete(true);
                     }
-
-                    if (!contains.getNow(false)) {
-                        AssignmentManager.getInstance().addAssignment(studentUuid, a);
-                        stirlingAssignments.add(a);
-                    }
                 });
+
+                if (!contains.getNow(false)) {
+                    AssignmentManager.getInstance().addAssignment(studentUuid, a);
+                    stirlingAssignments.add(a);
+                }
             });
 
             UtilLog.getInstance().log("Adding assignments to the daymap course: " + courseId + "!");
