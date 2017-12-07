@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentAccount;
 import com.obadiahpcrowe.stirling.classes.assignments.AssignmentManager;
 import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
@@ -445,49 +446,55 @@ public class ImportManager {
     }
 
     public void addAssignmentsToDaymapClass(String courseId, UUID studentUuid, List<StirlingAssignment> assignments) {
-        assignments.forEach(a -> {
-            System.out.println(a.getTitle());
-        });
-
-        System.exit(0);
-
         ClassManager classManager = ClassManager.getInstance();
         if (classManager.getByOwner(courseId) != null) {
             StirlingClass stirlingClass = classManager.getByOwner(courseId);
-            List<StirlingAssignment> assignmentList = Lists.newArrayList();
+            List<AssignmentAccount> assignmentList = Lists.newArrayList();
 
             try {
-                assignmentList.addAll(stirlingClass.getStudentAssignments().get(studentUuid));
+                assignmentList.addAll(stirlingClass.getStudentAssignments());
+            } catch (NullPointerException ignored) {
+            }
+
+            CompletableFuture<AssignmentAccount> future = new CompletableFuture<>();
+            assignmentList.forEach(a -> {
+                if (a.getUuid().equals(studentUuid)) {
+                    future.complete(a);
+                }
+            });
+
+            // TODO: 7/12/17 create the account
+            AssignmentAccount assAccount = future.getNow(null);
+            if (assAccount == null) {
+                assignments.forEach(a -> AssignmentManager.getInstance().addAssignment(studentUuid, a));
+                assignmentList.add(AssignmentManager.getInstance().getByUuid(studentUuid));
+                classManager.updateField(stirlingClass, "studentAssignments", assignmentList);
+                UtilLog.getInstance().log("Adding assignments to the daymap course: " + courseId + "!");
+                return;
+            }
+
+            List<StirlingAssignment> stirlingAssignments = Lists.newArrayList();
+            try {
+                stirlingAssignments.addAll(assAccount.getAssignments());
             } catch (NullPointerException ignored) {
             }
 
             assignments.forEach(a -> {
                 CompletableFuture<Boolean> contains = new CompletableFuture<>();
-                assignmentList.forEach(as -> {
-                    if (as.getTitle().equalsIgnoreCase(a.getTitle()) &&
-                      as.getAssignedDateTime().getDate().equalsIgnoreCase(a.getAssignedDateTime().getDate()) &&
-                      as.getAssignedDateTime().getTime().equalsIgnoreCase(a.getAssignedDateTime().getTime())) {
+                stirlingAssignments.forEach(as -> {
+                    if (as.getTitle().equalsIgnoreCase(a.getTitle())) {
                         contains.complete(true);
                     }
 
                     if (!contains.getNow(false)) {
-                        AssignmentManager.getInstance().addAssignment(a);
-                        assignmentList.add(a);
+                        AssignmentManager.getInstance().addAssignment(studentUuid, a);
+                        stirlingAssignments.add(a);
                     }
                 });
             });
 
-            Map<UUID, List<StirlingAssignment>> assMap = Maps.newHashMap();
-
-            try {
-                assMap.putAll(stirlingClass.getStudentAssignments());
-            } catch (NullPointerException ignored) {
-            }
-
-            assMap.replace(studentUuid, assignmentList);
-
             UtilLog.getInstance().log("Adding assignments to the daymap course: " + courseId + "!");
-            classManager.updateField(stirlingClass, "studentAssignments", assMap);
+            AssignmentManager.getInstance().updateField(studentUuid, "assignments", stirlingAssignments);
         }
     }
 

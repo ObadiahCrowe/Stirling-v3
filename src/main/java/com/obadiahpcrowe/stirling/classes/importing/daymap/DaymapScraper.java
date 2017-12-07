@@ -309,9 +309,10 @@ public class DaymapScraper {
                                         }
 
                                         StirlingResult result = new StirlingResult(received, max, grade, 0, comments);
-                                        StirlingAssignment assignment = new StirlingAssignment(account.getAccountUuid(),
-                                          ClassManager.getInstance().getByOwner(clazz.getId()).getUuid(), name.getTextContent(),
-                                          "", type, formative, result, new StirlingDate(date, time));
+
+                                        StirlingAssignment assignment = new StirlingAssignment(ClassManager.getInstance()
+                                          .getByOwner(clazz.getId()).getUuid(), name.getTextContent(), "", type, formative,
+                                          result, new StirlingDate(date, DateFormatter.formatTime(time)));
                                         asses.add(assignment);
                                     } catch (IOException e1) {
                                         e1.printStackTrace();

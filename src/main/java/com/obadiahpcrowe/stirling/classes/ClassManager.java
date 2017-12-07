@@ -11,7 +11,10 @@ import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.assignments.AssignmentAccount;
 import com.obadiahpcrowe.stirling.classes.assignments.AssignmentManager;
 import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
-import com.obadiahpcrowe.stirling.classes.enums.*;
+import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
+import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
+import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
+import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
@@ -366,6 +369,7 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "remove catchup modules", "TEACHER"));
     }
 
+    /*
     public String createAssignment(StirlingAccount account, UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
                                    StirlingDate dueDate, int maxMarks, double weighting) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -436,7 +440,7 @@ public class ClassManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete assignments", "TEACHER"));
-    }
+    }*/
 
     public String removeAssignmentForAll(StirlingAccount account, UUID classUuid, UUID assignmentUuid) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -944,6 +948,7 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "assign a progress marker", "TEACHER"));
     }
 
+    /*
     public String removeProgressMarker(StirlingAccount account, UUID classUuid, UUID studentUuid, UUID markerUuid) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (classExists(classUuid)) {
@@ -983,7 +988,7 @@ public class ClassManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "remove a progress marker", "TEACHER"));
-    }
+    }*/
 
     public String setStudentAttendance(StirlingAccount account, UUID classUuid, UUID lessonUuid, UUID studentUuid, AttendanceStatus status) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {

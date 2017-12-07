@@ -1,5 +1,7 @@
 package com.obadiahpcrowe.stirling.util.formatting;
 
+import com.obadiahpcrowe.stirling.util.StirlingDate;
+
 /**
  * Created by: Obadiah Crowe
  * Creation Date / Time: 4/12/17 at 6:24 PM
@@ -21,18 +23,22 @@ public class DateFormatter {
             pureDate = date;
         }
 
-        String[] parts = pureDate.split(":");
-        String hour = parts[0];
-        String minute = parts[1];
+        try {
+            String[] parts = pureDate.split(":");
+            String hour = parts[0];
+            String minute = parts[1];
 
-        if (isPm) {
-            Integer h = Integer.valueOf(hour);
-            h = h + 12;
-            hour = String.valueOf(h);
+            if (isPm) {
+                Integer h = Integer.valueOf(hour);
+                h = h + 12;
+                hour = String.valueOf(h);
+            }
+
+            String trimmable = hour + ":" + minute;
+
+            return trimmable.trim();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return StirlingDate.getNow().getTime().trim();
         }
-
-        String trimmable = hour + ":" + minute;
-
-        return trimmable.trim();
     }
 }
