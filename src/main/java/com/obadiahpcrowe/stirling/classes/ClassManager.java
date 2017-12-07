@@ -11,10 +11,7 @@ import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
 import com.obadiahpcrowe.stirling.classes.assignments.AssignmentAccount;
 import com.obadiahpcrowe.stirling.classes.assignments.AssignmentManager;
 import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
-import com.obadiahpcrowe.stirling.classes.enums.AttendanceStatus;
-import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
-import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
-import com.obadiahpcrowe.stirling.classes.enums.LessonTimeSlot;
+import com.obadiahpcrowe.stirling.classes.enums.*;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
 import com.obadiahpcrowe.stirling.classes.importing.ImportManager;
 import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
@@ -367,7 +364,6 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "remove catchup modules", "TEACHER"));
     }
 
-    /*
     public String createAssignment(StirlingAccount account, UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
                                    StirlingDate dueDate, int maxMarks, double weighting) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -376,35 +372,40 @@ public class ClassManager {
 
                 List<UUID> students = Lists.newArrayList();
                 try {
-                    students.addAll(clazz.getStudents());
+                    clazz.getMembers().forEach((u, r) -> {
+                        if (r.equals(ClassRole.STUDENT)) {
+                            students.add(u);
+                        }
+                    });
+                } catch (NullPointerException ignored) {
+                }
+
+                StirlingAssignment assignment = new StirlingAssignment(classUuid, title, desc, type, formative,
+                  new StirlingResult(0, maxMarks, "", weighting, ""), dueDate);
+
+                students.forEach(u -> AssignmentManager.getInstance().addAssignment(u, assignment));
+
+                List<AssignmentAccount> assignmentAccounts = Lists.newArrayList();
+                try {
+                    assignmentAccounts.addAll(clazz.getStudentAssignments());
                 } catch (NullPointerException ignored) {
                 }
 
                 students.forEach(u -> {
-                    StirlingAssignment assignment = new StirlingAssignment(account.getUuid(), classUuid, title, desc, type, formative,
-                      new StirlingResult(0, maxMarks, "", weighting, ""), dueDate);
+                    CompletableFuture<Boolean> contains = new CompletableFuture<>();
+                    assignmentAccounts.forEach(a -> {
+                        if (a.getUuid().equals(u)) {
+                            contains.complete(true);
+                        }
+                    });
 
-                    AssignmentManager.getInstance().addAssignment(assignment);
-
-                    Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap();
-                    try {
-                        assignments.putAll(clazz.getStudentAssignments());
-                    } catch (NullPointerException ignored) {
+                    if (!contains.getNow(false)) {
+                        assignmentAccounts.add(AssignmentManager.getInstance().getByUuid(u));
                     }
-
-                    if (assignments.containsKey(account.getUuid())) {
-                        List<StirlingAssignment> tempAsses = Lists.newArrayList();
-                        tempAsses.add(assignment);
-                        tempAsses.addAll(assignments.get(account.getUuid()));
-
-                        assignments.replace(account.getUuid(), tempAsses);
-                    } else {
-                        assignments.put(account.getUuid(), Lists.newArrayList(assignment));
-                    }
-
-                    classesDAO.updateField(clazz, "studentAssignments", assignments);
-
                 });
+
+                assignmentAccounts.forEach(a -> a.getAssignments().add(assignment));
+                classesDAO.updateField(clazz, "studentAssignments", assignmentAccounts);
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_ADDED, account.getLocale(), clazz.getName()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
@@ -416,29 +417,55 @@ public class ClassManager {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
-                CompletableFuture<String> assignmentName = new CompletableFuture<>();
 
-                List<StirlingAssignment> assignments = Lists.newArrayList(clazz.getStudentAssignments().get(studentUuid));
-                clazz.getStudentAssignments().get(studentUuid).forEach(assignment -> {
-                    if (assignment.getUuid().equals(assignmentUuid)) {
-                        assignments.remove(assignment);
-                        assignmentName.complete(assignment.getTitle());
+                List<AssignmentAccount> assignmentAccounts = Lists.newArrayList();
+                try {
+                    assignmentAccounts.addAll(clazz.getStudentAssignments());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<AssignmentAccount> future = new CompletableFuture<>();
+                assignmentAccounts.forEach(a -> {
+                    if (a.getUuid().equals(studentUuid)) {
+                        future.complete(a);
                     }
                 });
 
-                classesDAO.updateField(clazz, "studentAssignments", assignments);
+                AssignmentAccount assignmentAccount = future.getNow(null);
+                if (assignmentAccount == null) {
+                    return gson.toJson(new StirlingMsg(MsgTemplate.ASSIGNMENT_ACCOUNT_DOES_NOT_EXIST, account.getLocale()));
+                }
+
+                List<StirlingAssignment> assignments = Lists.newArrayList();
                 try {
-                    return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_REMOVED_SINGLE,
-                      account.getLocale(), assignmentName.get(), AccountManager.getInstance().getAccount(studentUuid).getAccountName()));
-                } catch (InterruptedException | ExecutionException e) {
-                    UtilLog.getInstance().log(e.getMessage());
+                    assignments.addAll(assignmentAccount.getAssignments());
+                } catch (NullPointerException ignored) {
+                }
+
+                CompletableFuture<StirlingAssignment> removeObj = new CompletableFuture<>();
+                assignments.forEach(a -> {
+                    if (a.getClassUuid().equals(classUuid)) {
+                        if (a.getUuid().equals(assignmentUuid)) {
+                            removeObj.complete(a);
+                        }
+                    }
+                });
+
+                StirlingAssignment assignment = removeObj.getNow(null);
+                if (assignment == null) {
                     return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_DOES_NOT_EXIST, account.getLocale(), assignmentUuid.toString()));
                 }
+
+                assignments.remove(assignment);
+                AssignmentManager.getInstance().updateField(studentUuid, "assignments", assignments);
+
+                return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_REMOVED_SINGLE,
+                  account.getLocale(), assignment.getTitle(), AccountManager.getInstance().getAccount(studentUuid).getAccountName()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "delete assignments", "TEACHER"));
-    }*/
+    }
 
     public String removeAssignmentForAll(StirlingAccount account, UUID classUuid, UUID assignmentUuid) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
