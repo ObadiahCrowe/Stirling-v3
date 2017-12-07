@@ -28,6 +28,7 @@ public class StirlingAssignment {
     private ObjectId id;
 
     private UUID uuid;
+    private UUID classUuid;
     private UUID assignee;
     private String title;
     private String desc;
@@ -42,9 +43,10 @@ public class StirlingAssignment {
     public StirlingAssignment() {
     }
 
-    public StirlingAssignment(UUID assignee, String title, String desc, AssignmentType type, boolean formative,
+    public StirlingAssignment(UUID assignee, UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
                               StirlingResult result, StirlingDate dueDateTime) {
         this.uuid = UUID.randomUUID();
+        this.classUuid = classUuid;
         this.assignee = assignee;
         this.title = title;
         this.desc = desc;

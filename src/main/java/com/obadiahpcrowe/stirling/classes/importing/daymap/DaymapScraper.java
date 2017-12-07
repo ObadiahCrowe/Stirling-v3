@@ -3,7 +3,6 @@ package com.obadiahpcrowe.stirling.classes.importing.daymap;
 import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
@@ -205,6 +204,12 @@ public class DaymapScraper {
         });
         teacherThread.start();
 
+        try {
+            ImportManager.getInstance().createClassFromDaymap(clazz.getId(), clazz.getClassName(), room.get(), timeSlot.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
         Thread assessmentThread = new Thread(() -> {
             final WebClient client = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
             List<StirlingAssignment> asses = Lists.newArrayList();
@@ -218,8 +223,6 @@ public class DaymapScraper {
                     table = (HtmlTableBody) page.getByXPath("//*[@id=\"ctl00_cp_divTasks\"]/div/table/tbody").get(0);
                 } catch (IndexOutOfBoundsException e) {
                     assignments.complete(asses);
-                    System.out.println("FUCKING HELL");
-                    System.exit(0);
                     return;
                 }
 
@@ -305,7 +308,8 @@ public class DaymapScraper {
                                         }
 
                                         StirlingResult result = new StirlingResult(received, max, grade, 0, comments);
-                                        StirlingAssignment assignment = new StirlingAssignment(account.getAccountUuid(), name.getTextContent(),
+                                        StirlingAssignment assignment = new StirlingAssignment(account.getAccountUuid(),
+                                          ClassManager.getInstance().getByOwner(clazz.getId()).getUuid(), name.getTextContent(),
                                           "", type, formative, result, new StirlingDate(date, time));
                                         asses.add(assignment);
                                     } catch (IOException e1) {
@@ -333,12 +337,6 @@ public class DaymapScraper {
             }
         });
         assessmentThread.start();
-
-        try {
-            ImportManager.getInstance().createClassFromDaymap(clazz.getId(), clazz.getClassName(), room.get(), timeSlot.get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
 
         Thread resourcesThread = new Thread(() -> {
             final WebClient client = new StirlingWebClient(BrowserVersion.CHROME).getClient(provider, new NicelyResynchronizingAjaxController());
@@ -595,9 +593,6 @@ public class DaymapScraper {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
-        System.out.println(new Gson().toJson(daymapClass));
-        System.exit(0);
 
         ImportManager importManager = ImportManager.getInstance();
 

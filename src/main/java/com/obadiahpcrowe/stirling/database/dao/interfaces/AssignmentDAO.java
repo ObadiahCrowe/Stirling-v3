@@ -20,5 +20,7 @@ public interface AssignmentDAO extends DAO<StirlingAssignment, ObjectId> {
 
     List<StirlingAssignment> getByAssignee(UUID uuid);
 
+    List<StirlingAssignment> getByClass(UUID uuid);
+
     void updateField(UUID uuid, String field, Object value);
 }

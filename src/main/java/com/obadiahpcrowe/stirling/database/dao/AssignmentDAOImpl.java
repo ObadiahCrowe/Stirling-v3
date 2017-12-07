@@ -41,6 +41,14 @@ public class AssignmentDAOImpl extends BasicDAO<StirlingAssignment, ObjectId> im
     }
 
     @Override
+    public List<StirlingAssignment> getByClass(UUID uuid) {
+        Query<StirlingAssignment> query = createQuery()
+          .field("classUuid").equal(uuid);
+
+        return query.asList();
+    }
+
+    @Override
     public void updateField(UUID uuid, String field, Object value) {
         Query<StirlingAssignment> query = createQuery().field("uuid").equal(uuid);
         UpdateOperations<StirlingAssignment> updateOps = createUpdateOperations().set(field, value);

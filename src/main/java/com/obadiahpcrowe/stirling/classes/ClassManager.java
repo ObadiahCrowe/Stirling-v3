@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.calendar.obj.StirlingCalendar;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentManager;
 import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.*;
 import com.obadiahpcrowe.stirling.classes.enums.fields.LessonField;
@@ -362,31 +363,43 @@ public class ClassManager {
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "remove catchup modules", "TEACHER"));
     }
 
-    // TODO: 7/12/17 unfuck
     public String createAssignment(StirlingAccount account, UUID classUuid, String title, String desc, AssignmentType type, boolean formative,
                                    StirlingDate dueDate, int maxMarks, double weighting) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
             if (classExists(classUuid)) {
                 StirlingClass clazz = getByUuid(classUuid);
 
-                StirlingAssignment assignment = new StirlingAssignment(title, desc, type, formative,
-                  new StirlingResult(0, maxMarks, "", weighting, ""), dueDate);
+                List<UUID> students = Lists.newArrayList();
+                try {
+                    students.addAll(clazz.getStudents());
+                } catch (NullPointerException ignored) {
+                }
 
-                Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap(clazz.getStudentAssignments());
+                students.forEach(u -> {
+                    StirlingAssignment assignment = new StirlingAssignment(account.getUuid(), classUuid, title, desc, type, formative,
+                      new StirlingResult(0, maxMarks, "", weighting, ""), dueDate);
 
-                clazz.getStudents().forEach(student -> {
-                    if (assignments.containsKey(student)) {
-                        List<StirlingAssignment> sAssignments = Lists.newArrayList(assignments.get(student));
-                        sAssignments.add(assignment);
+                    AssignmentManager.getInstance().addAssignment(assignment);
 
-                        assignments.remove(student);
-                        assignments.put(student, sAssignments);
-                    } else {
-                        assignments.put(student, Lists.newArrayList(assignment));
+                    Map<UUID, List<StirlingAssignment>> assignments = Maps.newHashMap();
+                    try {
+                        assignments.putAll(clazz.getStudentAssignments());
+                    } catch (NullPointerException ignored) {
                     }
-                });
 
-                classesDAO.updateField(clazz, "studentAssignments", assignments);
+                    if (assignments.containsKey(account.getUuid())) {
+                        List<StirlingAssignment> tempAsses = Lists.newArrayList();
+                        tempAsses.add(assignment);
+                        tempAsses.addAll(assignments.get(account.getUuid()));
+
+                        assignments.replace(account.getUuid(), tempAsses);
+                    } else {
+                        assignments.put(account.getUuid(), Lists.newArrayList(assignment));
+                    }
+
+                    classesDAO.updateField(clazz, "studentAssignments", assignments);
+
+                });
                 return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_ASSIGNMENT_ADDED, account.getLocale(), clazz.getName()));
             }
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
@@ -787,6 +800,7 @@ public class ClassManager {
     }
 
     // TODO: 7/12/17 unfuck
+    /*
     public String markAssignment(StirlingAccount account, UUID classUuid, UUID assignmentUuid, UUID studentUuid,
                                  int receivedMarks, String grade, double weighting, String comments) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {
@@ -826,7 +840,7 @@ public class ClassManager {
             return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), classUuid.toString()));
         }
         return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "mark an assignment", "TEACHER"));
-    }
+    }*/
 
     public String assignProgressMarker(StirlingAccount account, UUID classUuid, UUID studentUuid, String name, String desc) {
         if (isAccountHighEnough(account, AccountType.TEACHER)) {

@@ -1,9 +1,14 @@
 package com.obadiahpcrowe.stirling.classes.assignments;
 
 import com.google.gson.Gson;
+import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.classes.StirlingClass;
 import com.obadiahpcrowe.stirling.database.MorphiaService;
 import com.obadiahpcrowe.stirling.database.dao.AssignmentDAOImpl;
 import com.obadiahpcrowe.stirling.database.dao.interfaces.AssignmentDAO;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by: Obadiah Crowe
@@ -32,7 +37,19 @@ public class AssignmentManager {
         return instance;
     }
 
-    public void addAssignment() {
+    public void addAssignment(StirlingAssignment assignment) {
+        assignmentDAO.save(assignment);
+    }
 
+    public StirlingAssignment getByUuid(UUID uuid) {
+        return assignmentDAO.getByUuid(uuid);
+    }
+
+    public List<StirlingAssignment> getAssignments(StirlingAccount account) {
+        return assignmentDAO.getByAssignee(account.getUuid());
+    }
+
+    public List<StirlingAssignment> getByClass(StirlingClass stirlingClass) {
+        return assignmentDAO.getByClass(stirlingClass.getUuid());
     }
 }

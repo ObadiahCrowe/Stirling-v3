@@ -8,6 +8,7 @@ import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.calendar.CalendarManager;
 import com.obadiahpcrowe.stirling.classes.ClassManager;
 import com.obadiahpcrowe.stirling.classes.StirlingClass;
+import com.obadiahpcrowe.stirling.classes.assignments.AssignmentManager;
 import com.obadiahpcrowe.stirling.classes.assignments.StirlingAssignment;
 import com.obadiahpcrowe.stirling.classes.enums.ClassLength;
 import com.obadiahpcrowe.stirling.classes.enums.ClassRole;
@@ -464,6 +465,7 @@ public class ImportManager {
                     }
 
                     if (!contains.getNow(false)) {
+                        AssignmentManager.getInstance().addAssignment(a);
                         assignmentList.add(a);
                     }
                 });
