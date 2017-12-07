@@ -4,9 +4,6 @@ import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
 import com.obadiahpcrowe.stirling.api.*;
 import com.obadiahpcrowe.stirling.api.obj.APIManager;
-import com.obadiahpcrowe.stirling.classes.importing.ImportAccount;
-import com.obadiahpcrowe.stirling.classes.importing.daymap.DaymapScraper;
-import com.obadiahpcrowe.stirling.classes.importing.obj.ImportableClass;
 import com.obadiahpcrowe.stirling.modules.ModuleManager;
 import com.obadiahpcrowe.stirling.modules.events.EventManager;
 import com.obadiahpcrowe.stirling.modules.handoff.HandoffManager;
@@ -18,7 +15,6 @@ import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.UtilLog;
 import com.obadiahpcrowe.stirling.util.enums.VersionType;
 import lombok.Getter;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -84,28 +80,9 @@ public class Stirling {
         ModuleManager.getInstance().registerAPICalls();
 
         utilLog.log("Starting REST API service..");
-        SpringApplication.run(Stirling.class, args);
+        //SpringApplication.run(Stirling.class, args);
 
         StirlingAccount account = AccountManager.getInstance().getAccount("ObadiahCrowe");
-        ImportAccount importAccount = com.obadiahpcrowe.stirling.classes.importing.ImportManager.getInstance().getByUuid(account.getUuid());
-        DaymapScraper.getInstance().getFullCourse(importAccount, new ImportableClass("12 EnglishFB", "3755"), false);
-        /*
-        ClassManager.getInstance().getAllClasses(account).forEach(c -> {
-            c.getStudentResults().get(account.getUuid()).forEach(r -> {
-                System.out.println("RESULT - START");
-                System.out.println(r.getComments());
-                System.out.println(r.getGrade());
-                System.out.println(r.getMaxMarks());
-                System.out.println(r.getReceivedMarks());
-                System.out.println(r.getWeighting());
-                System.out.println("RESULT - END");
-            });
-
-            c.getStudentAssignments().get(account.getUuid()).forEach(a -> {
-                System.out.println(a.getTitle());
-                System.out.println(a.getResult().getComments());
-            });
-        });*/
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             utilLog.log("Beginning shutdown procedure..");
