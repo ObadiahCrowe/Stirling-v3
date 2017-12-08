@@ -17,6 +17,6 @@ public class NameFormatter {
             builder.append(part.substring(0, 1).toUpperCase() + part.substring(1).toLowerCase() + " ");
         }
 
-        return builder.toString();
+        return builder.toString().trim();
     }
 }

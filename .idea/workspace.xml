@@ -4,7 +4,7 @@
     <list default="true" id="0083e009-1fa8-4200-8880-dcadeb741671" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/StirlingClass.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/StirlingClass.java" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/NameFormatter.java" afterPath="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/NameFormatter.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -36,8 +36,8 @@
       <file leaf-file-name="ClassesAPI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="638" column="31" lean-forward="true" selection-start-line="638" selection-start-column="31" selection-end-line="638" selection-end-column="31" />
+            <state relative-caret-position="652">
+              <caret line="676" column="113" lean-forward="false" selection-start-line="676" selection-start-column="113" selection-end-line="676" selection-end-column="113" />
               <folding>
                 <element signature="method#updateBanner#0;class#ClassesAPI#0" expanded="false" />
               </folding>
@@ -186,7 +186,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingDate.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/StirlingVersion.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/NameFormatter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/NameFormatter.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/UtilTime.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
@@ -217,6 +216,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/msg/MsgTemplate.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/classes/StirlingClass.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/NameFormatter.java" />
       </list>
     </option>
   </component>
@@ -316,15 +316,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="stirling" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Stirling-v3" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Stirling-v3" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="stirling" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -764,14 +755,7 @@
       <workItem from="1512687798318" duration="3232000" />
       <workItem from="1512694764824" duration="55000" />
       <workItem from="1512701286592" duration="10000" />
-      <workItem from="1512730808842" duration="1459000" />
-    </task>
-    <task id="LOCAL-00142" summary="Large cleanup and some sace apis">
-      <created>1511160445178</created>
-      <option name="number" value="00142" />
-      <option name="presentableId" value="LOCAL-00142" />
-      <option name="project" value="LOCAL" />
-      <updated>1511160445179</updated>
+      <workItem from="1512730808842" duration="1507000" />
     </task>
     <task id="LOCAL-00143" summary="Atar stuff">
       <created>1511161239457</created>
@@ -1109,15 +1093,21 @@
       <option name="project" value="LOCAL" />
       <updated>1512691619065</updated>
     </task>
-    <option name="localTasksCounter" value="191" />
+    <task id="LOCAL-00191" summary="Fixes to database calls, updated name formatting in returned data">
+      <created>1512732321492</created>
+      <option name="number" value="00191" />
+      <option name="presentableId" value="LOCAL-00191" />
+      <option name="project" value="LOCAL" />
+      <updated>1512732321493</updated>
+    </task>
+    <option name="localTasksCounter" value="192" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="539617000" />
+    <option name="totallyTimeSpent" value="539665000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="992" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294979" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -1139,7 +1129,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1922619" sideWeight="0.4958159" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1922619" sideWeight="0.4958159" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1161,7 +1151,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Versioning update" />
     <MESSAGE value="Fixing daily classes stuff" />
     <MESSAGE value="Beginning to test daymap scraper compatibility with different user settings" />
     <MESSAGE value="Fixed daymap scrapers" />
@@ -1186,7 +1175,8 @@
     <MESSAGE value="Banner images for daymap imported classes" />
     <MESSAGE value="Adding some class administation calls. RC1." />
     <MESSAGE value="Updating class banner image" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updating class banner image" />
+    <MESSAGE value="Fixes to database calls, updated name formatting in returned data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixes to database calls, updated name formatting in returned data" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1258,13 +1248,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/NameFormatter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="6" column="54" lean-forward="false" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
         </state>
       </provider>
     </entry>
@@ -1560,10 +1543,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/util/formatting/NameFormatter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="19" column="40" lean-forward="false" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/obadiahpcrowe/stirling/api/ClassesAPI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="638" column="31" lean-forward="true" selection-start-line="638" selection-start-column="31" selection-end-line="638" selection-end-column="31" />
+        <state relative-caret-position="652">
+          <caret line="676" column="113" lean-forward="false" selection-start-line="676" selection-start-column="113" selection-end-line="676" selection-end-column="113" />
           <folding>
             <element signature="method#updateBanner#0;class#ClassesAPI#0" expanded="false" />
           </folding>

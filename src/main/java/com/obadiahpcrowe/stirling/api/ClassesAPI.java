@@ -635,7 +635,7 @@ public class ClassesAPI implements APIController {
         }
 
         List<String> studentNames = Lists.newArrayList();
-        students.forEach(u -> studentNames.add(AccountManager.getInstance().getAccount(u).getDisplayName()));
+        students.forEach(u -> studentNames.add(AccountManager.getInstance().getAccount(u).getDisplayName().trim()));
 
         return LocalisationManager.getInstance().translate(gson.toJson(studentNames), account.getLocale());
     }
@@ -674,7 +674,7 @@ public class ClassesAPI implements APIController {
         }
 
         List<String> teacherNames = Lists.newArrayList();
-        teachers.forEach(u -> teacherNames.add(AccountManager.getInstance().getAccount(u).getDisplayName()));
+        teachers.forEach(u -> teacherNames.add(AccountManager.getInstance().getAccount(u).getDisplayName().trim()));
 
         return LocalisationManager.getInstance().translate(gson.toJson(teacherNames), account.getLocale());
     }
