@@ -102,6 +102,7 @@ public enum MsgTemplate {
     CLASS_ADDED_TO_ACCOUNT(MsgResponse.SUCCESS, "The class, {0}, has been added to: {1}!", 2),
     CLASS_HOLDER_ADDED(MsgResponse.SUCCESS, "You have added the imported course, {0}, to the class, {1}!", 2),
     CLASS_HOLDER_REMOVED(MsgResponse.SUCCESS, "You have removed the imported course, {0}, from the class, {1}!", 1),
+    CLASS_BANNER_UPDATED(MsgResponse.SUCCESS, "You have updated the class banner for: {0}!", 1),
 
     IMPORT_ACCOUNT_CONTAINS_CRED(MsgResponse.USER_ERROR, "You already have credentials set for {0}!", 1),
     IMPORT_ACCOUNT_CREDS_SET(MsgResponse.SUCCESS, "You have added credentials for {0}!", 1),

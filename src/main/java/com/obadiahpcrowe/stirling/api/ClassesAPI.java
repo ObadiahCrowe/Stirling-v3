@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.obadiahpcrowe.stirling.accounts.AccountManager;
 import com.obadiahpcrowe.stirling.accounts.StirlingAccount;
+import com.obadiahpcrowe.stirling.accounts.enums.AccountType;
 import com.obadiahpcrowe.stirling.api.obj.APIController;
 import com.obadiahpcrowe.stirling.api.obj.CallableAPI;
 import com.obadiahpcrowe.stirling.classes.ClassIdentifier;
@@ -23,8 +24,10 @@ import com.obadiahpcrowe.stirling.classes.progress.MarkerManager;
 import com.obadiahpcrowe.stirling.classes.progress.ProgressAccount;
 import com.obadiahpcrowe.stirling.localisation.LocalisationManager;
 import com.obadiahpcrowe.stirling.localisation.StirlingLocale;
+import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
+import com.obadiahpcrowe.stirling.util.UtilFile;
 import com.obadiahpcrowe.stirling.util.formatting.NameFormatter;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
@@ -33,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -969,4 +973,63 @@ public class ClassesAPI implements APIController {
         return ClassManager.getInstance().removeTeachers(account, uuid, uuids.toArray(new UUID[uuids.size()]));
     }
 
+    @CallableAPI(fields = {"accountName", "password", "classUuid", "banner"})
+    @RequestMapping(value = "/stirling/v3/classes/update/banner", method = RequestMethod.POST)
+    public String updateBanner(@RequestParam("accountName") String accountName,
+                               @RequestParam("password") String password,
+                               @RequestParam("classUuid") String rawUuid,
+                               @RequestParam("banner") MultipartFile file) {
+        StirlingAccount account = accountManager.getAccount(accountName);
+        if (account == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.ACCOUNT_DOES_NOT_EXIST, StirlingLocale.ENGLISH, accountName));
+        }
+
+        if (!accountManager.validCredentials(accountName, password)) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.PASSWORD_INCORRECT, StirlingLocale.ENGLISH, accountName));
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(rawUuid);
+        } catch (IllegalArgumentException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INCOMPATIBLE_VALUE, account.getLocale(), rawUuid, "uuid"));
+        }
+
+        if (account.getAccountType().getAccessLevel() < AccountType.TEACHER.getAccessLevel()) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INSUFFICIENT_PERMISSIONS, account.getLocale(), "update the class banner", "TEACHER"));
+        }
+
+        String ext;
+        if (file.getOriginalFilename().endsWith(".jpg") || file.getOriginalFilename().endsWith(".jpeg")) {
+            ext = ".jpg";
+        } else if (file.getOriginalFilename().endsWith(".png")) {
+            ext = ".png";
+        } else {
+            return gson.toJson(new StirlingMsg(MsgTemplate.INVALID_TYPE_FORMAT, account.getLocale(), file.getOriginalFilename(), ".jpg or .png"));
+        }
+
+        StirlingClass stirlingClass = ClassManager.getInstance().getByUuid(uuid);
+        if (stirlingClass == null) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_DOES_NOT_EXIST, account.getLocale(), rawUuid));
+        }
+
+        File out = new File(UtilFile.getInstance().getStorageLoc() + File.separator + "Classes" + File.separator + uuid);
+        File banner = new File(out + File.separator + "banner" + ext);
+        try {
+            if (!out.exists()) {
+                out.mkdir();
+            }
+
+            if (banner.exists()) {
+                banner.delete();
+            }
+
+            file.transferTo(banner);
+        } catch (IOException e) {
+            return gson.toJson(new StirlingMsg(MsgTemplate.UNEXPECTED_ERROR, account.getLocale(), "uploading the new banner image"));
+        }
+
+        ClassManager.getInstance().updateField(stirlingClass, "classBanner", new AttachableResource(stirlingClass.getUuid(), "banner" + ext, ARType.CLASS));
+        return gson.toJson(new StirlingMsg(MsgTemplate.CLASS_BANNER_UPDATED, account.getLocale(), stirlingClass.getName()));
+    }
 }
