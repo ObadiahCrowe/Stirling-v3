@@ -28,7 +28,6 @@ import com.obadiahpcrowe.stirling.resources.ARType;
 import com.obadiahpcrowe.stirling.resources.AttachableResource;
 import com.obadiahpcrowe.stirling.util.StirlingDate;
 import com.obadiahpcrowe.stirling.util.UtilFile;
-import com.obadiahpcrowe.stirling.util.formatting.NameFormatter;
 import com.obadiahpcrowe.stirling.util.msg.MsgTemplate;
 import com.obadiahpcrowe.stirling.util.msg.StirlingMsg;
 import org.apache.commons.io.IOUtils;
@@ -636,9 +635,7 @@ public class ClassesAPI implements APIController {
         }
 
         List<String> studentNames = Lists.newArrayList();
-        students.forEach(u -> {
-            studentNames.add(NameFormatter.formatName(AccountManager.getInstance().getAccount(u).getDisplayName()));
-        });
+        students.forEach(u -> studentNames.add(AccountManager.getInstance().getAccount(u).getDisplayName()));
 
         return LocalisationManager.getInstance().translate(gson.toJson(studentNames), account.getLocale());
     }
@@ -677,7 +674,7 @@ public class ClassesAPI implements APIController {
         }
 
         List<String> teacherNames = Lists.newArrayList();
-        teachers.forEach(u -> teacherNames.add(NameFormatter.formatName(AccountManager.getInstance().getAccount(u).getDisplayName())));
+        teachers.forEach(u -> teacherNames.add(AccountManager.getInstance().getAccount(u).getDisplayName()));
 
         return LocalisationManager.getInstance().translate(gson.toJson(teacherNames), account.getLocale());
     }

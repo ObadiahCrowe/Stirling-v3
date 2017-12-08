@@ -64,10 +64,10 @@ public class StirlingClass {
     private List<StirlingResource> resources;
 
     // Results
-    @Reference
+    @Reference(idOnly = true, ignoreMissing = true)
     private List<AssignmentAccount> studentAssignments; // TODO: 26/9/17 Generate report and stuff from these results.
 
-    @Reference
+    @Reference(idOnly = true, ignoreMissing = true)
     private List<ProgressAccount> progressMarkers;
 
     @Deprecated
