@@ -426,9 +426,9 @@ public class DaymapScraper {
                                       .replace("DMU.ViewPlan(", "").replace(");;", "");
 
                                     String rawDate = e.getLastElementChild().getFirstElementChild().getTextContent();
-                                    rawDate = rawDate.split("2017")[0];
+                                    rawDate = rawDate.split("2018")[0];
 
-                                    StirlingDate date = new StirlingDate(rawDate + "2017", UtilTime.getInstance().getFriendlyTime());
+                                    StirlingDate date = new StirlingDate(rawDate + "2018", UtilTime.getInstance().getFriendlyTime());
 
                                     CompletableFuture<String> click = new CompletableFuture<>();
                                     if (onClick.equalsIgnoreCase("")) {
@@ -485,11 +485,11 @@ public class DaymapScraper {
                                               Lists.newArrayList()));
                                             return;
                                         } else {
-                                            String[] parts = date.split("2017 ");
+                                            String[] parts = date.split("2018 ");
                                             date = parts[0];
                                             date = date.split("posted ")[1];
 
-                                            StirlingDate d = new StirlingDate(date + "2017", DateFormatter.formatTime(parts[1]));
+                                            StirlingDate d = new StirlingDate(date + "2018", DateFormatter.formatTime(parts[1]));
                                             noteList.add(new StirlingPostable(t, div.getTextContent().replace("\\u00a0", ""),
                                               Lists.newArrayList(), d));
                                         }

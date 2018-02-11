@@ -33,11 +33,7 @@ public class StirlingDate {
 
         String day = parts[0];
         String month = parts[1];
-        String year = "2017";
-
-        if (parts[2].equalsIgnoreCase("17")) {
-            year = "2017";
-        }
+        String year = "2018";
 
         if (parts[2].equalsIgnoreCase("18")) {
             year = "2018";
