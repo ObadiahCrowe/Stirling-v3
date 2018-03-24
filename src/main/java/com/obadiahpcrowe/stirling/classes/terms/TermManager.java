@@ -56,10 +56,10 @@ public class TermManager {
     }
 
     private void initSA() {
-        saTerms.add(new TermLength(AusState.SA, 2017, 1, LocalDate.of(2017, 1, 30), LocalDate.of(2017, 4, 13)));
-        saTerms.add(new TermLength(AusState.SA, 2017, 2, LocalDate.of(2017, 5, 1), LocalDate.of(2017, 7, 7)));
-        saTerms.add(new TermLength(AusState.SA, 2017, 3, LocalDate.of(2017, 7, 24), LocalDate.of(2017, 9, 29)));
-        saTerms.add(new TermLength(AusState.SA, 2017, 4, LocalDate.of(2017, 10, 16), LocalDate.of(2017, 12, 15)));
+        saTerms.add(new TermLength(AusState.SA, 2018, 1, LocalDate.of(2018, 1, 30), LocalDate.of(2018, 4, 13)));
+        saTerms.add(new TermLength(AusState.SA, 2018, 2, LocalDate.of(2018, 5, 1), LocalDate.of(2018, 7, 7)));
+        saTerms.add(new TermLength(AusState.SA, 2018, 3, LocalDate.of(2018, 7, 24), LocalDate.of(2018, 9, 29)));
+        saTerms.add(new TermLength(AusState.SA, 2018, 4, LocalDate.of(2018, 10, 16), LocalDate.of(2018, 12, 15)));
     }
 
     private void initVIC() {

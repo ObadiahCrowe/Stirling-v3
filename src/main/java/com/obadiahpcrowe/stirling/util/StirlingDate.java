@@ -35,10 +35,6 @@ public class StirlingDate {
         String month = parts[1];
         String year = "2018";
 
-        if (parts[2].equalsIgnoreCase("18")) {
-            year = "2018";
-        }
-
         return new StirlingDate(day + "/" + month + "/" + year, UtilTime.getInstance().getFriendlyTime());
     }
 }
