@@ -104,16 +104,18 @@ public class ClassManager {
 
     public List<DailyClass> getDailyClasses(StirlingAccount account, StirlingDate date) {
         List<StirlingClass> classes = getAllClasses(account);
+        List<DailyClass> dailyClasses = Lists.newArrayList();
 
-        Map<UUID, StirlingLesson> lessons = Maps.newHashMap();
-        classes.forEach(c -> c.getLessons().forEach(l -> {
-            if (l.getStartDateTime().getDate().equalsIgnoreCase(date.getDate())) {
-                lessons.put(c.getUuid(), l);
-            }
+        classes.forEach(c -> c.getLessons().stream().filter(l -> l.getStartDateTime().getDate().equalsIgnoreCase(date.getDate())).forEach(l -> {
+            dailyClasses.add(new DailyClass(account.getUuid(), c.getUuid(), l.getStartDateTime(), l.getEndDateTime()));
         }));
 
-        List<DailyClass> dailyClasses = Lists.newArrayList();
-        lessons.forEach((u, l) -> dailyClasses.add(new DailyClass(account.getUuid(), u, l.getStartDateTime(), l.getEndDateTime())));
+        dailyClasses.forEach(d -> {
+            System.out.println("DAILY CLASS OBJECT");
+            System.out.println(d.getClassName());
+            System.out.println(d.getTeacher());
+            System.out.println(d.getStartTime().getDate() + " at " + d.getStartTime().getTime());
+        });
 
         return dailyClasses;
     }
