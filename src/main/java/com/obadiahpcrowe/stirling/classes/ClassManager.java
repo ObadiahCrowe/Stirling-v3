@@ -149,8 +149,11 @@ public class ClassManager {
     public List<StirlingClass> getAllClasses(StirlingAccount account) {
         List<StirlingClass> classes = Lists.newArrayList();
         classesDAO.getAllClasses().forEach(c -> {
-            if (c.getMembers().containsKey(account.getUuid().toString())) {
-                classes.add(c);
+            try {
+                if (c.getMembers().containsKey(account.getUuid().toString())) {
+                    classes.add(c);
+                }
+            } catch (NullPointerException ignored) {
             }
         });
 
